@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Wishlist • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.3" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .wishlist-page {
+      min-height: 70vh;
+      padding: 2rem 0;
+    }
+    
+    .page-header-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .page-header-section h1 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    
+    .page-header-section p {
+      margin: 0;
+      color: var(--muted);
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+    
+    .breadcrumb-separator {
+      color: var(--muted);
+    }
+    
+    .wishlist-stats {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+    }
+    
+    .stat-item i {
+      color: var(--primary);
+    }
+    
+    .stat-value {
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .wishlist-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .wishlist-item:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+    
+    .wishlist-item-image {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background: var(--panel2);
+      overflow: hidden;
+    }
+    
+    .wishlist-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    
+    .wishlist-item:hover .wishlist-item-image img {
+      transform: scale(1.05);
+    }
+    
+    .remove-wishlist-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      background: rgba(239, 68, 68, 0.9);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    
+    .remove-wishlist-btn:hover {
+      background: #ef4444;
+      transform: scale(1.1);
+    }
+    
+    .stock-badge {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .badge-in-stock {
+      background: #10b981;
+      color: white;
+    }
+    
+    .badge-out-of-stock {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .wishlist-item-content {
+      padding: 1.5rem;
+    }
+      .wishlist-item-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .wishlist-item-category {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .wishlist-item-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .price-current {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .price-original {
+      font-size: 1rem;
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+    
+    .price-discount {
+      background: var(--gradient-3);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .wishlist-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .wishlist-item-actions .btn {
+      flex: 1;
+    }
+    
+    .added-date {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    
+    .empty-state-icon {
+      font-size: 5rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    
+    .empty-state h2 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .wishlist-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .wishlist-item-actions {
+        flex-direction: column;
+      }
+      
+      .wishlist-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      <nav class="main-nav">
+        <a href="shop.html" class="nav-link">
+          <i class="fas fa-laptop"></i>
+          <span>Shop</span>
+        </a>
+        <a href="account.html" class="nav-link">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </a>
+        <a href="cart.html" class="nav-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+          <span class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="index.html" class="mobile-menu-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="shop.html" class="mobile-menu-link">
+        <i class="fas fa-laptop"></i>
+        <span>Shop</span>
+      </a>
+      <a href="account.html" class="mobile-menu-link">
+        <i class="fas fa-user"></i>
+        <span>Account</span>
+      </a>
+      <a href="cart.html" class="mobile-menu-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="container wishlist-page">
+    <!-- Page Header -->
+    <div class="page-header-section">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="account.html">Account</a>
+        <span class="breadcrumb-separator">/</span>
+        <span style="color: var(--text);">Wishlist</span>
+      </div>
+      <h1>
+        <i class="fas fa-heart"></i>
+        My Wishlist
+      </h1>
+      <p>Save your favorite items for later</p>
+      <div class="wishlist-stats">
+        <div class="stat-item">
+          <i class="fas fa-heart"></i>
+          <span><span class="stat-value" id="totalItems">0</span> items</span>
+        </div>
+        <div class="stat-item">
+          <i class="fas fa-tag"></i>
+          <span>Total value: <span class="stat-value" id="totalValue">LKR 0</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wishlist Grid -->
+    <div class="wishlist-grid" id="wishlistGrid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <div class="empty-state-icon">
+        <i class="fas fa-heart"></i>
+      </div>
+      <h2>Your Wishlist is Empty</h2>
+      <p>Save items you love to your wishlist so you can find them easily later</p>
+      <a href="shop.html" class="btn btn-primary">
+        <i class="fas fa-shopping-bag"></i> Browse Products
+      </a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>Your trusted partner for high-quality computer hardware and accessories.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a href="account.html">My Account</a></li>
+          <li><a href="orders.html">Order History</a></li>
+          <li><a href="addresses.html">Addresses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 One Click Computers. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>`n  <script src="assets/js/auth-system.js"></script>
+  <script src="assets/js/firebase-shim.js"></script>
+  <script src="assets/js/cart-manager.js"></script>
+  <script>
+    // Initialize Cart Manager
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof CartManager !== 'undefined') {
+        CartManager.init();
+      }
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+      });
+    }
+
+    // Wishlist Management
+    // Legacy firebase usage is shimmed. Please migrate to Supabase (assets/js/supabase-init.js)
+  </script>
+</body>
+</html>

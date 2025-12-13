@@ -1,0 +1,127 @@
+/* Dark UI kit for eCommerce Frontend - Modern, clean, responsive */
+/* Theme tokens */
+:root{
+  --bg:#0b0f14; /* page background */
+  --surface:#0f1620; /* panels */
+  --card:#111827; /* cards */
+  --text:#e5e7eb; /* primary text */
+  --muted:#9ca3af; /* secondary text */
+  --border:#1f2937; /* outlines */
+  --primary-start:#7c3aed; /* gradient start */
+  --primary-end:#06b6d4;   /* gradient end */
+  --accent:#22d3ee; /* accents */
+  --danger:#ef4444; --success:#10b981; --warning:#f59e0b;
+  --radius:14px; --radius-sm:10px; --radius-xs:8px;
+  --shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1000px 600px at -10% -10%, rgba(124,58,237,.15), transparent 40%),
+              radial-gradient(1000px 600px at 110% -10%, rgba(6,182,212,.15), transparent 40%),
+              var(--bg);
+  color:var(--text);
+  line-height:1.5;
+}
+
+/* Layout */
+.container{width:100%; max-width:1100px; margin:0 auto; padding:24px;}
+.stack{display:flex; flex-direction:column; gap:16px}
+.row{display:flex; gap:16px; flex-wrap:wrap}
+.row > *{flex:1 1 280px}
+.space{height:24px}
+
+/* Header / Footer */
+.site-header{position:sticky; top:0; z-index:50; backdrop-filter: blur(8px); background: rgba(15,22,32,.7); border-bottom:1px solid var(--border)}
+.nav{display:flex; align-items:center; justify-content:space-between; padding:12px 24px}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+.brand .logo{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, var(--primary-start), var(--primary-end)); box-shadow: var(--shadow)}
+.nav a{color:var(--muted); text-decoration:none; font-weight:500}
+.nav a:hover{color:var(--text)}
+.nav .actions{display:flex; gap:10px; align-items:center}
+
+.site-footer{border-top:1px solid var(--border); margin-top:40px; padding:24px 0; background:rgba(17,24,39,.6)}
+.site-footer .links{display:flex; gap:16px; flex-wrap:wrap}
+.site-footer a{color:var(--muted); text-decoration:none}
+.site-footer a:hover{color:var(--text)}
+
+/* Cards */
+.card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)); border:1px solid var(--border); border-radius:var(--radius); padding:22px; box-shadow: var(--shadow)}
+.card.sm{padding:16px; border-radius:var(--radius-sm)}
+.card-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px}
+.card-title{font-size:18px; font-weight:700}
+.muted{color:var(--muted)}
+
+/* Buttons */
+.btn{appearance:none; border:0; cursor:pointer; border-radius:14px; padding:12px 18px; font-weight:700; color:#0b0f14; transition: transform .12s ease, box-shadow .12s ease, background .2s ease;}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:linear-gradient(135deg, var(--primary-start), var(--primary-end)); color:white; box-shadow:0 10px 25px rgba(124,58,237,.25), 0 8px 20px rgba(6,182,212,.18)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-outline{background:transparent; color:var(--text); border:1px solid var(--border)}
+.btn-ghost{background:transparent; color:var(--muted)}
+.btn-danger{background:linear-gradient(135deg, #f43f5e, #ef4444); color:white}
+.btn-success{background:linear-gradient(135deg, #34d399, #10b981); color:white}
+
+/* Forms with floating labels */
+.form{display:grid; gap:14px}
+.field{position:relative}
+.field input,
+.field select,
+.field textarea{width:100%; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:12px; color:var(--text); padding:16px 14px 12px; outline:none; transition:border .2s ease, box-shadow .2s ease}
+.field textarea{min-height:110px; resize:vertical}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{border-color:var(--accent); box-shadow:0 0 0 4px rgba(34,211,238,.12)}
+.field label{position:absolute; left:12px; top:12px; padding:0 6px; color:var(--muted); pointer-events:none; background:transparent; transform-origin:left top; transition: all .15s ease}
+.field input::placeholder{color:transparent}
+.field input:not(:placeholder-shown) + label,
+.field input:focus + label,
+.field textarea:not(:placeholder-shown) + label,
+.field textarea:focus + label,
+.field select:focus + label{transform: translateY(-14px) scale(.86); color:var(--accent); background: var(--surface);}
+.help{font-size:12px; color:var(--muted)}
+.error{font-size:12px; color:#fecaca}
+
+/* Switches/checkboxes */
+.check{display:flex; align-items:center; gap:10px}
+.check input[type="checkbox"]{width:18px; height:18px; appearance:none; border:1px solid var(--border); border-radius:6px; background:rgba(255,255,255,.05); position:relative; cursor:pointer}
+.check input[type="checkbox"]:checked{background:linear-gradient(135deg, var(--primary-start), var(--primary-end)); border-color:transparent}
+.check input[type="checkbox"]:checked::after{content:""; position:absolute; inset:0; background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') no-repeat center/14px}
+
+/* Alert/Toast */
+.toast-area{position:fixed; right:20px; bottom:20px; display:flex; flex-direction:column; gap:10px; z-index:100}
+.toast{background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--text); padding:12px 14px; border-radius:12px; box-shadow:var(--shadow); display:flex; align-items:center; gap:10px; animation:slideIn .18s ease}
+.toast.success{border-color:rgba(16,185,129,.4)}
+.toast.error{border-color:rgba(239,68,68,.5)}
+@keyframes slideIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+/* Stepper */
+.steps{display:flex; gap:10px; flex-wrap:wrap}
+.step{flex:1 1 160px; min-width:140px; background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:12px; padding:12px; display:flex; align-items:center; gap:10px}
+.step .badge{width:26px; height:26px; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:700; color:white; background:#1f2937}
+.step.active{border-color:rgba(34,211,238,.5); box-shadow:0 0 0 4px rgba(34,211,238,.08)}
+.step.active .badge{background:linear-gradient(135deg, var(--primary-start), var(--primary-end))}
+.step.done{opacity:.8}
+
+/* Utilities */
+.center{display:flex; align-items:center; justify-content:center}
+.right{display:flex; justify-content:flex-end}
+.grid-2{display:grid; grid-template-columns:1fr; gap:16px}
+@media (min-width: 780px){.grid-2{grid-template-columns:1fr 1fr}}
+.grid-3{display:grid; grid-template-columns:1fr; gap:16px}
+@media (min-width: 980px){.grid-3{grid-template-columns: repeat(3, 1fr)}}
+.hidden{display:none}
+.badge-pill{display:inline-block; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid var(--border); color:var(--muted)}
+
+/* Links */
+a.link{color:var(--accent); text-decoration:none}
+a.link:hover{filter:brightness(1.15)}
+
+/* Tables (for orders) */
+table{width:100%; border-collapse:separate; border-spacing:0 10px}
+thead th{color:var(--muted); font-weight:600; text-align:left; padding:6px 10px}
+tbody tr{background:rgba(255,255,255,.03); border:1px solid var(--border)}
+tbody td{padding:12px 10px}
+tbody tr{border-radius:10px}

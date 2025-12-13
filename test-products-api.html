@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product API Test - One Click Computers</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #0e0f14;
+      color: #e9ecf1;
+    }
+    h1 { color: #e44d61; }
+    h2 { color: #00d4ff; margin-top: 2rem; }
+    .test-section {
+      background: #151821;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      border: 1px solid #272a36;
+    }
+    button {
+      background: #e44d61;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 5px;
+    }
+    button:hover {
+      background: #c73d51;
+    }
+    pre {
+      background: #0a0b0f;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      border: 1px solid #1a1e29;
+    }
+    .success { color: #22c55e; }
+    .error { color: #ef4444; }
+    .count { color: #00d4ff; font-weight: bold; }
+    .product-card {
+      background: #1a1e29;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border-left: 3px solid #e44d61;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Product API & Grid Loader Test</h1>
+  <p>Test all product-related functionality to ensure ALL 44+ products load correctly.</p>
+
+  <!-- Test 1: API Direct Test -->
+  <div class="test-section">
+    <h2>Test 1: API Direct Calls</h2>
+    <button onclick="testAllProducts()">Get ALL Products</button>
+    <button onclick="testLaptops()">Get Laptops Only</button>
+    <button onclick="testMultipleCategories()">Get Laptops + Monitors</button>
+    <button onclick="testFeatured()">Get Featured Products</button>
+    <div id="apiResult"></div>
+  </div>
+
+  <!-- Test 2: Grid Loader Test -->
+  <div class="test-section">
+    <h2>Test 2: Product Grid Loader</h2>
+    <p>Testing dynamic grid population with data-limit:</p>
+
+    <h3>All Laptops (no limit)</h3>
+    <div class="product-grid-vertical" data-products-grid data-category="Laptops" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+
+    <h3>Monitors (limit 4)</h3>
+    <div class="product-grid-vertical" data-products-grid data-category="Monitors" data-limit="4" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+
+    <h3>Featured Products (limit 8)</h3>
+    <div class="product-grid-vertical" data-products-grid data-category="__FEATURED__" data-limit="8" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+  </div>
+
+  <!-- Test 3: Summary -->
+  <div class="test-section">
+    <h2>Test 3: Quick Summary</h2>
+    <button onclick="runAllTests()">Run All Tests</button>
+    <div id="summary"></div>
+  </div>
+
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/config-auto.js"></script>
+  <script src="assets/js/product-grid-loader.js"></script>
+
+  <script>
+    const API_BASE = window.API_CONFIG?.apiUrl || 'api';
+
+    async function testAllProducts() {
+      const result = document.getElementById('apiResult');
+      result.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`${API_BASE}/get-products.php`);
+        const data = await res.json();
+
+        if (data.success) {
+          result.innerHTML = `
+            <p class="success">✅ SUCCESS</p>
+            <p>Total products returned: <span class="count">${data.count}</span></p>
+            <p>Expected: 44+</p>
+            <details>
+              <summary>View JSON Response</summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          `;
+        } else {
+          result.innerHTML = `<p class="error">❌ FAILED: ${data.error}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = `<p class="error">❌ ERROR: ${err.message}</p>`;
+      }
+    }
+
+    async function testLaptops() {
+      const result = document.getElementById('apiResult');
+      result.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`${API_BASE}/get-products.php?categories=Laptops`);
+        const data = await res.json();
+
+        if (data.success) {
+          result.innerHTML = `
+            <p class="success">✅ SUCCESS</p>
+            <p>Laptops returned: <span class="count">${data.count}</span></p>
+            <div>
+              ${data.products.slice(0, 3).map(p => `
+                <div class="product-card">
+                  <strong>${p.name}</strong><br>
+                  Category: ${p.category} | Price: Rs ${p.price}
+                </div>
+              `).join('')}
+            </div>
+            <details>
+              <summary>View Full JSON</summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          `;
+        } else {
+          result.innerHTML = `<p class="error">❌ FAILED: ${data.error}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = `<p class="error">❌ ERROR: ${err.message}</p>`;
+      }
+    }
+
+    async function testMultipleCategories() {
+      const result = document.getElementById('apiResult');
+      result.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`${API_BASE}/get-products.php?categories=Laptops,Monitors`);
+        const data = await res.json();
+
+        if (data.success) {
+          const byCategory = {};
+          data.products.forEach(p => {
+            byCategory[p.category] = (byCategory[p.category] || 0) + 1;
+          });
+
+          result.innerHTML = `
+            <p class="success">✅ SUCCESS</p>
+            <p>Total returned: <span class="count">${data.count}</span></p>
+            <p>Breakdown by category:</p>
+            <ul>
+              ${Object.entries(byCategory).map(([cat, count]) => `<li>${cat}: ${count}</li>`).join('')}
+            </ul>
+            <details>
+              <summary>View JSON</summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          `;
+        } else {
+          result.innerHTML = `<p class="error">❌ FAILED: ${data.error}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = `<p class="error">❌ ERROR: ${err.message}</p>`;
+      }
+    }
+
+    async function testFeatured() {
+      const result = document.getElementById('apiResult');
+      result.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`${API_BASE}/get-products.php?featured=1`);
+        const data = await res.json();
+
+        if (data.success) {
+          result.innerHTML = `
+            <p class="success">✅ SUCCESS</p>
+            <p>Featured products: <span class="count">${data.count}</span></p>
+            <details>
+              <summary>View JSON</summary>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            </details>
+          `;
+        } else {
+          result.innerHTML = `<p class="error">❌ FAILED: ${data.error}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = `<p class="error">❌ ERROR: ${err.message}</p>`;
+      }
+    }
+
+    async function runAllTests() {
+      const summary = document.getElementById('summary');
+      summary.innerHTML = '<p>Running tests...</p>';
+
+      const tests = [
+        { name: 'All Products', url: `${API_BASE}/get-products.php`, minCount: 40 },
+        { name: 'Laptops', url: `${API_BASE}/get-products.php?categories=Laptops`, minCount: 5 },
+        { name: 'Multiple Categories', url: `${API_BASE}/get-products.php?categories=Laptops,Monitors`, minCount: 8 },
+        { name: 'Featured', url: `${API_BASE}/get-products.php?featured=1`, minCount: 3 }
+      ];
+
+      let results = '<h3>Test Results:</h3><ul>';
+
+      for (const test of tests) {
+        try {
+          const res = await fetch(test.url);
+          const data = await res.json();
+
+          if (data.success && data.count >= test.minCount) {
+            results += `<li class="success">✅ ${test.name}: ${data.count} products (expected ≥${test.minCount})</li>`;
+          } else if (data.success) {
+            results += `<li class="error">⚠️ ${test.name}: ${data.count} products (expected ≥${test.minCount})</li>`;
+          } else {
+            results += `<li class="error">❌ ${test.name}: FAILED - ${data.error}</li>`;
+          }
+        } catch (err) {
+          results += `<li class="error">❌ ${test.name}: ERROR - ${err.message}</li>`;
+        }
+      }
+
+      results += '</ul>';
+      summary.innerHTML = results;
+    }
+  </script>
+</body>
+</html>
+

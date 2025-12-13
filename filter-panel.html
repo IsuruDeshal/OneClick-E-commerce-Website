@@ -1,0 +1,74 @@
+<aside class="filter-panel neon-dark" data-filter-panel>
+  <div class="fp-head">
+    <h3 class="fp-title"><i class="fas fa-sliders-h"></i> Filter Products</h3>
+    <button class="fp-close" aria-label="Close Filters"><i class="fas fa-times"></i></button>
+  </div>
+  <form class="fp-body" id="productFilters" autocomplete="off">
+    <!-- Availability -->
+    <div class="fp-group" data-group="availability">
+      <div class="fp-group-head"><h4>Availability</h4></div>
+      <div class="fp-pills">
+        <button type="button" data-value="in-stock" class="pill">In Stock</button>
+        <button type="button" data-value="pre-order" class="pill">Pre-Order</button>
+        <button type="button" data-value="used" class="pill">Used</button>
+      </div>
+    </div>
+
+    <!-- Brand (dynamic extension) -->
+    <div class="fp-group" data-group="brand">
+      <div class="fp-group-head"><h4>Brand</h4></div>
+      <div class="fp-pills brand-short">
+        <button type="button" data-value="asus" class="pill">ASUS</button>
+        <button type="button" data-value="dell" class="pill">Dell</button>
+        <button type="button" data-value="hp" class="pill">HP</button>
+        <button type="button" data-value="lenovo" class="pill">Lenovo</button>
+        <button type="button" data-value="msi" class="pill">MSI</button>
+      </div>
+      <div class="fp-collapsible" data-collapsed>
+        <div class="fp-pills">
+          <button type="button" data-value="acer" class="pill">Acer</button>
+          <button type="button" data-value="apple" class="pill">Apple</button>
+          <button type="button" data-value="gigabyte" class="pill">Gigabyte</button>
+          <button type="button" data-value="razer" class="pill">Razer</button>
+          <button type="button" data-value="benq" class="pill">BenQ</button>
+          <button type="button" data-value="viewsonic" class="pill">ViewSonic</button>
+          <button type="button" data-value="aoc" class="pill">AOC</button>
+          <button type="button" data-value="samsung" class="pill">Samsung</button>
+          <button type="button" data-value="lg" class="pill">LG</button>
+        </div>
+      </div>
+      <button type="button" class="fp-toggle-more" data-more-btn><span class="txt">Show More</span> <i class="fas fa-chevron-down"></i></button>
+    </div>
+
+    <!-- Type -->
+    <div class="fp-group" data-group="type">
+      <div class="fp-group-head"><h4>Type</h4></div>
+      <div class="fp-pills">
+        <button type="button" data-value="gaming" class="pill">Gaming</button>
+        <button type="button" data-value="business" class="pill">Business</button>
+        <button type="button" data-value="ultrabook" class="pill">Ultrabook</button>
+        <button type="button" data-value="macbook" class="pill">MacBook</button>
+      </div>
+    </div>
+
+    <!-- Price Range -->
+    <div class="fp-group" data-group="price">
+      <div class="fp-group-head"><h4>Price</h4></div>
+      <div class="fp-range-wrap">
+        <div class="fp-range-values"><span id="fpMinVal">Rs 0</span> – <span id="fpMaxVal">Rs 0</span></div>
+        <div class="fp-range-track">
+          <input type="range" id="fpMin" min="0" max="1000000" step="5000" value="0">
+          <input type="range" id="fpMax" min="0" max="1000000" step="5000" value="1000000">
+          <div class="fp-range-bar" id="fpRangeBar"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="fp-actions">
+      <button type="button" class="btn fp-reset" id="fpReset"><i class="fas fa-rotate-left"></i> Reset Filters</button>
+      <button type="submit" class="btn primary fp-apply" id="fpApply"><i class="fas fa-check"></i> Apply</button>
+    </div>
+  </form>
+</aside>
+

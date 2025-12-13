@@ -1,0 +1,646 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Orders • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.3" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .orders-page {
+      min-height: 70vh;
+      padding: 2rem 0;
+    }
+    
+    .page-header-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .page-header-section h1 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    
+    .page-header-section p {
+      margin: 0;
+      color: var(--muted);
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+    
+    .breadcrumb-separator {
+      color: var(--muted);
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: 0.6rem 1.2rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    
+    .filter-tab:hover {
+      border-color: var(--primary);
+    }
+    
+    .filter-tab.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    .order-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s;
+    }
+    
+    .order-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+    
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .order-info {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .order-number {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .order-date {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .order-status {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .status-paid, .status-completed {
+      background: #10b981;
+      color: white;
+    }
+    
+    .status-pending, .status-processing {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .status-cancelled {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .status-shipped {
+      background: #3b82f6;
+      color: white;
+    }
+    
+    .order-items {
+      margin-bottom: 1rem;
+    }
+    
+    .order-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--panel2);
+      border-radius: 8px;
+      margin-bottom: 0.8rem;
+    }
+    
+    .order-item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--bg);
+      flex-shrink: 0;
+    }
+    
+    .order-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .order-item-details {
+      flex: 1;
+    }
+    
+    .order-item-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    
+    .order-item-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .order-item-price {
+      text-align: right;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .order-total {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .order-total-amount {
+      color: var(--primary);
+    }
+    
+    .order-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    
+    .empty-state-icon {
+      font-size: 5rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    
+    .empty-state h2 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    
+    .empty-state p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+      .order-header {
+        flex-direction: column;
+      }
+      
+      .order-item {
+        flex-direction: column;
+      }
+      
+      .order-item-image {
+        width: 100%;
+        height: 200px;
+      }
+      
+      .order-item-price {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      
+      <div class="header-bottom">
+        <a href="index.html">Home</a>
+        <a href="laptops.html">Laptops</a>
+        <a href="desktops.html">Desktops</a>
+        <a href="monitors.html">Monitors</a>
+        <a href="printers.html">Printers</a>
+      </div>
+      
+      <div class="header-actions desktop-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="wishlist.html" title="Wishlist">
+          <span class="badge">0</span>
+          <i class="fas fa-heart"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container orders-page">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <span class="breadcrumb-separator">/</span>
+      <a href="account.html">Account</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>Orders</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header-section">
+      <h1><i class="fas fa-shopping-bag"></i> Your Orders</h1>
+      <p>Track and manage all your orders in one place</p>
+      
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">
+          All Orders
+        </button>
+        <button class="filter-tab" data-filter="paid">
+          Completed
+        </button>
+        <button class="filter-tab" data-filter="pending">
+          Pending
+        </button>
+        <button class="filter-tab" data-filter="cancelled">
+          Cancelled
+        </button>
+      </div>
+    </div>
+
+    <!-- Orders List -->
+    <div id="ordersContainer">
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <h2>Loading your orders...</h2>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="account.html">My Account</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 One Click Computers. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  
+  <!-- Scripts -->
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/firebase-init.js"></script>
+  <script src="assets/js/cart-manager.js"></script>
+  
+  <script>
+    let currentUser = null;
+    let allOrders = [];
+    let currentFilter = 'all';
+    
+    // Format currency
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-LK', {
+        style: 'currency',
+        currency: 'LKR',
+        maximumFractionDigits: 0
+      }).format(price || 0);
+    }
+    
+    // Format date
+    function formatDate(date) {
+      if (!date) return 'N/A';
+      try {
+        const d = date.toDate ? date.toDate() : new Date(date);
+        return d.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch {
+        return 'N/A';
+      }
+    }
+    
+    // Get status class
+    function getStatusClass(status) {
+      const statusLower = (status || 'pending').toLowerCase();
+      if (statusLower === 'paid' || statusLower === 'completed') return 'status-paid';
+      if (statusLower === 'pending' || statusLower === 'processing') return 'status-pending';
+      if (statusLower === 'cancelled') return 'status-cancelled';
+      if (statusLower === 'shipped') return 'status-shipped';
+      return 'status-pending';
+    }
+    
+    // Load orders
+    async function loadOrders() {
+      if (!currentUser) return;
+      
+      const container = document.getElementById('ordersContainer');
+      
+      try {
+        const { db } = window.Firebase;
+        const ordersSnapshot = await db.collection('orders')
+          .where('userId', '==', currentUser.uid)
+          .orderBy('createdAt', 'desc')
+          .get();
+        
+        allOrders = ordersSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        
+        renderOrders();
+        
+      } catch (error) {
+        console.error('Error loading orders:', error);
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2>Error Loading Orders</h2>
+            <p>We couldn't load your orders. Please try again later.</p>
+            <a href="account.html" class="btn primary">
+              <i class="fas fa-arrow-left"></i> Back to Account
+            </a>
+          </div>
+        `;
+      }
+    }
+    
+    // Render orders
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      
+      // Filter orders
+      let filteredOrders = allOrders;
+      if (currentFilter !== 'all') {
+        filteredOrders = allOrders.filter(order => {
+          const status = (order.status || 'pending').toLowerCase();
+          return status === currentFilter || 
+                 (currentFilter === 'paid' && status === 'completed');
+        });
+      }
+      
+      if (filteredOrders.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-shopping-bag"></i>
+            </div>
+            <h2>No Orders Found</h2>
+            <p>You haven't placed any orders yet.</p>
+            <a href="index.html" class="btn primary">
+              <i class="fas fa-shopping-cart"></i> Start Shopping
+            </a>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = filteredOrders.map(order => {
+        const items = order.items || [];
+        const itemCount = items.length;
+        const status = order.status || 'pending';
+        
+        return `
+          <div class="order-card">
+            <div class="order-header">
+              <div class="order-info">
+                <div class="order-number">
+                  Order #${order.id.substring(0, 8).toUpperCase()}
+                </div>
+                <div class="order-date">
+                  <i class="fas fa-calendar"></i> ${formatDate(order.createdAt)}
+                </div>
+              </div>
+              <div class="order-status ${getStatusClass(status)}">
+                ${status.toUpperCase()}
+              </div>
+            </div>
+            
+            <div class="order-items">
+              ${items.map(item => `
+                <div class="order-item">
+                  <div class="order-item-image">
+                    <img src="${item.image || 'assets/img/placeholder.png'}" 
+                         alt="${item.title || item.name || 'Product'}"
+                         onerror="this.src='assets/img/placeholder.png'">
+                  </div>
+                  <div class="order-item-details">
+                    <div class="order-item-title">${item.title || item.name || 'Product'}</div>
+                    <div class="order-item-meta">
+                      Quantity: ${item.qty || item.quantity || 1}
+                    </div>
+                  </div>
+                  <div class="order-item-price">
+                    ${formatPrice((item.price || 0) * (item.qty || item.quantity || 1))}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            
+            <div class="order-footer">
+              <div class="order-total">
+                Total: <span class="order-total-amount">${formatPrice(order.total)}</span>
+              </div>
+              <div class="order-actions">
+                <button class="btn btn-outline" onclick="viewOrderDetails('${order.id}')">
+                  <i class="fas fa-eye"></i> View Details
+                </button>
+                ${status.toLowerCase() === 'paid' || status.toLowerCase() === 'completed' ? `
+                  <button class="btn" onclick="reorder('${order.id}')">
+                    <i class="fas fa-redo"></i> Buy Again
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    // View order details
+    function viewOrderDetails(orderId) {
+      const order = allOrders.find(o => o.id === orderId);
+      if (!order) return;
+      
+      alert(`Order Details:\n\nOrder ID: ${orderId}\nStatus: ${order.status}\nTotal: ${formatPrice(order.total)}\n\nItems: ${order.items?.length || 0}`);
+    }
+    
+    // Reorder
+    async function reorder(orderId) {
+      const order = allOrders.find(o => o.id === orderId);
+      if (!order || !order.items) return;
+      
+      if (confirm('Add all items from this order to your cart?')) {
+        for (const item of order.items) {
+          await window.CartManager.addItem({
+            id: item.id,
+            title: item.title || item.name,
+            price: item.price,
+            image: item.image
+          });
+        }
+        alert('Items added to cart!');
+        window.location.href = 'cart.html';
+      }
+    }
+    
+    // Filter handlers
+    document.addEventListener('click', (e) => {
+      const filterTab = e.target.closest('.filter-tab');
+      if (filterTab) {
+        // Update active state
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        filterTab.classList.add('active');
+        
+        // Update filter
+        currentFilter = filterTab.dataset.filter;
+        renderOrders();
+      }
+    });
+    
+    // Initialize
+    async function init() {
+      await window.ensureFirebase();
+      const { auth } = window.Firebase;
+      
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          sessionStorage.setItem('postLoginRedirect', 'orders.html');
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        currentUser = user;
+        await loadOrders();
+      });
+    }
+    
+    // Expose functions globally
+    window.viewOrderDetails = viewOrderDetails;
+    window.reorder = reorder;
+    
+    // Start
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>

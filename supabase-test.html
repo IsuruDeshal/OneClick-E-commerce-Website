@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Test - One Click Computers</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0e0f14 0%, #1a1e29 100%);
+            color: #e9ecf1;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #e44d61, #ffcc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .card {
+            background: #151821;
+            border: 1px solid #272a36;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .card h2 {
+            color: #e44d61;
+            margin-bottom: 1rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #e44d61, #d63f52);
+            color: white;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(228,77,97,0.5);
+        }
+        .result {
+            background: #0e0f14;
+            border: 1px solid #272a36;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        .warning { color: #f59e0b; }
+        code {
+            background: #272a36;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .status-badge.connected {
+            background: rgba(34,197,94,0.1);
+            color: #22c55e;
+        }
+        .status-badge.disconnected {
+            background: rgba(239,68,68,0.1);
+            color: #ef4444;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #272a36;
+        }
+        th {
+            background: #1a1e29;
+            color: #a9b0bf;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #1a1e29;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Supabase Connection Test</h1>
+            <p>Test your Supabase database connection and queries</p>
+            <div id="connectionStatus"></div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Configuration</h2>
+            <p><strong>Project URL:</strong> <code id="projectUrl">Loading...</code></p>
+            <p><strong>Status:</strong> <span id="initStatus">Initializing...</span></p>
+        </div>
+
+        <div class="card">
+            <h2>🧪 Database Tests</h2>
+            <button class="btn" onclick="testConnection()">1️⃣ Test Connection</button>
+            <button class="btn" onclick="testProducts()">2️⃣ Get Products</button>
+            <button class="btn" onclick="testInsertProduct()">3️⃣ Insert Test Product</button>
+            <button class="btn" onclick="testAuth()">4️⃣ Test Auth</button>
+            <button class="btn" onclick="testCategories()">5️⃣ Get Categories</button>
+            <div id="testResults" class="result"></div>
+        </div>
+
+        <div class="card">
+            <h2>📦 Products List</h2>
+            <button class="btn" onclick="loadProducts()">Load All Products</button>
+            <div id="productsList"></div>
+        </div>
+
+        <div class="card">
+            <h2>💻 Quick Commands</h2>
+            <p>Open browser console (F12) and try:</p>
+            <pre style="background: #0e0f14; padding: 1rem; border-radius: 8px; overflow-x: auto;">
+<code class="info">// Get all products
+const result = await supabaseDB.getProducts();
+console.log(result);
+
+// Get products by category
+const laptops = await supabaseDB.getProducts({ category: 'Laptops' });
+console.log(laptops);
+
+// Create a product
+await supabaseDB.createProduct({
+  name: 'Test Laptop',
+  sku: 'TEST-LAP-001',
+  category: 'Laptops',
+  price: 50000,
+  stock: 5,
+  status: 'active'
+});</code></pre>
+        </div>
+    </div>
+
+    <!-- Supabase Scripts -->
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script src="assets/js/supabase-db.js"></script>
+
+    <script>
+        const resultsDiv = document.getElementById('testResults');
+
+        function log(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            resultsDiv.appendChild(entry);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            resultsDiv.innerHTML = '';
+        }
+
+        // Initialize
+        setTimeout(async () => {
+            try {
+                await window.ensureSupabase();
+                document.getElementById('projectUrl').textContent = window.SUPABASE_CONFIG.url;
+                document.getElementById('initStatus').innerHTML = '<span class="success">✅ Connected</span>';
+                document.getElementById('connectionStatus').innerHTML = '<div class="status-badge connected">🟢 Supabase Connected</div>';
+                log('Supabase initialized successfully!', 'success');
+            } catch (error) {
+                document.getElementById('initStatus').innerHTML = '<span class="error">❌ Failed</span>';
+                document.getElementById('connectionStatus').innerHTML = '<div class="status-badge disconnected">🔴 Connection Failed</div>';
+                log('Error: ' + error.message, 'error');
+            }
+        }, 1000);
+
+        async function testConnection() {
+            clearLog();
+            log('Testing connection to Supabase...', 'info');
+
+            try {
+                const supabase = await window.ensureSupabase();
+                log('✅ Supabase client ready', 'success');
+
+                // Test database query
+                const { data, error } = await supabase.from('products').select('id').limit(1);
+
+                if (error) {
+                    log('❌ Database query failed: ' + error.message, 'error');
+                    log('💡 Have you run the SQL schema? Check supabase-schema.sql', 'warning');
+                } else {
+                    log('✅ Database query successful!', 'success');
+                    log('Database is ready to use', 'success');
+                }
+            } catch (error) {
+                log('❌ Connection test failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testProducts() {
+            clearLog();
+            log('Fetching products from database...', 'info');
+
+            try {
+                const result = await window.supabaseDB.getProducts();
+
+                if (result.success) {
+                    log(`✅ Found ${result.products.length} products`, 'success');
+                    result.products.forEach((p, i) => {
+                        log(`${i + 1}. ${p.name} - Rs ${p.price} (Stock: ${p.stock})`, 'info');
+                    });
+                } else {
+                    log('❌ Failed to fetch products: ' + result.error, 'error');
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        async function testInsertProduct() {
+            clearLog();
+            log('Creating test product...', 'info');
+
+            try {
+                const testProduct = {
+                    name: 'Test Product ' + Date.now(),
+                    sku: 'TEST-' + Date.now(),
+                    description: 'This is a test product',
+                    category: 'Laptops',
+                    price: 49999.00,
+                    stock: 5,
+                    image_url: 'assets/img/placeholder.png',
+                    status: 'active',
+                    featured: false
+                };
+
+                const result = await window.supabaseDB.createProduct(testProduct);
+
+                if (result.success) {
+                    log('✅ Product created successfully!', 'success');
+                    log('Product ID: ' + result.product.id, 'info');
+                    log('SKU: ' + result.product.sku, 'info');
+                } else {
+                    log('❌ Failed to create product: ' + result.error, 'error');
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        async function testAuth() {
+            clearLog();
+            log('Testing authentication...', 'info');
+
+            try {
+                const supabase = await window.ensureSupabase();
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (session) {
+                    log('✅ User is logged in', 'success');
+                    log('Email: ' + session.user.email, 'info');
+                } else {
+                    log('ℹ️  No active session', 'info');
+                    log('User is not logged in', 'warning');
+                }
+            } catch (error) {
+                log('❌ Auth test failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testCategories() {
+            clearLog();
+            log('Fetching categories...', 'info');
+
+            try {
+                const supabase = await window.ensureSupabase();
+                const { data, error } = await supabase.from('categories').select('*');
+
+                if (error) {
+                    log('❌ Failed to fetch categories: ' + error.message, 'error');
+                } else {
+                    log(`✅ Found ${data.length} categories`, 'success');
+                    data.forEach((cat, i) => {
+                        log(`${i + 1}. ${cat.name} (${cat.slug})`, 'info');
+                    });
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        async function loadProducts() {
+            const container = document.getElementById('productsList');
+            container.innerHTML = '<p style="color: #a9b0bf;">Loading products...</p>';
+
+            try {
+                const result = await window.supabaseDB.getProducts({ limit: 20 });
+
+                if (result.success && result.products.length > 0) {
+                    let html = `<table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                    result.products.forEach(p => {
+                        html += `<tr>
+                            <td>${p.id.substring(0, 8)}...</td>
+                            <td>${p.name}</td>
+                            <td>${p.category || 'N/A'}</td>
+                            <td>Rs ${p.price?.toLocaleString() || '0'}</td>
+                            <td>${p.stock || 0}</td>
+                            <td><span class="${p.status === 'active' ? 'success' : 'warning'}">${p.status || 'N/A'}</span></td>
+                        </tr>`;
+                    });
+
+                    html += '</tbody></table>';
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = '<p class="warning">No products found. Insert some products first!</p>';
+                }
+            } catch (error) {
+                container.innerHTML = `<p class="error">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desktop PCs | One Click Computers Matara</title>
+    <meta name="description" content="Browse our complete selection of desktop computers for gaming, professional work, and office use.">  <link rel="stylesheet" href="assets/css/styles.css?v=18.1" />
+  <link rel="stylesheet" href="assets/css/critical-grid.css?v=2" />
+  <link rel="stylesheet" href="assets/css/product-modal.css" />
+</head>
+<body class="theme-dark" data-category="Desktops">
+
+<!-- STANDARD HEADER FROM graphics-card.html -->
+<header class="site-header">
+  <div class="container header-top">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <a href="index.html" class="logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-actions">
+      <a class="icon-btn mobile-search-btn" href="#" title="Search" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
+      <a class="icon-btn" href="#" title="Account"><i class="fas fa-user"></i></a>
+      <a class="icon-btn" href="#" title="Cart"><span class="badge">0</span><i class="fas fa-shopping-cart"></i></a>
+    </div>
+  </div>
+    <!-- Mobile Search Bar (hidden by default) -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <div class="container">
+      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Desktop Navigation - Single Row Layout -->
+  <div class="container desktop-nav">
+    <a href="index.html" class="logo desktop-logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-bottom">
+      <a href="index.html" class="mega-trigger">Home</a>
+      <a href="laptops.html" class="mega-trigger">Laptops</a>
+      <a href="desktops.html" class="mega-trigger">Desktops</a>
+      <a href="monitors.html" class="mega-trigger">Monitors</a>
+      <a href="printers.html" class="mega-trigger">Printers</a>
+      <a href="about.html" class="mega-trigger">About</a>
+      <a href="contact.html" class="mega-trigger">Contact</a>
+    </div>
+    <div class="header-actions desktop-actions">      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <a class="icon-btn" href="account.html" title="Account">
+        <i class="fas fa-user"></i>
+      </a>
+      <a class="icon-btn" href="#" title="Compare">
+        <span class="badge">0</span>
+        <i class="fas fa-code-compare"></i>
+      </a>
+      <a class="icon-btn" href="wishlist.html" title="Wishlist">
+        <span class="badge">0</span>
+        <i class="fas fa-heart"></i>
+      </a>
+      <a class="icon-btn" href="cart.html" title="Cart">
+        <span class="badge">0</span>
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+      <button class="icon-btn burger" id="openDrawer" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-panel">
+    <div class="mobile-drawer-head">
+      <strong>Menu</strong>
+      <button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="mobile-menu-items">
+      <a href="index.html" class="mobile-menu-item"><i class="fas fa-home"></i> Home</a>
+      <a href="laptops.html" class="mobile-menu-item"><i class="fas fa-laptop"></i> Laptops</a>
+      <a href="desktops.html" class="mobile-menu-item active"><i class="fas fa-desktop"></i> Desktop PCs</a>
+      <a href="printers.html" class="mobile-menu-item"><i class="fas fa-print"></i> Printers</a>
+      <a href="monitors.html" class="mobile-menu-item"><i class="fas fa-tv"></i> Monitors</a>
+      <a href="services.html" class="mobile-menu-item"><i class="fas fa-tools"></i> Services</a>
+      <a href="about.html" class="mobile-menu-item"><i class="fas fa-info-circle"></i> About Us</a>
+      <a href="contact.html" class="mobile-menu-item"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+  </div>
+</aside>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="index.html">Home</a>
+      <span>/</span>
+      <span aria-current="page">Desktop PCs</span>
+    </nav>
+    <h1>Desktop <span class="accent">PCs</span></h1>
+    <p>Complete selection of desktop computers for every need</p>
+  </div>
+</section>
+
+<!-- CATALOG WITH LEFT SIDEBAR FILTERS -->
+<section class="container section">
+  <div class="filters-toggle">
+    <button class="btn">? Filters</button>
+  </div>
+  <div class="catalog-layout">
+    <aside class="filter-sidebar" aria-label="Filters">
+      <h3>Filter Products</h3>
+      <div class="filter-group">
+        <div class="group-head"><h4>Availability</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="dt-instock" data-group="availability" value="in-stock"><label for="dt-instock">In Stock</label></li>
+          <li><input type="checkbox" id="dt-pre" data-group="availability" value="pre-order"><label for="dt-pre">Pre-Order</label></li>
+          <li><input type="checkbox" id="dt-used" data-group="availability" value="used"><label for="dt-used">Used</label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Brand</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="db-asus" data-group="brand" value="asus"><label for="db-asus">ASUS</label></li>
+          <li><input type="checkbox" id="db-dell" data-group="brand" value="dell"><label for="db-dell">Dell</label></li>
+          <li><input type="checkbox" id="db-hp" data-group="brand" value="hp"><label for="db-hp">HP</label></li>
+          <li><input type="checkbox" id="db-lenovo" data-group="brand" value="lenovo"><label for="db-lenovo">Lenovo</label></li>
+          <li><input type="checkbox" id="db-msi" data-group="brand" value="msi"><label for="db-msi">MSI</label></li>
+        </ul>
+        <div class="brand-more">
+          <ul class="checklist">
+            <li><input type="checkbox" id="db-nzxt" data-group="brand" value="nzxt"><label for="db-nzxt">NZXT</label></li>
+            <li><input type="checkbox" id="db-corsair" data-group="brand" value="corsair"><label for="db-corsair">Corsair</label></li>
+          </ul>
+        </div>
+        <button class="show-more-brands">Show more brands ?</button>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Processor / Type</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="dt-intel" data-group="type" value="intel"><label for="dt-intel">Intel</label></li>
+          <li><input type="checkbox" id="dt-amd" data-group="type" value="amd"><label for="dt-amd">AMD</label></li>
+          <li><input type="checkbox" id="dt-custom" data-group="type" value="custom"><label for="dt-custom">Custom Build</label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Price</h4></div>
+        <div class="price-box">
+          <div class="price-values">Rs. 100,000 - Rs. 1,500,000</div>
+          <div class="range">
+            <input type="range" id="priceMin" aria-label="Minimum price" min="100000" max="1500000" step="10000" value="100000">
+            <input type="range" id="priceMax" aria-label="Maximum price" min="100000" max="1500000" step="10000" value="1500000">
+          </div>
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button class="btn reset filters-reset">Reset</button>
+        <button class="btn primary filters-apply">Apply</button>
+      </div>
+    </aside>
+    <div class="catalog-content">
+<!-- ALL DESKTOP PCS SECTION -->
+<section class="section">
+  <div class="section-head">
+    <h2><i class="fas fa-desktop"></i> All <span class="accent">Desktop PCs</span></h2>
+  </div>
+  <div class="product-grid-vertical" id="allDesktops" data-products-grid data-category="Desktops" data-limit="0"></div>
+</section>
+
+<!-- CUSTOM BUILD SECTION -->
+<section class="section">
+  <div class="section-head">
+    <h2><i class="fas fa-cogs"></i> Custom <span class="accent">Builds</span></h2>
+    
+  </div>
+  
+  <div class="custom-build-wrapper">
+    <div class="custom-build-grid">
+      <div class="custom-build-card" data-category="custom" data-price="150k-300k" data-use="gaming-use">
+        <div class="custom-icon"><i class="fas fa-cogs"></i></div>
+        <h3>Gaming Build</h3>
+        <p>High-performance gaming PC with your choice of components. Perfect for 1080p and 1440p gaming.</p>
+        <ul class="custom-features">
+          <li>Latest GPU options (RTX 4060 - RTX 4080)</li>
+          <li>High-refresh rate gaming optimized</li>
+          <li>RGB lighting customization</li>
+          <li>Professional cable management</li>
+        </ul>
+        <div class="custom-price">Starting from Rs. 200,000</div>
+        <button class="btn btn-primary full-width"><i class="fas fa-cogs"></i> Start Custom Build</button>
+      </div>
+      
+      <div class="custom-build-card" data-category="custom" data-price="300k-500k" data-use="streaming">
+        <div class="custom-icon"><i class="fas fa-cogs"></i></div>
+        <h3>Streaming Build</h3>
+        <p>Dual-purpose gaming and streaming setup with encoding capabilities and professional features.</p>
+        <ul class="custom-features">
+          <li>High-core count processors</li>
+          <li>Streaming optimization</li>
+          <li>Capture card integration</li>
+          <li>Multi-monitor support</li>
+        </ul>
+        <div class="custom-price">Starting from Rs. 350,000</div>
+        <button class="btn btn-primary full-width"><i class="fas fa-cogs"></i> Start Custom Build</button>
+      </div>
+      
+      <div class="custom-build-card" data-category="custom" data-price="over-500k" data-use="design">
+        <div class="custom-icon"><i class="fas fa-cogs"></i></div>
+        <h3>Creator Build</h3>
+        <p>Professional workstation for content creation, video editing, 3D rendering, and design work.</p>
+        <ul class="custom-features">
+          <li>Workstation-class components</li>
+          <li>Color-accurate displays</li>
+          <li>High-speed storage arrays</li>
+          <li>Professional graphics cards</li>
+        </ul>
+        <div class="custom-price">Starting from Rs. 550,000</div>
+        <button class="btn btn-primary full-width"><i class="fas fa-cogs"></i> Start Custom Build</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES CTA -->
+<section class="section cta-section">
+  <div class="cta-content">
+    <h2>Need Help Choosing the Right PC?</h2>
+    <p>Our experts are here to help you find the perfect desktop computer for your needs and budget.</p>
+    <div class="cta-buttons">
+      <a href="contact.html" class="btn btn-primary"><i class="fas fa-user-tie"></i> Get Expert Advice</a>
+      <a href="services.html" class="btn btn-outline"><i class="fas fa-th"></i> View All Services</a>
+    </div>
+  </div>
+</section>
+<div class="filters-overlay"></div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info Column -->
+      <div class="footer-company">
+        <div class="footer-logo">
+          <img src="assets/img/one-logo.png" alt="One Click Computers">
+          <div class="company-info">
+            <h3>One Click Computers</h3>
+            <p>Premium gaming PCs, workstations & components delivered worldwide</p>
+          </div>
+        </div>
+        
+        <div class="footer-contact-info">
+          <h4>Get In Touch</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>46/B Kalidasa Road, Matara</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>+94 71 915 9933</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>9:00 AM - 9:30 PM Daily</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>oneclickmatara@gmail.com</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Categories Column -->
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="laptops.html">Laptops & Notebooks</a>
+        <a href="desktops.html">Desktop PCs</a>
+        <a href="graphics-card.html">Graphics Cards</a>
+        <a href="monitors.html">Monitors & Displays</a>
+        <a href="keyboard.html">Keyboards</a>
+        <a href="mouse.html">Gaming Mice</a>
+        <a href="printers.html">Printers</a>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="terms-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="sitemap.html">Site Map</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>? <span id="yearCopy"></span> One Click Computers. All Rights Reserved. Designed with Excellence.</small>
+    </div>
+  </div>
+</footer>
+
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/sidebar-filters.js"></script>
+<script src="assets/js/product-modal-enhanced.js"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/supabase-init.js"></script>`n  <script src="assets/js/auth-system.js"></script>
+<script src="assets/js/config-auto.js"></script>
+<script src="assets/js/product-grid-loader.js"></script>
+<script src="assets/js/backend-products.js"></script>
+<script src="assets/js/product-auto-collect.js"></script>
+</body>
+</html>

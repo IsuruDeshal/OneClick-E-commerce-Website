@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete System Check - One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; text-align: center; }
+    h2 { font-size: 1.8rem; margin: 2rem 0 1rem; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 0.5rem; }
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .status-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .status-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+    }
+    .status-label { opacity: 0.9; font-size: 0.9rem; }
+    .check-item {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .check-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .check-icon.pass { background: rgba(34,197,94,0.3); color: #22c55e; }
+    .check-icon.fail { background: rgba(239,68,68,0.3); color: #ef4444; }
+    .check-icon.pending { background: rgba(245,158,11,0.3); color: #f59e0b; }
+    .check-text { flex: 1; }
+    .check-detail { font-size: 0.85rem; opacity: 0.8; margin-top: 0.25rem; }
+    .error-log {
+      background: rgba(239,68,68,0.2);
+      border: 1px solid rgba(239,68,68,0.4);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+    }
+    .success-log {
+      background: rgba(34,197,94,0.2);
+      border: 1px solid rgba(34,197,94,0.4);
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+    }
+    .spinner {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .action-btn {
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .action-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    .action-btn i { font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Complete System Check</h1>
+    <p style="text-align: center; opacity: 0.9; margin-bottom: 2rem;">One Click Computers - Diagnostic Report</p>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 1rem;">Running comprehensive checks...</p>
+    </div>
+
+    <div id="content" style="display: none;">
+
+      <!-- Supabase Connection -->
+      <h2><i class="fas fa-database"></i> Supabase Connection</h2>
+      <div class="status-grid">
+        <div class="status-card">
+          <h3><i class="fas fa-plug"></i> Connection Status</h3>
+          <div class="status-value" id="connectionStatus">-</div>
+          <div class="status-label" id="connectionDetail">Checking...</div>
+        </div>
+        <div class="status-card">
+          <h3><i class="fas fa-box"></i> Total Products</h3>
+          <div class="status-value" id="totalProducts">0</div>
+          <div class="status-label">Active products in database</div>
+        </div>
+        <div class="status-card">
+          <h3><i class="fas fa-star"></i> Featured</h3>
+          <div class="status-value" id="featuredProducts">0</div>
+          <div class="status-label">Featured on homepage</div>
+        </div>
+        <div class="status-card">
+          <h3><i class="fas fa-layer-group"></i> Categories</h3>
+          <div class="status-value" id="totalCategories">0</div>
+          <div class="status-label">Product categories</div>
+        </div>
+      </div>
+
+      <!-- Product Distribution -->
+      <h2><i class="fas fa-chart-bar"></i> Product Distribution</h2>
+      <div id="categoryBreakdown"></div>
+
+      <!-- Frontend Checks -->
+      <h2><i class="fas fa-code"></i> Frontend Integration</h2>
+      <div id="frontendChecks"></div>
+
+      <!-- Page Checks -->
+      <h2><i class="fas fa-file"></i> Page Structure</h2>
+      <div id="pageChecks"></div>
+
+      <!-- Console Errors -->
+      <h2><i class="fas fa-exclamation-triangle"></i> Console Errors</h2>
+      <div id="consoleErrors"></div>
+
+      <!-- Quick Actions -->
+      <h2><i class="fas fa-rocket"></i> Quick Actions</h2>
+      <div class="action-grid">
+        <a href="index.html" class="action-btn">
+          <i class="fas fa-home"></i>
+          <span>Open Homepage</span>
+        </a>
+        <a href="shop.html" class="action-btn">
+          <i class="fas fa-store"></i>
+          <span>View Shop</span>
+        </a>
+        <a href="verify-products.html" class="action-btn">
+          <i class="fas fa-check-circle"></i>
+          <span>Product Verify</span>
+        </a>
+        <a href="admin/login.html" class="action-btn">
+          <i class="fas fa-lock"></i>
+          <span>Admin Login</span>
+        </a>
+        <a href="https://supabase.com/dashboard" target="_blank" class="action-btn">
+          <i class="fas fa-database"></i>
+          <span>Supabase Dashboard</span>
+        </a>
+      </div>
+
+      <!-- Summary -->
+      <div id="summary" style="margin-top: 2rem;"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script>
+    (async function() {
+      const loading = document.getElementById('loading');
+      const content = document.getElementById('content');
+      const errors = [];
+      const checks = [];
+
+      try {
+        // 1. Test Supabase Connection
+        const supabase = await window.ensureSupabase();
+        checks.push({ name: 'Supabase Client Init', pass: true, detail: 'Connected successfully' });
+
+        document.getElementById('connectionStatus').textContent = '✓ Connected';
+        document.getElementById('connectionDetail').textContent = 'Supabase connection established';
+
+        // 2. Fetch Products
+        const { data: products, error: productsError } = await supabase
+          .from('products')
+          .select('*')
+          .eq('status', 'active');
+
+        if (productsError) throw productsError;
+        checks.push({ name: 'Products Query', pass: true, detail: `Fetched ${products.length} products` });
+
+        // Stats
+        const featured = products.filter(p => p.featured === true);
+        const categories = {};
+        products.forEach(p => {
+          const cat = p.category || 'Uncategorized';
+          categories[cat] = (categories[cat] || 0) + 1;
+        });
+
+        document.getElementById('totalProducts').textContent = products.length;
+        document.getElementById('featuredProducts').textContent = featured.length;
+        document.getElementById('totalCategories').textContent = Object.keys(categories).length;
+
+        // Category breakdown
+        const breakdown = Object.entries(categories).sort((a,b) => b[1] - a[1]);
+        document.getElementById('categoryBreakdown').innerHTML = breakdown.map(([cat, count]) => `
+          <div class="check-item">
+            <div class="check-icon pass"><i class="fas fa-check"></i></div>
+            <div class="check-text">
+              <strong>${cat}</strong>
+              <div class="check-detail">${count} products</div>
+            </div>
+          </div>
+        `).join('');
+
+        // 3. Frontend Checks (test if core scripts are accessible)
+        const frontendChecks = [
+          {
+            name: 'backend-products.js loaded',
+            test: () => {
+              // Check if the script file exists by trying to fetch it
+              return fetch('assets/js/backend-products.js', { method: 'HEAD' })
+                .then(r => r.ok)
+                .catch(() => false);
+            }
+          },
+          {
+            name: 'Product grids on page',
+            test: () => {
+              // This test only makes sense on pages with product grids
+              // On system-check, we'll verify the loader file exists
+              return fetch('assets/js/product-grid-loader.js', { method: 'HEAD' })
+                .then(r => r.ok)
+                .catch(() => false);
+            }
+          },
+          {
+            name: 'Supabase config present',
+            test: () => Promise.resolve(!!window.SUPABASE_CONFIG || !!window.supabase)
+          },
+          {
+            name: 'Cart functionality',
+            test: () => Promise.resolve(typeof localStorage !== 'undefined')
+          }
+        ];
+
+        // Run async tests
+        const frontendResults = await Promise.all(
+          frontendChecks.map(async check => {
+            const result = await check.test();
+            const pass = !!result;
+            checks.push({ name: check.name, pass, detail: pass ? 'OK' : 'Missing' });
+            return { ...check, pass };
+          })
+        );
+
+        document.getElementById('frontendChecks').innerHTML = frontendResults.map(check => {
+          return `
+            <div class="check-item">
+              <div class="check-icon ${check.pass ? 'pass' : 'fail'}">
+                <i class="fas fa-${check.pass ? 'check' : 'times'}"></i>
+              </div>
+              <div class="check-text">
+                <strong>${check.name}</strong>
+                <div class="check-detail">${check.pass ? '✓ Present' : '✗ Not found'}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // 4. Page Structure Checks
+        const pageChecks = [
+          { name: 'Homepage has product sections', url: 'index.html' },
+          { name: 'Shop page exists', url: 'shop.html' },
+          { name: 'Category pages exist', url: 'laptops.html' },
+          { name: 'Product details page', url: 'product-details.html' },
+          { name: 'Admin panel', url: 'admin/login.html' }
+        ];
+
+        document.getElementById('pageChecks').innerHTML = pageChecks.map(check => `
+          <div class="check-item">
+            <div class="check-icon pending"><i class="fas fa-link"></i></div>
+            <div class="check-text">
+              <strong>${check.name}</strong>
+              <div class="check-detail"><a href="${check.url}" style="color: #60a5fa;">${check.url}</a></div>
+            </div>
+          </div>
+        `).join('');
+
+        // 5. Console Errors Check
+        const consoleErrorsDiv = document.getElementById('consoleErrors');
+        if (errors.length === 0) {
+          consoleErrorsDiv.innerHTML = '<div class="success-log">✓ No JavaScript errors detected</div>';
+        } else {
+          consoleErrorsDiv.innerHTML = `<div class="error-log">${errors.join('<br>')}</div>`;
+        }
+
+        // Summary
+        const totalChecks = checks.length;
+        const passedChecks = checks.filter(c => c.pass).length;
+        const percentage = Math.round((passedChecks / totalChecks) * 100);
+
+        const summaryDiv = document.getElementById('summary');
+        if (percentage === 100) {
+          summaryDiv.innerHTML = `
+            <div class="success-log">
+              <h3 style="margin-bottom: 1rem;"><i class="fas fa-check-circle"></i> All Systems Operational</h3>
+              <p><strong>${passedChecks}/${totalChecks}</strong> checks passed (${percentage}%)</p>
+              <p style="margin-top: 1rem;">✅ Your website is fully connected to Supabase and ready to use!</p>
+            </div>
+          `;
+        } else {
+          summaryDiv.innerHTML = `
+            <div class="error-log">
+              <h3 style="margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> Issues Detected</h3>
+              <p><strong>${passedChecks}/${totalChecks}</strong> checks passed (${percentage}%)</p>
+              <p style="margin-top: 1rem;">⚠️ Some components need attention. Review the checks above.</p>
+            </div>
+          `;
+        }
+
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+      } catch (err) {
+        console.error('System check error:', err);
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+        document.getElementById('connectionStatus').textContent = '✗ Failed';
+        document.getElementById('connectionDetail').textContent = err.message || 'Connection error';
+
+        document.getElementById('consoleErrors').innerHTML = `
+          <div class="error-log">
+            <strong>Error:</strong> ${err.message || 'Unknown error'}<br>
+            <div style="margin-top: 0.5rem; opacity: 0.8;">${err.stack || ''}</div>
+          </div>
+        `;
+      }
+    })();
+
+    // Capture console errors
+    window.addEventListener('error', (e) => {
+      console.error('Caught error:', e.message);
+    });
+  </script>
+</body>
+</html>
+

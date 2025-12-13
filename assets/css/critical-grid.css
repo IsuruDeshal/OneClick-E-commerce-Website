@@ -1,0 +1,6 @@
+/* Critical grid fallback to guarantee 220px layout on all product pages */
+.product-grid-vertical{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important;gap:1.2rem;padding:1rem 0;margin-bottom:2rem}
+.product-grid-vertical>*{min-width:0!important;max-width:100%}
+.product-grid-vertical .p-card .media{aspect-ratio:1/1}
+@media (max-width:768px){.product-grid-vertical{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+@media (max-width:480px){.product-grid-vertical{grid-template-columns:repeat(2,1fr)}}

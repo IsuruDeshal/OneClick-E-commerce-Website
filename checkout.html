@@ -1,0 +1,1038 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.4" />
+  <link rel="stylesheet" href="assets/css/animations.css" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .checkout-page {
+      min-height: 70vh;
+      padding: 2rem 0;
+    }
+    
+    .checkout-steps {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    
+    .checkout-step {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.5rem;
+      background: var(--panel2);
+      border: 2px solid var(--border);
+      border-radius: 30px;
+      color: var(--muted);
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .checkout-step.active {
+      background: var(--gradient-3);
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    .checkout-step.completed {
+      background: var(--panel);
+      border-color: #10b981;
+      color: #10b981;
+    }
+    
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    
+    .checkout-step.active .step-number {
+      background: white;
+      color: var(--primary);
+    }
+    
+    .checkout-step.completed .step-number {
+      background: #10b981;
+      color: white;
+    }
+    
+    .checkout-container {
+      display: grid;
+      grid-template-columns: 1fr 450px;
+      gap: 2rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .checkout-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    
+    .section-title i {
+      color: var(--primary);
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    
+    .form-grid.cols-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    @media (max-width: 768px) {
+      .form-grid.cols-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    
+    .form-group label .required {
+      color: var(--primary);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem;
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(228, 77, 97, 0.1);
+    }
+    
+    .saved-addresses {
+      margin-bottom: 1.5rem;
+    }
+    
+    .address-option {
+      background: var(--panel2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .address-option:hover {
+      border-color: var(--primary);
+    }
+    
+    .address-option.selected {
+      border-color: var(--primary);
+      background: rgba(228, 77, 97, 0.1);
+    }
+    
+    .address-option-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .address-name {
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .address-default-badge {
+      background: var(--gradient-3);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .address-details {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    .payment-option {
+      background: var(--panel2);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .payment-option:hover {
+      border-color: var(--primary);
+    }
+    
+    .payment-option.selected {
+      border-color: var(--primary);
+      background: rgba(228, 77, 97, 0.1);
+    }
+    
+    .payment-radio {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+    
+    .payment-icon {
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+    }
+    
+    .payment-details {
+      flex: 1;
+    }
+    
+    .payment-name {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    
+    .payment-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .order-summary {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .summary-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    
+    .summary-item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel2);
+      flex-shrink: 0;
+    }
+    
+    .summary-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .summary-item-details {
+      flex: 1;
+    }
+    
+    .summary-item-title {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .summary-item-qty {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    
+    .summary-item-price {
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-top: 1px solid var(--border);
+    }
+    
+    .summary-row.total {
+      border-top: 2px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    
+    .summary-total-amount {
+      color: var(--primary);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .action-buttons .btn {
+      flex: 1;
+    }
+    
+    .new-address-toggle {
+      background: var(--panel2);
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: var(--primary);
+      font-weight: 600;
+      transition: all 0.2s;
+      margin-bottom: 1rem;
+    }
+    
+    .new-address-toggle:hover {
+      border-color: var(--primary);
+      background: rgba(228, 77, 97, 0.05);
+    }
+    
+    .new-address-form {
+      display: none;
+    }
+    
+    .new-address-form.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .checkout-steps {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .checkout-step {
+        justify-content: center;
+      }
+      
+      .action-buttons {
+        flex-direction: column-reverse;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- Auth Header (Phase 2) -->
+  <div id="header" style="display:flex; justify-content:space-between; align-items:center; padding:10px 20px; background:#151821; border-bottom:1px solid #272a36;">
+    <span style="font-weight:700; color:#e44d61;">One Click</span>
+    <div style="display:flex; gap:15px; align-items:center;">
+      <a href="account.html" id="account-link" style="display:none; text-decoration:none; color:#e44d61;">My Account</a>
+      <a href="admin/index.html" id="admin-link" style="display:none; text-decoration:none; color:#e44d61;">Admin</a>
+      <button id="logout-btn" onclick="handleLogout()" style="display:none; background:none; border:none; color:#e44d61; cursor:pointer; font-size:14px;">Logout</button>
+      <a href="login.html" id="login-btn" style="text-decoration:none; color:#e44d61;">Login</a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      <nav class="main-nav">
+        <a href="shop.html" class="nav-link">
+          <i class="fas fa-laptop"></i>
+          <span>Shop</span>
+        </a>
+        <a href="account.html" class="nav-link">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </a>
+        <a href="cart.html" class="nav-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+          <span class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="index.html" class="mobile-menu-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="shop.html" class="mobile-menu-link">
+        <i class="fas fa-laptop"></i>
+        <span>Shop</span>
+      </a>
+      <a href="account.html" class="mobile-menu-link">
+        <i class="fas fa-user"></i>
+        <span>Account</span>
+      </a>
+      <a href="cart.html" class="mobile-menu-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="container checkout-page">    <!-- Checkout Steps -->
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step1Indicator">
+        <div class="step-number">1</div>
+        <span>Address</span>
+      </div>
+      <div class="checkout-step" id="step2Indicator">
+        <div class="step-number">2</div>
+        <span>Shipping</span>
+      </div>
+      <div class="checkout-step" id="step3Indicator">
+        <div class="step-number">3</div>
+        <span>Payment</span>
+      </div>
+      <div class="checkout-step" id="step4Indicator">
+        <div class="step-number">4</div>
+        <span>Review</span>
+      </div>
+    </div>
+
+    <div class="checkout-container">
+      <!-- Left Column - Forms -->
+      <div>
+        <!-- Step 1: Shipping Address -->
+        <div class="checkout-section" id="step1">
+          <h2 class="section-title">
+            <i class="fas fa-map-marker-alt"></i>
+            Shipping Address
+          </h2>
+          
+          <!-- Saved Addresses -->
+          <div class="saved-addresses" id="savedAddressesContainer">
+            <p style="color: var(--muted); margin-bottom: 1rem;">Select a saved address or add a new one</p>
+            <div id="savedAddressesList"></div>
+          </div>
+          
+          <!-- New Address Toggle -->
+          <div class="new-address-toggle" onclick="toggleNewAddressForm()">
+            <i class="fas fa-plus"></i> Add New Address
+          </div>
+          
+          <!-- New Address Form -->
+          <div class="new-address-form" id="newAddressForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" required>
+              </div>
+              
+              <div class="form-grid cols-2">
+                <div class="form-group">
+                  <label>Email <span class="required">*</span></label>
+                  <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                  <label>Phone <span class="required">*</span></label>
+                  <input type="tel" id="phone" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Address Line 1 <span class="required">*</span></label>
+                <input type="text" id="line1" required>
+              </div>
+              
+              <div class="form-group">
+                <label>Address Line 2</label>
+                <input type="text" id="line2">
+              </div>
+              
+              <div class="form-grid cols-2">
+                <div class="form-group">
+                  <label>City <span class="required">*</span></label>
+                  <input type="text" id="city" required>
+                </div>
+                <div class="form-group">
+                  <label>Postal Code <span class="required">*</span></label>
+                  <input type="text" id="postal" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Country <span class="required">*</span></label>
+                <select id="country" required>
+                  <option value="">Select Country</option>
+                  <option value="Sri Lanka" selected>Sri Lanka</option>
+                  <option value="India">India</option>
+                  <option value="USA">United States</option>
+                  <option value="UK">United Kingdom</option>
+                </select>
+              </div>
+            </div>
+          </div>
+            <div class="action-buttons">
+            <button class="btn btn-outline" onclick="window.location.href='cart.html'">
+              <i class="fas fa-arrow-left"></i> Back to Cart
+            </button>
+            <button class="btn btn-primary" id="continueToShipping">
+              Continue to Shipping <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Shipping Method -->
+        <div class="checkout-section" id="step2" style="display: none;">
+          <h2 class="section-title">
+            <i class="fas fa-shipping-fast"></i>
+            Shipping Method
+          </h2>
+          
+          <div id="shippingOptions">
+            <div class="payment-option selected" data-method="standard">
+              <input type="radio" name="shipping" class="payment-radio" value="standard" checked>
+              <div class="payment-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Standard Shipping</div>
+                <div class="payment-description">Delivery in 3-5 business days</div>
+              </div>
+              <div class="payment-price" style="font-weight: 700; color: var(--primary);">LKR 500</div>
+            </div>
+            
+            <div class="payment-option" data-method="express">
+              <input type="radio" name="shipping" class="payment-radio" value="express">
+              <div class="payment-icon">
+                <i class="fas fa-shipping-fast"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Express Shipping</div>
+                <div class="payment-description">Delivery in 1-2 business days</div>
+              </div>
+              <div class="payment-price" style="font-weight: 700; color: var(--primary);">LKR 1,000</div>
+            </div>
+            
+            <div class="payment-option" data-method="pickup">
+              <input type="radio" name="shipping" class="payment-radio" value="pickup">
+              <div class="payment-icon">
+                <i class="fas fa-store"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Store Pickup</div>
+                <div class="payment-description">Pick up from our store in Matara</div>
+              </div>
+              <div class="payment-price" style="font-weight: 700; color: #10b981;">FREE</div>
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn btn-outline" id="backToAddress">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" id="continueToPaymentMethod">
+              Continue to Payment <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment Method -->
+        <div class="checkout-section" id="step3" style="display: none;">
+          <h2 class="section-title">
+            <i class="fas fa-credit-card"></i>
+            Payment Method
+          </h2>
+          
+          <div id="paymentOptions">
+            <div class="payment-option selected" data-method="cod">
+              <input type="radio" name="payment" class="payment-radio" value="cod" checked>
+              <div class="payment-icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Cash on Delivery</div>
+                <div class="payment-description">Pay with cash when your order is delivered</div>
+              </div>
+            </div>            
+            <div class="payment-option" data-method="bank">
+              <input type="radio" name="payment" class="payment-radio" value="bank">
+              <div class="payment-icon">
+                <i class="fas fa-university"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Bank Transfer</div>
+                <div class="payment-description">Transfer to our bank account</div>
+              </div>
+            </div>
+            
+            <div class="payment-option" data-method="card">
+              <input type="radio" name="payment" class="payment-radio" value="card">
+              <div class="payment-icon">
+                <i class="fas fa-credit-card"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-name">Credit/Debit Card</div>
+                <div class="payment-description">Pay securely via PayHere (Test Mode)</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn btn-outline" id="backToShipping">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" id="continueToReview">
+              Review Order <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Review & Place Order -->
+        <div class="checkout-section" id="step4" style="display: none;">
+          <h2 class="section-title">
+            <i class="fas fa-check-circle"></i>
+            Review Your Order
+          </h2>
+          
+          <div style="background: var(--panel2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h3 style="color: var(--text); margin-bottom: 1rem;">
+              <i class="fas fa-map-marker-alt"></i> Shipping Address
+            </h3>
+            <div id="reviewAddress" style="color: var(--muted);"></div>
+          </div>
+          
+          <div style="background: var(--panel2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h3 style="color: var(--text); margin-bottom: 1rem;">
+              <i class="fas fa-shipping-fast"></i> Shipping Method
+            </h3>
+            <div id="reviewShipping" style="color: var(--muted);"></div>
+          </div>
+          
+          <div style="background: var(--panel2); border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h3 style="color: var(--text); margin-bottom: 1rem;">
+              <i class="fas fa-credit-card"></i> Payment Method
+            </h3>
+            <div id="reviewPayment" style="color: var(--muted);"></div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn btn-outline" id="backToPayment">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-success" id="placeOrderBtn">
+              <i class="fas fa-lock"></i> Place Order
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Order Summary -->
+      <div class="order-summary">
+        <h2 class="section-title">Order Summary</h2>
+        
+        <div id="summaryItems">
+          <!-- Cart items will be loaded here -->
+        </div>
+          <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">LKR 0</span>
+        </div>
+        
+        <div class="summary-row">
+          <span id="shippingLabel">Shipping</span>
+          <span id="summaryShipping">LKR 500</span>
+        </div>
+        
+        <div class="summary-row">
+          <span>Tax (0%)</span>
+          <span id="summaryTax">LKR 0</span>
+        </div>
+        
+        <div class="summary-row total">
+          <span>Total</span>
+          <span class="summary-total-amount" id="summaryTotal">LKR 0</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-company">
+          <div class="footer-logo"><img src="assets/img/one-logo.png" alt="One Click Computers"><div class="company-info"><h3>One Click Computers</h3><p>Premium gaming PCs, workstations & components</p></div></div>
+          <div class="footer-contact-info"><h4>Get In Touch</h4>
+            <div class="contact-item"><div class="contact-icon">📍</div><strong>46/B Kalidasa Road, Matara</strong></div>
+            <div class="contact-item"><div class="contact-icon">📞</div><strong>+94 71 915 9933</strong></div>
+            <div class="contact-item"><div class="contact-icon">🕐</div><strong>9:00 AM - 9:30 PM Daily</strong></div>
+            <div class="contact-item"><div class="contact-icon">✉️</div><strong>oneclickmatara@gmail.com</strong></div>
+          </div>
+        </div>
+        <div class="link-column"><h4>Shop Categories</h4>
+          <a href="laptops.html">Laptops & Notebooks</a>
+          <a href="desktops.html">Desktop PCs</a>
+          <a href="graphics-card.html">Graphics Cards</a>
+          <a href="monitors.html">Monitors & Displays</a>
+          <a href="keyboard.html">Keyboards</a>
+          <a href="mouse.html">Gaming Mice</a>
+          <a href="printers.html">Printers</a>
+        </div>
+        <div class="link-column"><h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="about.html">About Us</a>
+          <a href="services.html">Services</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="terms-conditions.html">Terms & Conditions</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="sitemap.html">Site Map</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><small>© <span id="yearCopy"></span> One Click Computers. All Rights Reserved.</small></div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/auth-system.js"></script>
+
+  <!-- PayHere Sandbox Library -->
+  <script src="https://www.payhere.lk/lib/payhere.js"></script>
+  
+  <script>
+    // Checkout requires authentication
+    (async function() {
+      const isAuth = await window.requireAuth();
+      if (!isAuth) {
+        return; // requireAuth will redirect to login
+      }
+
+      // Load checkout scripts after auth check
+      import('./api/supabaseClient.js');
+      import('./api/checkout.js');
+      import('./api/header.js');
+
+      // Load cart
+      if (typeof loadCart === 'function') {
+        loadCart();
+      }
+    })();
+  </script>
+  <script type="module">
+    // Use existing supabase client from imported modules
+    import { cartManager } from '/oneclick/public/js/cart-manager.js';
+    import { authManager } from '/oneclick/public/js/auth-manager.js';
+    
+    // Get supabase from window (already initialized)
+    const supabase = window.supabase || await window.ensureSupabase();
+
+    let selectedAddress = null;
+    let shippingMethod = 'standard';
+    let paymentMethod = 'cod';
+
+    /**
+     * Initialize checkout (Issue #1 - Load cart from localStorage)
+     */
+    async function initCheckout() {
+      try {
+        // Check authentication (Issue #7)
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          window.location.href = '/oneclick/account.html?redirect=checkout';
+          return;
+        }
+
+        // Wait for cart to load (Issue #1)
+        await new Promise(r => setTimeout(r, 500));
+
+        // Sync cart from server
+        const cartSynced = await cartManager.syncBeforeCheckout();
+        
+        // Check cart not empty (Issue #1)
+        if (cartManager.cart.length === 0) {
+          alert('Your cart is empty');
+          window.location.href = '/oneclick/cart.html';
+          return;
+        }
+
+        // Display cart summary
+        displayOrderSummary();
+        
+        // Load saved addresses
+        await loadSavedAddresses(session.user.id);
+
+      } catch (error) {
+        console.error('Checkout init error:', error); // Issue #4 - Proper error handling
+        alert('Failed to initialize checkout: ' + error.message);
+      }
+    }
+
+    /**
+     * Display order summary (Issue #1)
+     */
+    function displayOrderSummary() {
+      const summaryItems = document.getElementById('summaryItems');
+      let subtotal = 0;
+      let html = '';
+
+      if (cartManager.cart.length === 0) {
+        summaryItems.innerHTML = '<p>No items</p>';
+        return;
+      }
+
+      cartManager.cart.forEach(item => {
+        const price = parseFloat(item.price || 0);
+        const quantity = parseInt(item.quantity || 0);
+        const itemTotal = price * quantity;
+        subtotal += itemTotal;
+
+        html += `
+          <div class="summary-item">
+            ${item.image ? `<div class="summary-item-image"><img src="${item.image}" alt="${item.name}"></div>` : `<div class="summary-item-image" style="background: #444;"></div>`}
+            <div class="summary-item-details">
+              <div class="summary-item-title">${item.name || item.product_id}</div>
+              <div class="summary-item-qty">Qty: ${quantity} × LKR ${price.toFixed(2)}</div>
+            </div>
+            <div class="summary-item-price">LKR ${itemTotal.toFixed(2)}</div>
+          </div>
+        `;
+      });
+
+      summaryItems.innerHTML = html;
+      updateOrderTotal(subtotal);
+    }
+
+    /**
+     * Update order total
+     */
+    function updateOrderTotal(subtotal) {
+      const shippingCost = shippingMethod === 'standard' ? 500 : shippingMethod === 'express' ? 1000 : 0;
+      const tax = 0;
+      const total = subtotal + shippingCost + tax;
+
+      document.getElementById('summarySubtotal').textContent = `LKR ${subtotal.toFixed(2)}`;
+      document.getElementById('summaryShipping').textContent = `LKR ${shippingCost}`;
+      document.getElementById('summaryTax').textContent = `LKR ${tax}`;
+      document.getElementById('summaryTotal').textContent = `LKR ${total.toFixed(2)}`;
+    }
+
+    /**
+     * Load saved addresses (Issue #2)
+     */
+    async function loadSavedAddresses(userId) {
+      try {
+        const { data: addresses } = await supabase
+          .from('addresses')
+          .select('*')
+          .eq('user_id', userId);
+
+        const list = document.getElementById('savedAddressesList');
+        let html = '';
+
+        if (addresses && addresses.length > 0) {
+          addresses.forEach((addr, idx) => {
+            html += `
+              <div class="address-option ${idx === 0 ? 'selected' : ''}" onclick="selectAddress(${idx})">
+                <div class="address-option-header">
+                  <span class="address-name">${addr.full_name}</span>
+                  ${addr.is_default ? '<span class="address-default-badge">DEFAULT</span>' : ''}
+                </div>
+                <div class="address-details">
+                  ${addr.address_line1}<br>
+                  ${addr.address_line2 ? addr.address_line2 + '<br>' : ''}
+                  ${addr.city}, ${addr.postal_code}<br>
+                  ${addr.phone}
+                </div>
+              </div>
+            `;
+          });
+          list.innerHTML = html;
+          selectedAddress = addresses[0];
+        }
+      } catch (error) {
+        console.warn('Load addresses failed:', error.message);
+      }
+    }
+
+    /**
+     * Toggle new address form
+     */
+    window.toggleNewAddressForm = function() {
+      const form = document.getElementById('newAddressForm');
+      form.classList.toggle('active');
+    };
+
+    /**
+     * Select saved address
+     */
+    window.selectAddress = function(idx) {
+      document.querySelectorAll('.address-option').forEach((el, i) => {
+        el.classList.toggle('selected', i === idx);
+      });
+    };
+
+    /**
+     * Place order (Issue #4 - Proper error handling)
+     */
+    document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          alert('Session expired');
+          return;
+        }
+
+        const btn = document.getElementById('placeOrderBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        const response = await fetch('/oneclick/api/user/orders.php?action=create', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            items: cartManager.cart,
+            shipping_address: selectedAddress,
+            shipping_method: shippingMethod,
+            payment_method: paymentMethod
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          cartManager.clear();
+          alert('Order placed successfully!');
+          window.location.href = `/oneclick/account.html?order=${result.data.order_id}`;
+        } else {
+          alert('Order failed: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Order error:', error);
+        alert('Error: ' + error.message);
+      } finally {
+        const btn = document.getElementById('placeOrderBtn');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-lock"></i> Place Order';
+      }
+    });
+
+    // Shipping method selection
+    document.querySelectorAll('[name="shipping"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        shippingMethod = e.target.value;
+        document.querySelectorAll('#shippingOptions .payment-option').forEach(opt => {
+          opt.classList.toggle('selected', opt.dataset.method === e.target.value);
+        });
+        updateOrderTotal(parseFloat(document.getElementById('summarySubtotal').textContent.replace(/[^\d.]/g, '')));
+      });
+    });
+
+    // Payment method selection
+    document.querySelectorAll('[name="payment"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        paymentMethod = e.target.value;
+        document.querySelectorAll('#paymentOptions .payment-option').forEach(opt => {
+          opt.classList.toggle('selected', opt.dataset.method === e.target.value);
+        });
+      });
+    });
+
+    // Initialize on load (Issue #4 - No debugger, proper execution)
+    initCheckout();
+  </script>
+</body>
+</html>

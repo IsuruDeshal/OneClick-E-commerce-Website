@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FINAL FIX TEST</title>
+  <style>
+    body { font: 14px monospace; background: #000; color: #0f0; padding: 20px; }
+    .pass { color: #0f0; } .fail { color: #f00; } .warn { color: #fa0; }
+    pre { background: #111; padding: 10px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>🔧 HOMEPAGE FINAL TEST</h1>
+  <div id="log"></div>
+
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+
+  <script>
+    const log = (msg, status = 'pass') => {
+      document.getElementById('log').innerHTML += `<p class="${status}">${status === 'pass' ? '✓' : status === 'fail' ? '✗' : '⚠'} ${msg}</p>`;
+    };
+
+    (async () => {
+      // Test 1: Supabase config
+      log(window.SUPABASE_CONFIG ? 'Supabase config loaded' : 'Supabase config MISSING', window.SUPABASE_CONFIG ? 'pass' : 'fail');
+
+      // Test 2: Init function
+      log(typeof window.ensureSupabase === 'function' ? 'ensureSupabase() available' : 'ensureSupabase() MISSING', typeof window.ensureSupabase === 'function' ? 'pass' : 'fail');
+
+      // Test 3: Connect
+      try {
+        const client = await window.ensureSupabase();
+        log('Supabase client created');
+
+        // Test 4: Fetch products
+        const { data: products, error } = await client
+          .from('products')
+          .select('id, name, category, featured')
+          .eq('status', 'active');
+
+        if (error) throw error;
+        log(`Fetched ${products.length} active products`);
+
+        // Count by category
+        const categories = {};
+        products.forEach(p => {
+          categories[p.category] = (categories[p.category] || 0) + 1;
+        });
+
+        document.getElementById('log').innerHTML += '<h2>Products by Category:</h2>';
+        Object.entries(categories).sort((a,b) => b[1] - a[1]).forEach(([cat, count]) => {
+          log(`${cat}: ${count} products`, 'pass');
+        });
+
+        const featured = products.filter(p => p.featured).length;
+        log(`Featured products: ${featured}`, featured > 0 ? 'pass' : 'warn');
+
+        // Test 5: Check homepage HTML
+        document.getElementById('log').innerHTML += '<h2>Checking Homepage HTML:</h2>';
+
+        const response = await fetch('index.html');
+        const html = await response.text();
+
+        // Check for product grids
+        const gridMatches = html.match(/data-products-grid/g) || [];
+        log(`Found ${gridMatches.length} product grid containers`, gridMatches.length >= 5 ? 'pass' : 'warn');
+
+        // Check for broken HTML
+        const brokenPatterns = [
+          { pattern: /<article[^>]*>\s*<a class="title"/, msg: 'Broken article tags' },
+          { pattern: /<\/article>\s*<a href/, msg: 'Orphan closing tags' },
+          { pattern: /data-products-grid[^>]*>[\s\S]{0,50}<article/, msg: 'Hardcoded cards after grid' }
+        ];
+
+        brokenPatterns.forEach(({ pattern, msg }) => {
+          const found = pattern.test(html);
+          log(found ? `⚠ ${msg} detected!` : `No ${msg}`, found ? 'fail' : 'pass');
+        });
+
+        // Check script order
+        const supabaseConfigIdx = html.indexOf('supabase-config.js');
+        const supabaseInitIdx = html.indexOf('supabase-init.js');
+        const backendProductsIdx = html.indexOf('backend-products.js');
+
+        if (supabaseConfigIdx > 0 && supabaseInitIdx > supabaseConfigIdx && backendProductsIdx > supabaseInitIdx) {
+          log('Scripts load in correct order', 'pass');
+        } else {
+          log('Scripts NOT in correct order!', 'fail');
+        }
+
+        document.getElementById('log').innerHTML += '<hr><h2>✅ READY TO TEST</h2>';
+        document.getElementById('log').innerHTML += '<p><a href="index.html" style="color:#0ff;font-size:18px;">→ OPEN HOMEPAGE NOW</a></p>';
+        document.getElementById('log').innerHTML += '<p style="color:#fa0;">After opening, press F12 and check Console for errors</p>';
+
+      } catch (err) {
+        log('ERROR: ' + err.message, 'fail');
+        document.getElementById('log').innerHTML += '<pre>' + err.stack + '</pre>';
+      }
+    })();
+  </script>
+</body>
+</html>
+

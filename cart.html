@@ -1,0 +1,518 @@
+﻿﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Shopping Cart • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2"/>
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .cart-page {
+      min-height: 70vh;
+      padding: 2rem 0;
+    }
+    
+    .cart-container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    @media (max-width: 968px) {
+      .cart-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .cart-items {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    
+    .cart-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .cart-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    
+    .cart-item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    
+    .cart-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .cart-item-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .cart-item-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+    }
+    
+    .cart-item-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .cart-item-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+    
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.3rem;
+    }
+    
+    .qty-controls button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .qty-controls button:hover {
+      background: var(--primary);
+      transform: scale(1.1);
+    }
+    
+    .qty-controls input {
+      width: 50px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    .remove-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .remove-btn:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: white;
+    }
+    
+    .cart-summary {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .summary-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .summary-row:last-child {
+      border-bottom: none;
+      padding-top: 1.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    
+    .summary-total {
+      color: var(--primary);
+    }
+    
+    .checkout-btn {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      font-size: 1.1rem;
+      background: var(--gradient-2);
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(228, 77, 97, 0.3);
+    }
+    
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(228, 77, 97, 0.5);
+    }
+    
+    .continue-shopping {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .continue-shopping:hover {
+      border-color: var(--primary);
+      background: var(--panel2);
+    }
+    
+    .empty-cart {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    
+    .empty-cart-icon {
+      font-size: 5rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    
+    .empty-cart h2 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    
+    .empty-cart p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      
+      <div class="header-bottom">
+        <a href="index.html">Home</a>
+        <a href="laptops.html">Laptops</a>
+        <a href="desktops.html">Desktops</a>
+        <a href="monitors.html">Monitors</a>
+        <a href="printers.html">Printers</a>
+      </div>
+      
+      <div class="header-actions desktop-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="wishlist.html" title="Wishlist">
+          <span class="badge">0</span>
+          <i class="fas fa-heart"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container cart-page">
+    <h1><i class="fas fa-shopping-cart"></i> Shopping Cart</h1>
+    
+    <div id="cartContent">
+      <!-- Cart items will be loaded here -->
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 One Click Computers. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase -->
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/auth-system.js"></script>
+  <script src="api/cart-unified.js"></script>
+
+  <script>
+    // Cart is accessible to all users (logged in and guest)
+    // But checkout requires authentication
+
+    // Format currency
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-LK', {
+        style: 'currency',
+        currency: 'LKR',
+        maximumFractionDigits: 0
+      }).format(price || 0);
+    }
+    
+    // Load cart and render
+    async function loadAndRenderCart() {
+      try {
+        // ISSUE #2 FIX: Check authentication
+        const user = await window.getCurrentUser();
+        if (!user) {
+          console.log('[Cart] User not authenticated, redirecting to login');
+          window.setRedirectAfterLogin('/oneclick/cart.html');
+          window.location.href = '/oneclick/login.html';
+          return;
+        }
+        
+        console.log('[Cart] User authenticated, loading cart...');
+        const items = await window.getCart();
+        renderCart(items);
+      } catch (error) {
+        console.error('[Cart] Error loading cart:', error);
+        alert('Error loading cart. Please refresh the page.');
+      }
+    }
+    
+    // Render cart
+    function renderCart(items = []) {
+      const contentDiv = document.getElementById('cartContent');
+      
+      if (!items || items.length === 0) {
+        contentDiv.innerHTML = `
+          <div class="cart-items">
+            <div class="empty-cart">
+              <div class="empty-cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+              <h2>Your cart is empty</h2>
+              <p>Looks like you haven't added anything to your cart yet.</p>
+              <a href="shop.html" class="btn primary">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+              </a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      // Calculate totals
+      const subtotal = items.reduce((sum, item) => {
+        const price = item.products?.price || item.price || 0;
+        const qty = item.quantity || 1;
+        return sum + (price * qty);
+      }, 0);
+      
+      const shipping = 500; // Fixed shipping cost
+      const total = subtotal + shipping;
+      
+      contentDiv.innerHTML = `
+        <div class="cart-container">
+          <div class="cart-items">
+            <h3 style="margin-bottom: 1.5rem;">Cart Items (${items.length})</h3>
+            ${items.map((item, idx) => {
+              const product = item.products || {};
+              const image = product.main_image_url || 'assets/img/placeholder.png';
+              const price = product.price || 0;
+              const name = product.name || 'Unknown Product';
+              const qty = item.quantity || 1;
+              
+              return `
+                <div class="cart-item" data-id="${item.product_id}">
+                  <div class="cart-item-image">
+                    <img src="${image}" alt="${name}" onerror="this.src='assets/img/placeholder.png'">
+                  </div>
+                  <div class="cart-item-details">
+                    <h3 class="cart-item-title">${name}</h3>
+                    <div class="cart-item-price">${formatPrice(price)}</div>
+                    <div style="color: var(--muted); font-size: 0.9rem;">
+                      In Stock
+                    </div>
+                  </div>
+                  <div class="cart-item-actions">
+                    <div class="qty-controls">
+                      <button onclick="updateQty('${item.product_id}', ${qty - 1})">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <input type="number" value="${qty}" min="1" readonly>
+                      <button onclick="updateQty('${item.product_id}', ${qty + 1})">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem('${item.product_id}')">
+                      <i class="fas fa-trash"></i> Remove
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div class="cart-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            
+            <div class="summary-row">
+              <span>Subtotal (${items.length} items)</span>
+              <span>${formatPrice(subtotal)}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span>${formatPrice(shipping)}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span><strong>Total</strong></span>
+              <span class="summary-total"><strong>${formatPrice(total)}</strong></span>
+            </div>
+            
+            <button class="checkout-btn" onclick="goToCheckout()">
+              <i class="fas fa-lock"></i> Proceed to Checkout
+            </button>
+            
+            <button class="continue-shopping" onclick="window.location.href='shop.html'">
+              <i class="fas fa-arrow-left"></i> Continue Shopping
+            </button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Update quantity
+    async function updateQty(productId, newQty) {
+      if (newQty < 1) {
+        removeItem(productId);
+        return;
+      }
+      
+      try {
+        const result = await window.updateCartQuantity(productId, newQty);
+        if (result.success) {
+          const items = await window.getCart();
+          renderCart(items);
+        } else {
+          alert('Error updating cart');
+        }
+      } catch (error) {
+        console.error('[Cart] Error updating quantity:', error);
+      }
+    }
+    
+    // Remove item
+    async function removeItem(productId) {
+      if (confirm('Remove this item from cart?')) {
+        try {
+          const result = await window.removeFromCart(productId);
+          if (result.success) {
+            const items = await window.getCart();
+            renderCart(items);
+          } else {
+            alert('Error removing item');
+          }
+        } catch (error) {
+          console.error('[Cart] Error removing item:', error);
+        }
+      }
+    }
+    
+    // Go to checkout
+    function goToCheckout() {
+      window.location.href = '/oneclick/checkout.html';
+    }
+    
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAndRenderCart();
+    });
+  </script>
+</body>
+</html>

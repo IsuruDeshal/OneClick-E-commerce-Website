@@ -1,0 +1,587 @@
+/* ==================== PRODUCT MODAL STYLES ==================== */
+
+/* Modal Overlay */
+.product-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.product-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Modal Container */
+.product-modal-container {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 20px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+
+.product-modal-overlay.active .product-modal-container {
+  transform: scale(1);
+}
+
+/* Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 107, 53, 0.9);
+  transform: rotate(90deg);
+}
+
+/* Modal Content */
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+}
+
+/* Left Section: Images */
+.modal-image-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-image-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.modal-main-image {
+  max-width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.modal-main-image:hover {
+  transform: scale(1.05);
+}
+
+.image-thumbnails {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.image-thumbnails::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-thumbnails::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.5);
+  border-radius: 3px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.thumbnail:hover {
+  border-color: rgba(255, 107, 53, 0.5);
+  transform: translateY(-2px);
+}
+
+.thumbnail.active {
+  border-color: #ff6b35;
+  background: rgba(255, 107, 53, 0.1);
+}
+
+/* Right Section: Product Info */
+.modal-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.modal-breadcrumb .separator {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-product-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Rating */
+.modal-rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+.star {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 20px;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.star.half {
+  background: linear-gradient(90deg, #ffc107 50%, rgba(255, 255, 255, 0.2) 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rating-text {
+  color: #fff;
+  font-weight: 600;
+}
+
+.review-count {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+/* Price Section */
+.modal-price-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.current-price {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ff6b35;
+}
+
+.original-price {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Stock Status */
+.stock-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.stock-status.in-stock {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4caf50;
+}
+
+.stock-status.in-stock .status-dot {
+  background: #4caf50;
+}
+
+.stock-status.low-stock {
+  background: rgba(255, 152, 0, 0.15);
+  color: #ff9800;
+}
+
+.stock-status.low-stock .status-dot {
+  background: #ff9800;
+}
+
+.stock-status.out-of-stock {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+}
+
+.stock-status.out-of-stock .status-dot {
+  background: #f44336;
+}
+
+.stock-status.pre-order {
+  background: rgba(33, 150, 243, 0.15);
+  color: #2196f3;
+}
+
+.stock-status.pre-order .status-dot {
+  background: #2196f3;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Description */
+.modal-description {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* Highlights */
+.modal-highlights {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  border-left: 4px solid #ff6b35;
+}
+
+.modal-highlights h3 {
+  color: #ff6b35;
+  font-size: 18px;
+  margin: 0 0 15px 0;
+}
+
+.modal-highlights ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-highlights li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+}
+
+.modal-highlights li svg {
+  flex-shrink: 0;
+}
+
+/* Specifications */
+.modal-specs {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.modal-specs h3 {
+  color: #fff;
+  font-size: 18px;
+  margin: 0 0 15px 0;
+}
+
+.specs-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.spec-item:last-child {
+  border-bottom: none;
+}
+
+.spec-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.spec-value {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: right;
+}
+
+/* Action Buttons */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-btn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.modal-btn-primary {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  color: #fff;
+}
+
+.modal-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+}
+
+.modal-btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-btn-icon {
+  flex: 0 0 auto;
+  width: 50px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ff6b35;
+}
+
+.modal-btn-icon:hover {
+  background: rgba(255, 107, 53, 0.15);
+  color: #ff8c42;
+}
+
+/* Warranty Info */
+.modal-warranty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+/* Notification */
+.product-notification {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 16px 24px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  z-index: 10000;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.product-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.product-notification.success {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+}
+
+.product-notification.info {
+  background: linear-gradient(135deg, #2196f3, #42a5f5);
+}
+
+.product-notification.error {
+  background: linear-gradient(135deg, #f44336, #ef5350);
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .modal-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px 20px;
+  }
+
+  .modal-product-title {
+    font-size: 24px;
+  }
+
+  .current-price {
+    font-size: 28px;
+  }
+
+  .main-image-container {
+    min-height: 300px;
+  }
+
+  .modal-main-image {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-modal-overlay {
+    padding: 10px;
+  }
+
+  .product-modal-container {
+    border-radius: 12px;
+    max-height: 95vh;
+  }
+
+  .modal-content {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .modal-close-btn {
+    width: 36px;
+    height: 36px;
+    top: 15px;
+    right: 15px;
+  }
+
+  .modal-product-title {
+    font-size: 20px;
+  }
+
+  .current-price {
+    font-size: 24px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-btn-icon {
+    width: 100%;
+  }
+
+  .main-image-container {
+    padding: 20px;
+    min-height: 250px;
+  }
+
+  .modal-main-image {
+    max-height: 250px;
+  }
+
+  .specs-grid {
+    gap: 8px;
+  }
+
+  .spec-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .spec-value {
+    text-align: left;
+  }
+}
+
+/* Custom Scrollbar for Modal */
+.product-modal-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.product-modal-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.product-modal-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 107, 53, 0.5);
+  border-radius: 10px;
+}
+
+.product-modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.7);
+}

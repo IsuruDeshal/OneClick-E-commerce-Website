@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Map - One Click Computers | All Pages</title>
+    <meta name="description" content="Complete site map of One Click Computers website. Find all pages including laptops, desktops, monitors, printers, services, and contact information.">
+    <link rel="stylesheet" href="assets/css/styles.css?v=18.1" />`n  <link rel="stylesheet" href="assets/css/critical-grid.css?v=2" />
+    <style>
+        .sitemap-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .sitemap-section {
+            margin-bottom: 3rem;
+        }
+        .sitemap-section h2 {
+            color: var(--accent, #ff6b00);
+            border-bottom: 2px solid var(--accent, #ff6b00);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .sitemap-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .sitemap-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-bg, #1a1a1a);
+            border: 1px solid var(--border, #333);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text, #fff);
+            transition: all 0.3s ease;
+        }
+        .sitemap-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.2);
+            border-color: var(--accent, #ff6b00);
+        }
+        .sitemap-link .icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        .sitemap-link .text h3 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1.1rem;
+        }
+        .sitemap-link .text p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .page-header {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SITE HEADER -->
+<header class="site-header">
+  <!-- Desktop Header Top -->
+  <div class="header-top">
+    <div class="container">
+      <a class="logo" href="index.html">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+        <span>One Click Computers</span>
+      </a>
+      
+      <div class="header-actions">
+        <div class="search">
+          <input type="text" placeholder="Search laptops, PCs, monitors..." />
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <a href="#" class="icon-btn"><i class="fas fa-ellipsis-v"></i></a>
+        <a href="#" class="icon-btn"><i class="fas fa-ellipsis-v"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Header -->
+  <div class="header-mobile">
+    <div class="container">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      
+      <a class="logo" href="index.html">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      
+      <div class="mobile-actions">
+        <button class="search-btn" id="mobileSearchBtn"><i class="fas fa-search"></i></button>
+        <a href="#" class="icon-btn"><i class="fas fa-ellipsis-v"></i></a>
+      </div>
+    </div>
+    
+    <!-- Mobile Search -->
+    <div class="mobile-search" id="mobileSearch">
+      <div class="container">
+        <input type="text" placeholder="Search..." />
+        <button class="search-btn">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop Navigation -->
+  <nav class="header-nav">
+    <div class="container">
+      <a href="index.html">Home</a>
+      <a href="laptops.html">Laptops</a>
+      <a href="desktops.html">Desktop PCs</a>
+      <a href="printers.html">Printers</a>
+      <a href="monitors.html">Monitors</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-panel">
+    <div class="mobile-drawer-head">
+      <strong>Menu</strong>
+      <button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="mobile-menu-items">
+      <a href="index.html" class="mobile-menu-item"><i class="fas fa-home"></i> Home</a>
+      <a href="laptops.html" class="mobile-menu-item"><i class="fas fa-laptop"></i> Laptops</a>
+      <a href="desktops.html" class="mobile-menu-item"><i class="fas fa-desktop"></i> Desktop PCs</a>
+      <a href="printers.html" class="mobile-menu-item"><i class="fas fa-print"></i> Printers</a>
+      <a href="monitors.html" class="mobile-menu-item"><i class="fas fa-tv"></i> Monitors</a>
+      <a href="services.html" class="mobile-menu-item"><i class="fas fa-tools"></i> Services</a>
+      <a href="about.html" class="mobile-menu-item"><i class="fas fa-info-circle"></i> About Us</a>
+      <a href="contact.html" class="mobile-menu-item"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="sitemap.html" class="mobile-menu-item active"><i class="fas fa-sitemap"></i> Site Map</a>
+    </div>
+  </div>
+</aside>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+    <h1>Site <span style="color: #ff6b00;">Map</span></h1>
+    <p>All pages and sections of One Click Computers website</p>
+</section>
+
+<!-- SITEMAP CONTENT -->
+<div class="sitemap-container">
+
+    <!-- Main Pages Section -->
+    <div class="sitemap-section">
+        <h2><i class="fas fa-sitemap"></i> Main Pages</h2>
+        <div class="sitemap-links">
+            <a href="index.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Home</h3>
+                    <p>Main landing page with featured products</p>
+                </div>
+            </a>
+            <a href="about.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>About Us</h3>
+                    <p>Learn about our company and team</p>
+                </div>
+            </a>
+            <a href="contact.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Contact Us</h3>
+                    <p>Get in touch with our team</p>
+                </div>
+            </a>
+            <a href="services.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Our Services</h3>
+                    <p>PC building, repair, and support</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Product Pages Section -->
+    <div class="sitemap-section">
+        <h2><i class="fas fa-th-large"></i> Shop by Category</h2>
+        <div class="sitemap-links">
+            <a href="laptops.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Laptops</h3>
+                    <p>Gaming, business, and budget laptops</p>
+                </div>
+            </a>
+            <a href="desktops.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Desktop PCs</h3>
+                    <p>Pre-built and custom gaming rigs</p>
+                </div>
+            </a>
+            <a href="monitors.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Monitors</h3>
+                    <p>Gaming and professional displays</p>
+                </div>
+            </a>
+            <a href="printers.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Printers</h3>
+                    <p>Printers, ink, and accessories</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+  <!-- Components & Accessories Section -->
+  <div class="sitemap-section">
+    <h2><i class="fas fa-microchip"></i> Components & Accessories</h2>
+    <div class="sitemap-links">
+      <a href="graphics-card.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Graphics Cards</h3>
+          <p>Latest NVIDIA and AMD GPUs</p>
+        </div>
+      </a>
+      <a href="internal-ssd.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Internal SSD</h3>
+          <p>NVMe and SATA SSDs</p>
+        </div>
+      </a>
+      <a href="hard-drive.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Hard Drives</h3>
+          <p>High-capacity HDDs</p>
+        </div>
+      </a>
+      <a href="power-supply.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Power Supply</h3>
+          <p>Reliable PSUs for any build</p>
+        </div>
+      </a>
+      <a href="cabinets.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>PC Cabinets</h3>
+          <p>ATX, mATX, mini-ITX cases</p>
+        </div>
+      </a>
+      <a href="case-fans.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Case Fans</h3>
+          <p>Cooling and RGB fans</p>
+        </div>
+      </a>
+      <a href="keyboard.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Keyboards</h3>
+          <p>Mechanical and wireless</p>
+        </div>
+      </a>
+      <a href="mouse.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Mouse</h3>
+          <p>Gaming and productivity</p>
+        </div>
+      </a>
+      <a href="mousepad.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Mousepads</h3>
+          <p>Control and speed surfaces</p>
+        </div>
+      </a>
+      <a href="headset.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Headsets</h3>
+          <p>Gaming and studio audio</p>
+        </div>
+      </a>
+      <a href="controller.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Controllers</h3>
+          <p>Gamepads and accessories</p>
+        </div>
+      </a>
+      <a href="custom-cables.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Custom Cables</h3>
+          <p>GPU/PSU sleeved cables</p>
+        </div>
+      </a>
+      <a href="ups.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>UPS</h3>
+          <p>Power backup units</p>
+        </div>
+      </a>
+      <a href="external-ssd.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>External SSD</h3>
+          <p>Portable high-speed storage</p>
+        </div>
+      </a>
+      <a href="power-strip.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Power Strips</h3>
+          <p>Surge-protected extensions</p>
+        </div>
+      </a>
+      <a href="usb-devices.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>USB Devices</h3>
+          <p>Hubs, adapters and more</p>
+        </div>
+      </a>
+      <a href="vertical-gpu-bracket.html" class="sitemap-link">
+        <span class="icon"><i class="fas fa-check-circle"></i></span>
+        <div class="text">
+          <h3>Vertical GPU Brackets</h3>
+          <p>Mount kits and risers</p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+    <!-- Legal Pages Section -->
+    <div class="sitemap-section">
+        <h2><i class="fas fa-balance-scale"></i> Legal & Policies</h2>
+        <div class="sitemap-links">
+            <a href="terms-conditions.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Terms & Conditions</h3>
+                    <p>User agreements and service terms</p>
+                </div>
+            </a>
+            <a href="privacy-policy.html" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Privacy Policy</h3>
+                    <p>How we protect your data</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="sitemap-section">
+        <h2>? Quick Actions</h2>
+        <div class="sitemap-links">
+            <a href="#" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Shopping Cart</h3>
+                    <p>View your cart items</p>
+                </div>
+            </a>
+            <a href="#" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Wishlist</h3>
+                    <p>Save your favorite products</p>
+                </div>
+            </a>
+            <a href="#" class="sitemap-link">
+                <span class="icon">?</span>
+                <div class="text">
+                    <h3>Compare</h3>
+                    <p>Compare products side-by-side</p>
+                </div>
+            </a>
+            <a href="#" class="sitemap-link">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>My Account</h3>
+                    <p>Manage your profile and orders</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="sitemap-section">
+        <h2><i class="fas fa-store"></i> Store Information</h2>
+        <div class="sitemap-links">
+            <div class="sitemap-link" style="cursor: default;">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Store Location</h3>
+                    <p>46/B Kalidasa Rd, Matara, Sri Lanka</p>
+                </div>
+            </div>
+            <div class="sitemap-link" style="cursor: default;">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Phone</h3>
+                    <p>+94 71 915 9933</p>
+                </div>
+            </div>
+            <div class="sitemap-link" style="cursor: default;">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Business Hours</h3>
+                    <p>9:00 AM - 9:30 PM Daily</p>
+                </div>
+            </div>
+            <div class="sitemap-link" style="cursor: default;">
+                <span class="icon"><i class="fas fa-check-circle"></i></span>
+                <div class="text">
+                    <h3>Email</h3>
+                    <p>oneclickmatara@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <!-- Mobile-First Company Section -->
+    <div class="footer-company">
+      <div class="footer-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers">
+        <div class="company-info">
+          <h3>One Click Computers</h3>
+          <p>Gaming PCs, workstations & components worldwide</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Contact Section -->
+    <div class="footer-contact">
+      <h4><i class="fas fa-store"></i> Visit Our Store</h4>
+      <div class="contact-item">
+        <strong>46/B Kalidasa Rd, Matara</strong>
+      </div>
+      <div class="contact-row">
+        <div class="contact-item">
+          <strong><i class="fas fa-phone"></i> +94 71 915 9933</strong>
+        </div>
+        <div class="contact-item">
+          <strong><i class="fas fa-clock"></i> 9am - 9:30pm</strong>
+        </div>
+      </div>
+      <div class="contact-item email">
+        <strong><i class="fas fa-envelope"></i> oneclickmatara@gmail.com</strong>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="footer-links">
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="laptops.html"><i class="fas fa-laptop"></i> Laptops</a>
+        <a href="desktops.html"><i class="fas fa-desktop"></i> Desktop PCs</a>
+        <a href="monitors.html"><i class="fas fa-tv"></i> Monitors</a>
+        <a href="printers.html"><i class="fas fa-print"></i> Printers</a>
+      </div>
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="terms-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="sitemap.html">Site Map</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>� <span id="yearCopy"></span> One Click Computers. All rights reserved.</small>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js"></script>
+<script>
+  // Set current year in footer
+  document.getElementById('yearCopy').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

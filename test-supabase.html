@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test - One Click Computers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0e0f14 0%, #1a1e29 100%);
+            color: #e9ecf1;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #e44d61, #ffcc66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+        }
+        .test-section {
+            background: #151821;
+            border-radius: 14px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #272a36;
+        }
+        .test-section h2 {
+            color: #e44d61;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        .status.loading {
+            background: #3b82f6;
+            color: white;
+        }
+        .status.success {
+            background: #22c55e;
+            color: white;
+        }
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+        .status.info {
+            background: #1a1e29;
+            color: #a9b0bf;
+            border: 1px solid #272a36;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .product-card {
+            background: #1a1e29;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #272a36;
+        }
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .product-card h3 {
+            font-size: 0.9rem;
+            color: #e9ecf1;
+            margin-bottom: 0.5rem;
+        }
+        .product-card p {
+            font-size: 0.8rem;
+            color: #a9b0bf;
+        }
+        .price {
+            color: #22c55e !important;
+            font-weight: bold;
+            font-size: 1rem !important;
+        }
+        button {
+            background: linear-gradient(135deg, #e44d61, #ff6b7a);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        code {
+            background: #0e0f14;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #ffcc66;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .stat-card {
+            background: #1a1e29;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #272a36;
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: #a9b0bf;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #e44d61, #ffcc66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Supabase Connection Test</h1>
+
+        <!-- Configuration Test -->
+        <div class="test-section">
+            <h2>1. Configuration Check</h2>
+            <div id="configStatus" class="status loading">Testing configuration...</div>
+            <div id="configDetails"></div>
+        </div>
+
+        <!-- Connection Test -->
+        <div class="test-section">
+            <h2>2. Database Connection</h2>
+            <div id="connectionStatus" class="status loading">Testing database connection...</div>
+            <div id="connectionDetails"></div>
+        </div>
+
+        <!-- Products Test -->
+        <div class="test-section">
+            <h2>3. Product Data</h2>
+            <button onclick="loadProducts()" id="loadBtn">Load Products</button>
+            <div id="productStatus" class="status info" style="margin-top: 1rem;">Click button to test product loading</div>
+            <div id="productStats" class="stats"></div>
+            <div id="productGrid" class="product-grid"></div>
+        </div>
+
+        <!-- API Endpoint Test -->
+        <div class="test-section">
+            <h2>4. REST API Endpoints</h2>
+            <div id="apiStatus" class="status loading">Testing REST API...</div>
+            <div id="apiDetails"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script>
+        // Test 1: Configuration
+        function testConfig() {
+            const configStatus = document.getElementById('configStatus');
+            const configDetails = document.getElementById('configDetails');
+
+            if (window.SUPABASE_CONFIG) {
+                configStatus.className = 'status success';
+                configStatus.textContent = '✓ Configuration loaded successfully';
+                configDetails.innerHTML = `
+                    <div class="status info">
+                        <strong>Supabase URL:</strong> <code>${window.SUPABASE_CONFIG.url}</code><br>
+                        <strong>Anon Key:</strong> <code>${window.SUPABASE_CONFIG.anonKey.substring(0, 30)}...</code><br>
+                        <strong>REST URL:</strong> <code>${window.SUPABASE_CONFIG.restUrl}</code>
+                    </div>
+                `;
+            } else {
+                configStatus.className = 'status error';
+                configStatus.textContent = '✗ Configuration not found';
+                configDetails.innerHTML = '<div class="status error">supabase-config.js failed to load</div>';
+            }
+        }
+
+        // Test 2: Connection
+        async function testConnection() {
+            const connectionStatus = document.getElementById('connectionStatus');
+            const connectionDetails = document.getElementById('connectionDetails');
+
+            try {
+                await window.ensureSupabase();
+
+                if (window.supabaseClient) {
+                    connectionStatus.className = 'status success';
+                    connectionStatus.textContent = '✓ Successfully connected to Supabase';
+                    connectionDetails.innerHTML = `
+                        <div class="status info">
+                            <strong>Client Status:</strong> Connected<br>
+                            <strong>Auth Status:</strong> ${window.supabaseClient.auth ? 'Ready' : 'Not initialized'}<br>
+                            <strong>Database:</strong> Ready
+                        </div>
+                    `;
+                } else {
+                    throw new Error('Client not initialized');
+                }
+            } catch (error) {
+                connectionStatus.className = 'status error';
+                connectionStatus.textContent = '✗ Connection failed';
+                connectionDetails.innerHTML = `<div class="status error">${error.message}</div>`;
+            }
+        }
+
+        // Test 3: Load Products
+        async function loadProducts() {
+            const productStatus = document.getElementById('productStatus');
+            const productGrid = document.getElementById('productGrid');
+            const productStats = document.getElementById('productStats');
+            const loadBtn = document.getElementById('loadBtn');
+
+            productStatus.className = 'status loading';
+            productStatus.textContent = 'Loading products...';
+            loadBtn.disabled = true;
+            productGrid.innerHTML = '';
+            productStats.innerHTML = '';
+
+            try {
+                const { data, error } = await window.supabaseClient
+                    .from('products')
+                    .select('*')
+                    .eq('status', 'active')
+                    .limit(12);
+
+                if (error) throw error;
+
+                productStatus.className = 'status success';
+                productStatus.textContent = `✓ Loaded ${data.length} products successfully`;
+
+                // Show stats
+                const categories = [...new Set(data.map(p => p.category))];
+                const totalStock = data.reduce((sum, p) => sum + (p.stock || 0), 0);
+                const avgPrice = data.reduce((sum, p) => sum + (p.price || 0), 0) / data.length;
+
+                productStats.innerHTML = `
+                    <div class="stat-card">
+                        <h3>Total Products</h3>
+                        <div class="value">${data.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Categories</h3>
+                        <div class="value">${categories.length}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Stock</h3>
+                        <div class="value">${totalStock}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Avg Price</h3>
+                        <div class="value">Rs ${Math.round(avgPrice).toLocaleString()}</div>
+                    </div>
+                `;
+
+                // Render products
+                productGrid.innerHTML = data.map(product => `
+                    <div class="product-card">
+                        <img src="${product.image_url || 'assets/img/placeholder.svg'}"
+                             alt="${product.name}"
+                             onerror="this.src='assets/img/placeholder.svg'">
+                        <h3>${product.name}</h3>
+                        <p>${product.category || 'Uncategorized'}</p>
+                        <p class="price">Rs ${(product.price || 0).toLocaleString()}</p>
+                        <p>Stock: ${product.stock || 0}</p>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                productStatus.className = 'status error';
+                productStatus.textContent = `✗ Failed to load products: ${error.message}`;
+            } finally {
+                loadBtn.disabled = false;
+            }
+        }
+
+        // Test 4: API Endpoints
+        async function testAPI() {
+            const apiStatus = document.getElementById('apiStatus');
+            const apiDetails = document.getElementById('apiDetails');
+
+            const tests = [
+                {
+                    name: 'Products Endpoint',
+                    url: `${window.SUPABASE_CONFIG.restUrl}/products?select=id,name&limit=1`
+                },
+                {
+                    name: 'Categories Endpoint',
+                    url: `${window.SUPABASE_CONFIG.restUrl}/categories?select=id,name&limit=1`
+                },
+                {
+                    name: 'Orders Endpoint',
+                    url: `${window.SUPABASE_CONFIG.restUrl}/orders?select=id&limit=1`
+                }
+            ];
+
+            let results = [];
+
+            for (const test of tests) {
+                try {
+                    const response = await fetch(test.url, {
+                        headers: {
+                            'apikey': window.SUPABASE_CONFIG.anonKey,
+                            'Authorization': `Bearer ${window.SUPABASE_CONFIG.anonKey}`
+                        }
+                    });
+
+                    results.push({
+                        name: test.name,
+                        status: response.ok ? '✓' : '✗',
+                        code: response.status,
+                        className: response.ok ? 'success' : 'error'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: test.name,
+                        status: '✗',
+                        code: 'Error',
+                        className: 'error'
+                    });
+                }
+            }
+
+            const allPassed = results.every(r => r.status === '✓');
+            apiStatus.className = `status ${allPassed ? 'success' : 'error'}`;
+            apiStatus.textContent = allPassed ? '✓ All API endpoints accessible' : '✗ Some endpoints failed';
+
+            apiDetails.innerHTML = results.map(r => `
+                <div class="status ${r.className}">
+                    ${r.status} ${r.name}: HTTP ${r.code}
+                </div>
+            `).join('');
+        }
+
+        // Run tests on load
+        window.addEventListener('load', async () => {
+            testConfig();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await testConnection();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await testAPI();
+        });
+    </script>
+</body>
+</html>
+

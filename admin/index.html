@@ -1,0 +1,3158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - One Click Computers</title>
+  
+  <!-- ⚠️ CRITICAL: Auth Guard MUST be loaded first -->
+  <script src="../assets/js/admin-auth-guard.js"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0e0f14;
+      --panel: #151821;
+      --panel2: #1a1e29;
+      --border: #272a36;
+      --soft: #343a4a;
+      --text: #e9ecf1;
+      --muted: #a9b0bf;
+      --primary: #e44d61;
+      --accent: #ffcc66;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    #authLoader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    #authLoader .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 1rem;
+    }
+
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      padding: 0 0.75rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-item:hover {
+      background: var(--soft);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(228,77,97,0.15), rgba(228,77,97,0.05));
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+    }
+
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      padding: 2rem;
+      background: var(--bg);
+    }
+
+    .content-header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .content-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--panel), var(--panel2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(228,77,97,0.2);
+    }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .stat-icon.primary {
+      background: rgba(228,77,97,0.1);
+      color: var(--primary);
+    }
+
+    .stat-icon.success {
+      background: rgba(34,197,94,0.1);
+      color: var(--success);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .table-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .table-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--panel2);
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover {
+      background: var(--panel2);
+    }
+
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #d63f52);
+      color: white;
+      box-shadow: 0 4px 15px rgba(228,77,97,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(228,77,97,0.5);
+    }
+
+    .btn-secondary {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--soft);
+      border-color: var(--primary);
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.85rem;
+    }
+
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      color: var(--muted);
+      border: none;
+    }
+
+    .btn-icon:hover {
+      color: var(--primary);
+      background: rgba(228,77,97,0.1);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge.success {
+      background: rgba(34,197,94,0.1);
+      color: var(--success);
+    }
+
+    .badge.warning {
+      background: rgba(245,158,11,0.1);
+      color: var(--warning);
+    }
+
+    .badge.danger {
+      background: rgba(239,68,68,0.1);
+      color: var(--danger);
+    }
+
+    .badge.info {
+      background: rgba(59,130,246,0.1);
+      color: var(--info);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(228,77,97,0.1);
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .tag-input-container {
+      position: relative;
+    }
+
+    .tag-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag-chip {
+      background: var(--primary);
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tag-chip button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .image-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .image-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      background: var(--panel2);
+    }
+
+    .image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .image-item .remove-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .image-item:hover .remove-btn {
+      opacity: 1;
+    }
+
+    .add-image-btn {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: var(--panel2);
+    }
+
+    .add-image-btn:hover {
+      border-color: var(--primary);
+      background: rgba(228,77,97,0.05);
+    }
+
+    .alert {
+      padding: 1rem 1.25rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .alert-success {
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: var(--danger);
+    }
+
+    .alert-info {
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--info);
+    }
+
+    .dashboard-section {
+      display: none;
+    }
+
+    .dashboard-section.active {
+      display: block;
+    }
+
+    .product-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      background: var(--panel2);
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .order-details-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .order-items {
+      background: var(--panel2);
+      padding: 1rem;
+      border-radius: 10px;
+    }
+
+    .order-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-summary {
+      background: var(--panel2);
+      padding: 1.5rem;
+      border-radius: 10px;
+      height: fit-content;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+
+    .summary-row.total {
+      border-top: 2px solid var(--border);
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="authLoader">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="dashboard-container" id="dashboardContainer" style="display: none;">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <i class="fas fa-laptop-code"></i>
+          One Click Admin
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a class="nav-item active" data-section="overview">
+            <i class="fas fa-chart-line"></i>
+            <span>Overview</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Management</div>
+          <a class="nav-item" data-section="products">
+            <i class="fas fa-box"></i>
+            <span>Products</span>
+          </a>
+          <a class="nav-item" data-section="add-product">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add Product</span>
+          </a>
+          <a class="nav-item" data-section="orders">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Orders</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Settings</div>
+          <a class="nav-item" data-section="settings">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">A</div>
+          <div>
+            <div style="font-weight: 600; font-size: 0.9rem;" id="userName">Admin</div>
+            <div style="font-size: 0.75rem; color: var(--muted);">Administrator</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="logoutBtn" style="width: 100%;">
+          <i class="fas fa-sign-out-alt"></i>
+          Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- Overview Section -->
+      <div class="dashboard-section active" id="overview">
+        <div class="content-header">
+          <div>
+            <h1>Dashboard Overview</h1>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">
+              Home / Dashboard
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <div>
+                <div class="stat-value" id="totalProducts">0</div>
+                <div class="stat-label">Total Products</div>
+              </div>
+              <div class="stat-icon primary">
+                <i class="fas fa-box"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-header">
+              <div>
+                <div class="stat-value" id="totalOrders">0</div>
+                <div class="stat-label">Total Orders</div>
+              </div>
+              <div class="stat-icon success">
+                <i class="fas fa-shopping-cart"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h2 class="table-title">Recent Products</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Tags</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="recentProductsTable">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--muted);">
+                  Loading products...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="dashboard-section" id="settings">
+        <div class="content-header">
+          <div>
+            <h1>Settings</h1>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">
+              Home / Settings
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 250px 1fr; gap: 1.5rem;">
+          <!-- Settings Sidebar -->
+          <div class="table-card" style="height: fit-content;">
+            <div class="modal-body">
+              <nav style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a class="nav-item active" data-settings-tab="general" style="margin-bottom: 0;">
+                  <i class="fas fa-cog"></i>
+                  <span>General</span>
+                </a>
+                <a class="nav-item" data-settings-tab="homepage" style="margin-bottom: 0;">
+                  <i class="fas fa-home"></i>
+                  <span>Homepage Sections</span>
+                </a>
+                <a class="nav-item" data-settings-tab="categories" style="margin-bottom: 0;">
+                  <i class="fas fa-folder"></i>
+                  <span>Categories</span>
+                </a>
+                <a class="nav-item" data-settings-tab="tags" style="margin-bottom: 0;">
+                  <i class="fas fa-tags"></i>
+                  <span>Product Tags</span>
+                </a>
+                <a class="nav-item" data-settings-tab="shipping" style="margin-bottom: 0;">
+                  <i class="fas fa-truck"></i>
+                  <span>Shipping</span>
+                </a>
+                <a class="nav-item" data-settings-tab="payment" style="margin-bottom: 0;">
+                  <i class="fas fa-credit-card"></i>
+                  <span>Payment Methods</span>
+                </a>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Settings Content -->
+          <div>
+            <!-- General Settings -->
+            <div class="settings-tab active" id="settings-general">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">General Settings</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="generalSettingsAlert"></div>
+                  <form id="generalSettingsForm">
+                    <div class="form-group">
+                      <label class="form-label">Store Name</label>
+                      <input type="text" class="form-input" value="One Click Computers" id="storeName">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Store Email</label>
+                      <input type="email" class="form-input" value="info@oneclickcomputers.lk" id="storeEmail">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Store Phone</label>
+                      <input type="tel" class="form-input" value="+94 11 234 5678" id="storePhone">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Store Address</label>
+                      <textarea class="form-textarea" id="storeAddress">123 Galle Road, Colombo 03, Sri Lanka</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="saveGeneralSettings(); return false;">
+                      <i class="fas fa-save"></i>
+                      Save Changes
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Homepage Sections Settings -->
+            <div class="settings-tab" id="settings-homepage">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">Homepage Sections Configuration</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="homepageSettingsAlert"></div>
+                  <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Configure which product tags display on which homepage sections.</span>
+                  </div>
+                  
+                  <div style="display: grid; gap: 1.5rem; margin-top: 1.5rem;">
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-fire" style="color: var(--primary);"></i>
+                        Top Selling Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">top-selling</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-laptop" style="color: var(--info);"></i>
+                        Shop Laptops Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">shop-laptops</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-desktop" style="color: var(--success);"></i>
+                        Best Monitors Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">best-monitors</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-gamepad" style="color: var(--warning);"></i>
+                        Gaming Products Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">gaming-products</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-server" style="color: var(--accent);"></i>
+                        Pre-Built PC Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">prebuilt-pc</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-print" style="color: var(--primary);"></i>
+                        Top Printers & All-in-One Section
+                      </h3>
+                      <p style="color: var(--muted); font-size: 0.9rem;">Products tagged with: <span class="badge info">top-printers</span></p>
+                      <div style="margin-top: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enable this section</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="saveHomepageSettings()">
+                    <i class="fas fa-save"></i>
+                    Save Homepage Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categories Settings -->
+            <div class="settings-tab" id="settings-categories">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">Product Categories</h2>
+                  <button class="btn btn-primary btn-sm" onclick="addNewCategory()">
+                    <i class="fas fa-plus"></i>
+                    Add Category
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div id="categoriesSettingsAlert"></div>
+                  <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Manage your product categories. These are used to organize products in your store.</span>
+                  </div>
+                  
+                  <div style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;">Main Categories</h3>
+                    <div style="display: grid; gap: 0.5rem;">
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-laptop"></i> Laptops</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-desktop"></i> Desktops</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-tv"></i> Monitors</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-print"></i> Printers</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 1rem;">Gaming Peripherals</h3>
+                    <div style="display: grid; gap: 0.5rem;">
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-keyboard"></i> Keyboard</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-mouse"></i> Mouse</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                      <div style="background: var(--panel2); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                        <span><i class="fas fa-headphones"></i> Headset</span>
+                        <div>
+                          <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                          <button class="btn-icon" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tags Settings -->
+            <div class="settings-tab" id="settings-tags">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">Product Tags (Homepage Sections)</h2>
+                </div>
+                <div class="modal-body">
+                  <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>All homepage section tags are configured and ready to use!</span>
+                  </div>
+                  
+                  <div style="margin-top: 1.5rem;">
+                    <h3 style="margin-bottom: 1rem;">Available Tags</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                      <span class="badge" style="background: var(--primary); color: white; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-fire"></i> top-selling
+                      </span>
+                      <span class="badge" style="background: var(--info); color: white; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-laptop"></i> shop-laptops
+                      </span>
+                      <span class="badge" style="background: var(--success); color: white; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-desktop"></i> best-monitors
+                      </span>
+                      <span class="badge" style="background: var(--warning); color: white; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-gamepad"></i> gaming-products
+                      </span>
+                      <span class="badge" style="background: var(--accent); color: #0e0f14; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-server"></i> prebuilt-pc
+                      </span>
+                      <span class="badge" style="background: var(--danger); color: white; padding: 0.6rem 1rem; font-size: 0.95rem;">
+                        <i class="fas fa-print"></i> top-printers
+                      </span>
+                    </div>
+
+                    <div style="margin-top: 2rem; background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <h4 style="margin-bottom: 1rem;"><i class="fas fa-lightbulb" style="color: var(--accent);"></i> How to Use Tags</h4>
+                      <ol style="color: var(--muted); line-height: 2;">
+                        <li>When adding/editing a product, select one or more tags from the dropdown</li>
+                        <li>Products will automatically appear in homepage sections based on selected tags</li>
+                        <li>You can assign multiple tags to show a product in multiple sections</li>
+                        <li>Example: Tag a laptop with both "shop-laptops" and "top-selling" to show it in both sections</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Shipping Settings -->
+            <div class="settings-tab" id="settings-shipping">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">Shipping Settings</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="shippingSettingsAlert"></div>
+                  <form id="shippingSettingsForm">
+                    <div class="form-group">
+                      <label class="form-label">Flat Rate Shipping (LKR)</label>
+                      <input type="number" class="form-input" value="500" id="flatRateShipping">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Free Shipping Threshold (LKR)</label>
+                      <input type="number" class="form-input" value="50000" id="freeShippingThreshold">
+                      <small style="color: var(--muted);">Orders above this amount get free shipping</small>
+                    </div>
+                    <div class="form-group">
+                      <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" checked>
+                        <span>Enable Free Shipping</span>
+                      </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="saveShippingSettings(); return false;">
+                      <i class="fas fa-save"></i>
+                      Save Shipping Settings
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Settings -->
+            <div class="settings-tab" id="settings-payment">
+              <div class="table-card">
+                <div class="table-header">
+                  <h2 class="table-title">Payment Methods</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="paymentSettingsAlert"></div>
+                  <div style="display: grid; gap: 1rem;">
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                          <h3><i class="fas fa-money-bill-wave"></i> Cash on Delivery</h3>
+                          <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">Accept cash payment on delivery</p>
+                        </div>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enabled</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                          <h3><i class="fas fa-credit-card"></i> Credit/Debit Card</h3>
+                          <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">Accept card payments online</p>
+                        </div>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enabled</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div style="background: var(--panel2); padding: 1.5rem; border-radius: 10px;">
+                      <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                          <h3><i class="fas fa-university"></i> Bank Transfer</h3>
+                          <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">Direct bank transfer payments</p>
+                        </div>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                          <input type="checkbox" checked>
+                          <span>Enabled</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-primary" style="margin-top: 1.5rem;" onclick="savePaymentSettings()">
+                    <i class="fas fa-save"></i>
+                    Save Payment Settings
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section -->
+      <div class="dashboard-section" id="products">
+        <div class="content-header">
+          <div>
+            <h1>Products Management</h1>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-primary" onclick="openAddProductSection()">
+              <i class="fas fa-plus"></i>
+              Add Product
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h2 class="table-title">All Products</h2>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Tags</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTable">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--muted);">
+                  Loading products...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Add Product Section -->
+      <div class="dashboard-section" id="add-product">
+        <div class="content-header">
+          <div>
+            <h1 id="addProductTitle">Add New Product</h1>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-secondary" onclick="cancelAddProduct()">
+              <i class="fas fa-times"></i>
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="modal-body">
+            <div id="addProductAlert"></div>
+            <form id="addProductForm">
+              <input type="hidden" id="editProductId">
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Product Name *</label>
+                  <input type="text" class="form-input" id="addProductName" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">SKU *</label>
+                  <input type="text" class="form-input" id="addProductSku" required placeholder="AUTO-001">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Price (LKR) *</label>
+                  <input type="number" class="form-input" id="addProductPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Stock Quantity *</label>
+                  <input type="number" class="form-input" id="addProductStock" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select class="form-select" id="addProductCategory" required>
+                  <option value="">Select Category</option>
+                  <optgroup label="Main Categories">
+                    <option value="Laptops">Laptops</option>
+                    <option value="Desktops">Desktops</option>
+                    <option value="Monitors">Monitors</option>
+                    <option value="Printers">Printers</option>
+                  </optgroup>
+                  <optgroup label="Gaming Peripherals">
+                    <option value="Mouse">Mouse</option>
+                    <option value="Keyboard">Keyboard</option>
+                    <option value="Headset">Headset</option>
+                    <option value="Mousepad">Mousepad</option>
+                    <option value="Accessory">Accessory</option>
+                  </optgroup>
+                  <optgroup label="PC Components">
+                    <option value="Pre-Built PC">Pre-Built PC</option>
+                    <option value="Graphics Card">Graphics Card</option>
+                    <option value="Motherboard">Motherboard</option>
+                    <option value="CPU">CPU</option>
+                    <option value="RAM">RAM</option>
+                    <option value="Storage">Storage (SSD/HDD)</option>
+                    <option value="Power Supply">Power Supply</option>
+                    <option value="Case">Case</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="UPS">UPS</option>
+                    <option value="General">General</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Homepage Section Tags (Select Multiple)</label>
+                <select class="form-select" id="addProductTags" multiple size="6">
+                  <option value="top-selling">🔥 Top Selling</option>
+                  <option value="shop-laptops">💻 Shop Laptops</option>
+                  <option value="best-monitors">🖥️ Best Monitors</option>
+                  <option value="gaming-products">🎮 Gaming Products</option>
+                  <option value="prebuilt-pc">🖲️ Pre-Built PC</option>
+                  <option value="top-printers">🖨️ Top Printers & All-in-One</option>
+                </select>
+                <small style="color: var(--muted); font-size: 0.85rem;">
+                  Hold Ctrl (Windows) or Cmd (Mac) to select multiple tags. Selected tags determine which homepage sections show this product.
+                </small>
+                <div class="tag-chips" id="selectedTagsDisplay"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="addProductDescription" rows="4"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Primary Image URL *</label>
+                <input type="url" class="form-input" id="addProductImage" required placeholder="https://example.com/image.jpg">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Additional Images (up to 4 more)</label>
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-secondary" onclick="addImageUrl()">
+                    <i class="fas fa-link"></i>
+                    Add Image URL
+                  </button>
+                  <button type="button" class="btn btn-secondary" onclick="uploadImageFile()">
+                    <i class="fas fa-upload"></i>
+                    Upload Image File
+                  </button>
+                  <input type="file" id="imageFileInput" accept="image/*" multiple style="display: none;" onchange="handleFileUpload(event)">
+                </div>
+                <div class="image-gallery" id="addImageGallery">
+                  <div class="add-image-btn" onclick="showImageUploadOptions()">
+                    <i class="fas fa-plus" style="font-size: 2rem; color: var(--muted);"></i>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted);">Add Image</div>
+                  </div>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted);">
+                  <i class="fas fa-info-circle"></i>
+                  You can add images by URL or upload files directly. Supported formats: JPG, PNG, GIF, WebP
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" class="btn btn-secondary" onclick="cancelAddProduct()">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  <span id="saveProductBtnText">Save Product</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Section -->
+      <div class="dashboard-section" id="orders">
+        <div class="content-header">
+          <div>
+            <h1>Orders Management</h1>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">
+              Home / Orders Management
+              <span style="margin-left: 1rem; color: var(--info); cursor: help;" title="Click on Order ID or 'View' button to see full order details">
+                <i class="fas fa-info-circle"></i>
+                Click Order ID or 'View' button for details
+              </span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-secondary" onclick="exportOrders()">
+              <i class="fas fa-download"></i>
+              Export CSV
+            </button>
+            <button class="btn btn-primary" onclick="refreshOrders()">
+              <i class="fas fa-sync-alt"></i>
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <!-- Orders Filters -->
+        <div class="table-card" style="margin-bottom: 1rem;">
+          <div class="modal-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 200px; gap: 1rem; align-items: end;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Search Orders</label>
+                <input type="text" class="form-input" id="orderSearchInput" placeholder="Search by order ID, customer name...">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Filter by Status</label>
+                <select class="form-select" id="orderStatusFilter">
+                  <option value="">All Statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Date Range</label>
+                <select class="form-select" id="orderDateFilter">
+                  <option value="">All Time</option>
+                  <option value="today">Today</option>
+                  <option value="week">This Week</option>
+                  <option value="month">This Month</option>
+                  <option value="quarter">This Quarter</option>
+                </select>
+              </div>
+              <div>
+                <button class="btn btn-secondary" onclick="clearOrderFilters()">
+                  <i class="fas fa-times"></i>
+                  Clear
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h2 class="table-title">All Orders</h2>
+            <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.9rem; color: var(--muted);">
+              <span>Total: <strong id="totalOrdersCount">0</strong></span>
+              <span>|</span>
+              <span>Showing: <strong id="filteredOrdersCount">0</strong></span>
+            </div>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th style="cursor: pointer;" onclick="sortOrders('id')">
+                    Order # <i class="fas fa-sort" id="sort-id"></i>
+                  </th>
+                  <th style="cursor: pointer;" onclick="sortOrders('customerName')">
+                    Customer <i class="fas fa-sort" id="sort-customerName"></i>
+                  </th>
+                  <th style="cursor: pointer;" onclick="sortOrders('date')">
+                    Date <i class="fas fa-sort" id="sort-date"></i>
+                  </th>
+                  <th style="cursor: pointer;" onclick="sortOrders('total')">
+                    Total <i class="fas fa-sort" id="sort-total"></i>
+                  </th>
+                  <th>Payment Status</th>
+                  <th style="cursor: pointer;" onclick="sortOrders('status')">
+                    Order Status <i class="fas fa-sort" id="sort-status"></i>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTable">
+                <tr>
+                  <td colspan="7" style="text-align: center; padding: 2rem; color: var(--muted);">
+                    <div class="loading-spinner" id="ordersLoading">
+                      <i class="fas fa-spinner fa-spin"></i>
+                      Loading orders...
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Details Section -->
+      <div class="dashboard-section" id="order-details">
+        <div class="content-header">
+          <div>
+            <h1>Order Details</h1>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem;">
+              Home / Orders / <span style="color: var(--primary);" id="orderDetailBreadcrumb">Order Details</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-secondary" onclick="backToOrders()">
+              <i class="fas fa-arrow-left"></i>
+              Back to Orders
+            </button>
+            <button class="btn btn-primary" onclick="printCurrentOrder()">
+              <i class="fas fa-print"></i>
+              Print Order
+            </button>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="modal-body">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+              <div>
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">Order Information</h3>
+                <div style="display: grid; gap: 0.5rem;">
+                  <div><strong>Order Number:</strong> <span id="orderDetailNumber"></span></div>
+                  <div><strong>Customer:</strong> <span id="orderDetailCustomer"></span></div>
+                  <div><strong>Date:</strong> <span id="orderDetailDate"></span></div>
+                  <div><strong>Status:</strong> <span id="orderStatusBadge"></span></div>
+                </div>
+              </div>
+              
+              <div>
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">Update Status</h3>
+                <div class="form-group">
+                  <select class="form-select" id="updateOrderStatus">
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary" onclick="updateOrderStatus()">
+                  <i class="fas fa-save"></i>
+                  Update Status
+                </button>
+              </div>
+            </div>
+
+            <h3 style="color: var(--accent); margin-bottom: 1rem;">Order Items</h3>
+            <div id="orderItemsList"></div>
+
+            <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 2rem;">
+              <div style="text-align: right;">
+                <h3>Total: <span id="orderDetailTotal" style="color: var(--accent);"></span></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Supabase Connection -->
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/supabase-init.js"></script>
+
+  <script>
+    // Print safety override - prevent accidental printing
+    const originalPrint = window.print;
+    window.print = function() {
+      console.log('⚠️ window.print() blocked for safety - use Print Invoice button instead');
+      return false;
+    };
+
+    // Restore print function for legitimate use with confirmation
+    function safePrint() {
+      if (confirm('Print this document?')) {
+        return originalPrint.call(window);
+      }
+      return false;
+    }
+
+    // Data storage
+    let products = [];
+    let orders = [];
+    let additionalImages = [];
+    let currentUser = { email: 'admin@oneclick.com', name: 'Admin' };
+
+    // Initialize dashboard
+    async function initDashboard() {
+      console.log('📊 Initializing dashboard...');
+
+      // Show dashboard container first
+      const authLoader = document.getElementById('authLoader');
+      const dashboardContainer = document.getElementById('dashboardContainer');
+
+      console.log('🔍 Dashboard elements:', { authLoader: !!authLoader, dashboardContainer: !!dashboardContainer });
+
+      if (authLoader) {
+        authLoader.style.display = 'none';
+        console.log('✅ Auth loader hidden');
+      }
+      if (dashboardContainer) {
+        dashboardContainer.style.display = 'flex';
+        console.log('✅ Dashboard container shown');
+      }
+
+      // Set user info
+      const userName = currentUser.name || currentUser.email.split('@')[0];
+      const userNameElement = document.getElementById('userName');
+      const userAvatarElement = document.getElementById('userAvatar');
+
+      if (userNameElement) {
+        userNameElement.textContent = userName;
+        console.log('✅ User name set:', userName);
+      }
+      if (userAvatarElement) {
+        userAvatarElement.textContent = userName[0].toUpperCase();
+        console.log('✅ User avatar set');
+      }
+
+      // Initialize Supabase connection with timeout
+      try {
+        // Check if Supabase functions are available
+        if (typeof window.ensureSupabase === 'function') {
+          // Add timeout to prevent hanging
+          await Promise.race([
+            window.ensureSupabase(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Supabase timeout')), 3000))
+          ]);
+          console.log('✅ Supabase connected in admin dashboard');
+          await loadRealData(); // Load from Supabase
+        } else {
+          console.log('⚠️ Supabase not available, using mock data');
+          loadMockData(); // Fallback to mock data
+        }
+      } catch (error) {
+        console.error('⚠️ Supabase connection error:', error);
+        loadMockData(); // Fallback to mock data
+      }
+
+      updateStats();
+      setupNavigation();
+      setupEventListeners();
+      
+      console.log('✅ Dashboard initialized successfully');
+    }
+
+    // Load real data from Supabase
+    async function loadRealData() {
+      try {
+        const supabase = window.supabaseClient;
+
+        if (!supabase) {
+          console.warn('Supabase client not available');
+          throw new Error('No Supabase client');
+        }
+
+        console.log('📊 Loading products from Supabase...');
+
+        // Load products
+        const { data: productsData, error: productsError } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (productsError) {
+          console.error('Error loading products:', productsError);
+          throw productsError;
+        }
+
+        products = productsData || [];
+        console.log(`✅ Loaded ${products.length} products from Supabase`);
+        
+        // Render products immediately
+        loadProductsTable();
+        loadOrdersTable();
+
+        // Load orders
+        const { data: ordersData, error: ordersError } = await supabase
+          .from('orders')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(50);
+
+        if (ordersError) {
+          console.error('Error loading orders:', ordersError);
+          orders = [];
+        } else {
+          orders = ordersData || [];
+          console.log(`✅ Loaded ${orders.length} orders from Supabase`);
+        }
+
+      } catch (error) {
+        console.error('Error loading real data:', error);
+        throw error; // Re-throw to trigger fallback
+      }
+    }
+
+    // Load mock data (fallback)
+    function loadMockData() {
+      console.log('⚠️ Using mock data (Supabase unavailable)');
+      // Sample products with tags
+      products = [
+        {
+          id: 1,
+          name: 'Dell XPS 15 Laptop',
+          sku: 'DELL-XPS-001',
+          price: 250000,
+          stock: 15,
+          category: 'Laptops',
+          tags: ['shop-laptops', 'top-selling'],
+          description: 'High-performance laptop with Intel i7 processor',
+          image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400',
+          images: [
+            'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400',
+            'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400'
+          ]
+        },
+        {
+          id: 2,
+          name: 'LG 27" 4K Monitor',
+          sku: 'LG-MON-002',
+          price: 65000,
+          stock: 25,
+          category: 'Monitors',
+          tags: ['best-monitors', 'top-selling'],
+          description: '27-inch 4K UHD monitor with HDR support',
+          image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400',
+          images: [
+            'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400',
+            'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400'
+          ]
+        },
+        {
+          id: 3,
+          name: 'Razer Gaming Keyboard RGB',
+          sku: 'RZR-KB-003',
+          price: 18500,
+          stock: 40,
+          category: 'Keyboard',
+          tags: ['gaming-products'],
+          description: 'Mechanical gaming keyboard with RGB lighting',
+          image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400',
+          images: [
+            'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400',
+            'https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=400'
+          ]
+        },
+        {
+          id: 4,
+          name: 'Gaming PC RTX 4070',
+          sku: 'PC-4070-004',
+          price: 320000,
+          stock: 8,
+          category: 'Pre-Built PC',
+          tags: ['prebuilt-pc', 'gaming-products', 'top-selling'],
+          description: 'High-end gaming PC with RTX 4070',
+          image: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=400',
+          images: [
+            'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=400',
+            'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400'
+          ]
+        },
+        {
+          id: 5,
+          name: 'HP LaserJet Pro Printer',
+          sku: 'HP-PRT-005',
+          price: 45000,
+          stock: 12,
+          category: 'Printers',
+          tags: ['top-printers'],
+          description: 'Professional laser printer for office use',
+          image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400',
+          images: [
+            'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400'
+          ]
+        }
+      ];
+
+      // Sample orders
+      orders = [
+        {
+          id: 'ORD-001',
+          customerName: 'John Silva',
+          customerEmail: 'john@example.com',
+          customerPhone: '+94 77 123 4567',
+          customerAddress: '123 Main St, Colombo 03',
+          date: '2024-01-15',
+          total: 250000,
+          status: 'delivered',
+          paymentStatus: 'paid',
+          items: [
+            { productId: 1, name: 'Dell XPS 15 Laptop', quantity: 1, price: 250000 }
+          ]
+        },
+        {
+          id: 'ORD-002',
+          customerName: 'Sarah Perera',
+          customerEmail: 'sarah@example.com',
+          customerPhone: '+94 71 987 6543',
+          customerAddress: '456 Galle Road, Colombo 04',
+          date: '2024-01-16',
+          total: 83500,
+          status: 'processing',
+          paymentStatus: 'paid',
+          items: [
+            { productId: 2, name: 'LG 27" 4K Monitor', quantity: 1, price: 65000 },
+            { productId: 3, name: 'Razer Gaming Keyboard RGB', quantity: 1, price: 18500 }
+          ]
+        },
+        {
+          id: 'ORD-003',
+          customerName: 'Mike Fernando',
+          customerEmail: 'mike@example.com',
+          customerPhone: '+94 76 555 8888',
+          customerAddress: '789 Kandy Road, Kandy',
+          date: '2024-01-17',
+          total: 320000,
+          status: 'pending',
+          paymentStatus: 'pending',
+          items: [
+            { productId: 4, name: 'Gaming PC RTX 4070', quantity: 1, price: 320000 }
+          ]
+        }
+      ];
+
+      updateStats();
+      loadProductsTable();
+      loadOrdersTable();
+    }
+
+    // Update stats
+    function updateStats() {
+      document.getElementById('totalProducts').textContent = products.length;
+      document.getElementById('totalOrders').textContent = orders.length;
+    }
+
+    // Load products table
+    function loadProductsTable() {
+      const tbody = document.getElementById('productsTable');
+      const recentTbody = document.getElementById('recentProductsTable');
+      
+      if (products.length === 0) {
+        const emptyRow = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--muted);">No products found</td></tr>';
+        if (tbody) tbody.innerHTML = emptyRow;
+        if (recentTbody) recentTbody.innerHTML = emptyRow;
+        return;
+      }
+
+      const renderProduct = (p) => `
+        <tr>
+          <td>
+            <img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.src='https://via.placeholder.com/50'">
+          </td>
+          <td>
+            <div style="font-weight: 600;">${p.name}</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">${p.sku}</div>
+          </td>
+          <td>${p.category}</td>
+          <td>
+            ${(p.tags || []).map(tag => `<span class="badge info" style="margin-right: 0.25rem;">${tag}</span>`).join('')}
+          </td>
+          <td>Rs. ${p.price.toLocaleString()}</td>
+          <td>${p.stock}</td>
+          <td>
+            <button class="btn-icon" onclick="editProduct('${p.id}')" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon" onclick="deleteProduct('${p.id}')" title="Delete" style="color: var(--danger);">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+
+      if (tbody) tbody.innerHTML = products.map(renderProduct).join('');
+      if (recentTbody) recentTbody.innerHTML = products.slice(0, 5).map(renderProduct).join('');
+    }
+
+    // Load orders table with filtering and sorting
+    function loadOrdersTable() {
+      const tbody = document.getElementById('ordersTable');
+      
+      if (!tbody) return;
+      
+      // Apply filters
+      let filteredOrders = [...orders];
+      
+      // Search filter
+      const searchTerm = document.getElementById('orderSearchInput')?.value.toLowerCase() || '';
+      if (searchTerm) {
+        filteredOrders = filteredOrders.filter(order => 
+          order.id.toLowerCase().includes(searchTerm) ||
+          order.customerName.toLowerCase().includes(searchTerm) ||
+          order.customerEmail.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Status filter
+      const statusFilter = document.getElementById('orderStatusFilter')?.value || '';
+      if (statusFilter) {
+        filteredOrders = filteredOrders.filter(order => order.status === statusFilter);
+      }
+      
+      // Date filter
+      const dateFilter = document.getElementById('orderDateFilter')?.value || '';
+      if (dateFilter) {
+        const now = new Date();
+        const orderDate = new Date();
+        
+        filteredOrders = filteredOrders.filter(order => {
+          const orderDate = new Date(order.date);
+          
+          switch(dateFilter) {
+            case 'today':
+              return orderDate.toDateString() === now.toDateString();
+            case 'week':
+              const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+              return orderDate >= weekAgo;
+            case 'month':
+              return orderDate.getMonth() === now.getMonth() && orderDate.getFullYear() === now.getFullYear();
+            case 'quarter':
+              const quarter = Math.floor(now.getMonth() / 3);
+              const orderQuarter = Math.floor(orderDate.getMonth() / 3);
+              return quarter === orderQuarter && orderDate.getFullYear() === now.getFullYear();
+            default:
+              return true;
+          }
+        });
+      }
+      
+      // Update counts
+      const totalCount = document.getElementById('totalOrdersCount');
+      const filteredCount = document.getElementById('filteredOrdersCount');
+      if (totalCount) totalCount.textContent = orders.length;
+      if (filteredCount) filteredCount.textContent = filteredOrders.length;
+      
+      if (filteredOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: var(--muted);">No orders found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filteredOrders.map(o => `
+        <tr style="transition: all 0.2s;" onmouseover="this.style.background='var(--panel2)'" onmouseout="this.style.background=''">
+          <td>
+            <div style="font-weight: 600; color: var(--primary); cursor: pointer;" onclick="viewOrderDetails('${o.id}')" title="Click to view order details">${o.id}</div>
+            <div style="font-size: 0.8rem; color: var(--muted);">${o.items.length} item${o.items.length !== 1 ? 's' : ''}</div>
+          </td>
+          <td>
+            <div style="font-weight: 600;">${o.customerName}</div>
+            <div style="font-size: 0.85rem; color: var(--muted);">${o.customerEmail}</div>
+            <div style="font-size: 0.8rem; color: var(--muted);"><i class="fas fa-phone"></i> ${o.customerPhone}</div>
+          </td>
+          <td>
+            <div>${new Date(o.date).toLocaleDateString()}</div>
+            <div style="font-size: 0.8rem; color: var(--muted);">${new Date(o.date).toLocaleTimeString()}</div>
+          </td>
+          <td>
+            <div style="font-weight: 700; font-size: 1.1rem;">Rs. ${o.total.toLocaleString()}</div>
+          </td>
+          <td>
+            <span class="badge ${o.paymentStatus === 'paid' ? 'success' : o.paymentStatus === 'failed' ? 'danger' : 'warning'}">
+              <i class="fas fa-${o.paymentStatus === 'paid' ? 'check-circle' : o.paymentStatus === 'failed' ? 'times-circle' : 'clock'}"></i>
+              ${o.paymentStatus}
+            </span>
+          </td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="badge ${o.status === 'delivered' ? 'success' : o.status === 'cancelled' ? 'danger' : o.status === 'shipped' ? 'info' : 'warning'}">
+                <i class="fas fa-${getStatusIcon(o.status)}"></i>
+                ${o.status}
+              </span>
+              <select class="form-select" style="width: auto; padding: 0.25rem 0.5rem; font-size: 0.8rem;" onchange="quickUpdateStatus('${o.id}', this.value)">
+                <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
+                <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.25rem;">
+              <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${o.id}')" title="View Order Details" style="padding: 0.35rem 0.75rem;">
+                <i class="fas fa-eye"></i>
+                <span style="margin-left: 0.25rem;">View</span>
+              </button>
+              <button class="btn-icon" onclick="printOrder('${o.id}')" title="Print Invoice">
+                <i class="fas fa-print"></i>
+              </button>
+              <button class="btn-icon" onclick="emailCustomer('${o.id}')" title="Email Customer">
+                <i class="fas fa-envelope"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Get status icon for orders
+    function getStatusIcon(status) {
+      const icons = {
+        'pending': 'clock',
+        'processing': 'cog',
+        'shipped': 'truck',
+        'delivered': 'check-circle',
+        'cancelled': 'times-circle'
+      };
+      return icons[status] || 'question-circle';
+    }
+
+    // Setup navigation
+    function setupNavigation() {
+      const navItems = document.querySelectorAll('.nav-item[data-section]');
+      const sections = document.querySelectorAll('.dashboard-section');
+
+      navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetSection = item.getAttribute('data-section');
+          switchSection(targetSection);
+        });
+      });
+    }
+
+    // Switch section
+    function switchSection(sectionId) {
+      const navItems = document.querySelectorAll('.nav-item[data-section]');
+      const sections = document.querySelectorAll('.dashboard-section');
+
+      navItems.forEach(nav => {
+        nav.classList.toggle('active', nav.getAttribute('data-section') === sectionId);
+      });
+
+      sections.forEach(section => {
+        section.classList.toggle('active', section.id === sectionId);
+      });
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Logout
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          window.location.href = 'login.html';
+        }
+      });
+
+      // Add product form
+      const form = document.getElementById('addProductForm');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveProductForm();
+      });
+
+      // Tag selector
+      const tagSelect = document.getElementById('addProductTags');
+      tagSelect.addEventListener('change', updateSelectedTags);
+
+      // Auto-generate SKU
+      document.getElementById('addProductName').addEventListener('input', autoGenerateSKU);
+    }
+
+    // Auto-generate SKU
+    function autoGenerateSKU() {
+      const name = document.getElementById('addProductName').value;
+      const category = document.getElementById('addProductCategory').value;
+      
+      if (name && category) {
+        const prefix = category.substring(0, 3).toUpperCase();
+        const namePart = name.substring(0, 3).toUpperCase().replace(/[^A-Z]/g, '');
+        const random = Math.floor(100 + Math.random() * 900);
+        document.getElementById('addProductSku').value = `${prefix}-${namePart}-${random}`;
+      }
+    }
+
+    // Update selected tags display
+    function updateSelectedTags() {
+      const select = document.getElementById('addProductTags');
+      const display = document.getElementById('selectedTagsDisplay');
+      const selected = Array.from(select.selectedOptions).map(opt => opt.value);
+      
+      display.innerHTML = selected.map(tag => `
+        <span class="tag-chip">
+          ${tag}
+          <button type="button" onclick="removeTag('${tag}')">
+            <i class="fas fa-times"></i>
+          </button>
+        </span>
+      `).join('');
+    }
+
+    // Remove tag
+    function removeTag(tag) {
+      const select = document.getElementById('addProductTags');
+      Array.from(select.options).forEach(opt => {
+        if (opt.value === tag) opt.selected = false;
+      });
+      updateSelectedTags();
+    }
+
+    // Enhanced image management functions
+    function showImageUploadOptions() {
+      const modal = document.createElement('div');
+      modal.className = 'modal active';
+      modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+          <div class="modal-header">
+            <h3 class="modal-title">Add Product Image</h3>
+            <button class="btn-icon" onclick="closeImageModal()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div style="display: grid; gap: 1rem;">
+              <button class="btn btn-primary" onclick="addImageUrl(); closeImageModal();" style="padding: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-link"></i>
+                <div>
+                  <div style="font-weight: 600;">Add Image URL</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8;">Enter a web URL for the image</div>
+                </div>
+              </button>
+              <button class="btn btn-secondary" onclick="uploadImageFile(); closeImageModal();" style="padding: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-upload"></i>
+                <div>
+                  <div style="font-weight: 600;">Upload Image File</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8;">Select files from your computer</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      window.currentImageModal = modal;
+    }
+    
+    function closeImageModal() {
+      if (window.currentImageModal) {
+        document.body.removeChild(window.currentImageModal);
+        window.currentImageModal = null;
+      }
+    }
+
+    // Add image URL (enhanced)
+    function addImageUrl() {
+      if (additionalImages.length >= 4) {
+        showAlert('Maximum 4 additional images allowed', 'error');
+        return;
+      }
+
+      const url = prompt('Enter image URL:', 'https://');
+      if (url && url.trim()) {
+        // Validate URL format
+        if (!isValidImageUrl(url.trim())) {
+          showAlert('Please enter a valid image URL (JPG, PNG, GIF, WebP)', 'error');
+          return;
+        }
+        
+        // Check if URL already exists
+        if (additionalImages.includes(url.trim())) {
+          showAlert('This image URL is already added', 'error');
+          return;
+        }
+        
+        additionalImages.push(url.trim());
+        renderImageGallery();
+        showAlert('Image URL added successfully!', 'success');
+      }
+    }
+    
+    // Upload image file
+    function uploadImageFile() {
+      if (additionalImages.length >= 4) {
+        showAlert('Maximum 4 additional images allowed', 'error');
+        return;
+      }
+      
+      const fileInput = document.getElementById('imageFileInput');
+      fileInput.click();
+    }
+    
+    // Handle file upload
+    function handleFileUpload(event) {
+      const files = Array.from(event.target.files);
+      
+      if (files.length === 0) return;
+      
+      const remainingSlots = 4 - additionalImages.length;
+      const filesToProcess = files.slice(0, remainingSlots);
+      
+      if (files.length > remainingSlots) {
+        showAlert(`Only ${remainingSlots} more images can be added. ${files.length - remainingSlots} files ignored.`, 'warning');
+      }
+      
+      filesToProcess.forEach((file) => {
+        // Validate file type
+        if (!isValidImageFile(file)) {
+          showAlert(`${file.name} is not a valid image file`, 'error');
+          return;
+        }
+        
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showAlert(`${file.name} is too large. Maximum size is 5MB`, 'error');
+          return;
+        }
+        
+        // Convert file to data URL for preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          additionalImages.push(e.target.result);
+          renderImageGallery();
+          showAlert(`${file.name} uploaded successfully!`, 'success');
+        };
+        reader.onerror = function() {
+          showAlert(`Error reading ${file.name}`, 'error');
+        };
+        reader.readAsDataURL(file);
+      });
+      
+      // Clear input
+      event.target.value = '';
+    }
+    
+    // Validate image URL
+    function isValidImageUrl(url) {
+      try {
+        new URL(url);
+        return /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(url);
+      } catch {
+        return false;
+      }
+    }
+    
+    // Validate image file
+    function isValidImageFile(file) {
+      const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      return validTypes.includes(file.type);
+    }
+
+    // Remove image
+    function removeImage(index) {
+      additionalImages.splice(index, 1);
+      renderImageGallery();
+    }
+
+    // Render image gallery (enhanced)
+    function renderImageGallery() {
+      const gallery = document.getElementById('addImageGallery');
+      
+      const imageItems = additionalImages.map((url, index) => {
+        const isDataUrl = url.startsWith('data:');
+        const imageType = isDataUrl ? 'Uploaded File' : 'URL';
+        
+        return `
+          <div class="image-item" style="position: relative;">
+            <img src="${url}" alt="Product image ${index + 1}" onerror="this.src='https://via.placeholder.com/120?text=Error'">
+            <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: white; padding: 0.25rem; font-size: 0.7rem; text-align: center; opacity: 0; transition: opacity 0.2s;" class="image-info">
+              ${imageType}
+            </div>
+            <button class="remove-btn" type="button" onclick="removeImage(${index})" title="Remove image">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      const addButton = additionalImages.length < 4 ? `
+        <div class="add-image-btn" onclick="showImageUploadOptions()" title="Add image">
+          <i class="fas fa-plus" style="font-size: 2rem; color: var(--muted);"></i>
+          <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--muted);">Add Image</div>
+          <div style="font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem;">${4 - additionalImages.length} remaining</div>
+        </div>
+      ` : '';
+
+      gallery.innerHTML = imageItems + addButton;
+      
+      // Add hover effects for image info
+      document.querySelectorAll('.image-item').forEach(item => {
+        const info = item.querySelector('.image-info');
+        if (info) {
+          item.addEventListener('mouseenter', () => info.style.opacity = '1');
+          item.addEventListener('mouseleave', () => info.style.opacity = '0');
+        }
+      });
+    }
+
+    // Open add product section
+    function openAddProductSection() {
+      document.getElementById('addProductTitle').textContent = 'Add New Product';
+      document.getElementById('saveProductBtnText').textContent = 'Save Product';
+      document.getElementById('addProductForm').reset();
+      document.getElementById('editProductId').value = '';
+      additionalImages = [];
+      renderImageGallery();
+      updateSelectedTags();
+      switchSection('add-product');
+    }
+
+    // Cancel add product
+    function cancelAddProduct() {
+      switchSection('products');
+    }
+
+    // Save product form
+    async function saveProductForm() {
+      const id = document.getElementById('editProductId').value;
+      const tagSelect = document.getElementById('addProductTags');
+      const selectedTags = Array.from(tagSelect.selectedOptions).map(opt => opt.value);
+
+      const productData = {
+        name: document.getElementById('addProductName').value,
+        sku: document.getElementById('addProductSku').value,
+        price: parseFloat(document.getElementById('addProductPrice').value),
+        stock: parseInt(document.getElementById('addProductStock').value),
+        category: document.getElementById('addProductCategory').value,
+        tags: selectedTags,
+        description: document.getElementById('addProductDescription').value,
+        image: document.getElementById('addProductImage').value
+      };
+
+      try {
+        if (window.supabaseClient) {
+          if (id) {
+            // Update existing product in database
+            const { data, error } = await window.supabaseClient
+              .from('products')
+              .update(productData)
+              .eq('id', id)
+              .select();
+
+            if (error) {
+              console.error('Error updating product:', error);
+              showAlert('Failed to update product: ' + error.message, 'error');
+              return;
+            }
+
+            console.log('✅ Product updated in database:', data);
+
+            // Update local array
+            const index = products.findIndex(p => p.id === id);
+            if (index !== -1) {
+              products[index] = { ...productData, id, images: [productData.image, ...additionalImages] };
+            }
+            showAlert('Product updated successfully!', 'success');
+
+          } else {
+            // Insert new product into database
+            const { data, error } = await window.supabaseClient
+              .from('products')
+              .insert([productData])
+              .select();
+
+            if (error) {
+              console.error('Error creating product:', error);
+              showAlert('Failed to create product: ' + error.message, 'error');
+              return;
+            }
+
+            console.log('✅ Product created in database:', data);
+
+            // Add to local array
+            if (data && data[0]) {
+              products.push({ ...data[0], images: [data[0].image, ...additionalImages] });
+            }
+            showAlert('Product created successfully!', 'success');
+          }
+        } else {
+          // Fallback to local-only (if Supabase unavailable)
+          const fullProductData = {
+            ...productData,
+            id: id || Date.now(),
+            images: [productData.image, ...additionalImages]
+          };
+
+          if (id) {
+            const index = products.findIndex(p => p.id === parseInt(id));
+            if (index !== -1) {
+              products[index] = fullProductData;
+            }
+          } else {
+            products.push(fullProductData);
+          }
+          showAlert('Product saved locally (Supabase unavailable)', 'warning');
+        }
+
+        loadProductsTable();
+        updateStats();
+        
+        setTimeout(() => {
+          switchSection('products');
+        }, 1500);
+
+      } catch (error) {
+        console.error('Error in saveProductForm:', error);
+        showAlert('Failed to save product: ' + error.message, 'error');
+      }
+    }
+
+    // Edit product
+    async function editProduct(id) {
+      try {
+        let product;
+
+        // Try to load fresh data from Supabase
+        if (window.supabaseClient) {
+          const { data, error } = await window.supabaseClient
+            .from('products')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+          if (error) {
+            console.error('Error loading product from database:', error);
+            // Fallback to local array
+            product = products.find(p => p.id === id);
+          } else {
+            product = data;
+            console.log('✅ Loaded fresh product data from database:', product);
+          }
+        } else {
+          // Use local array if Supabase unavailable
+          product = products.find(p => p.id === id);
+        }
+
+        if (!product) {
+          showAlert('Product not found', 'error');
+          return;
+        }
+
+        document.getElementById('addProductTitle').textContent = 'Edit Product';
+        document.getElementById('saveProductBtnText').textContent = 'Update Product';
+        document.getElementById('editProductId').value = product.id;
+        document.getElementById('addProductName').value = product.name;
+        document.getElementById('addProductSku').value = product.sku;
+        document.getElementById('addProductPrice').value = product.price;
+        document.getElementById('addProductStock').value = product.stock;
+        document.getElementById('addProductCategory').value = product.category;
+        document.getElementById('addProductDescription').value = product.description || '';
+        document.getElementById('addProductImage').value = product.image;
+
+        // Set tags
+        const tagSelect = document.getElementById('addProductTags');
+        Array.from(tagSelect.options).forEach(opt => {
+          opt.selected = (product.tags || []).includes(opt.value);
+        });
+        updateSelectedTags();
+
+        // Set additional images
+        additionalImages = (product.images || []).slice(1);
+        renderImageGallery();
+
+        switchSection('add-product');
+
+      } catch (error) {
+        console.error('Error in editProduct:', error);
+        showAlert('Failed to load product: ' + error.message, 'error');
+      }
+    }
+
+    // Delete product
+    async function deleteProduct(id) {
+      if (!confirm('Are you sure you want to delete this product?')) {
+        return;
+      }
+
+      try {
+        // Delete from Supabase database
+        if (window.supabaseClient) {
+          const { error } = await window.supabaseClient
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+          if (error) {
+            console.error('Error deleting product from database:', error);
+            showAlert('Failed to delete product from database: ' + error.message, 'error');
+            return;
+          }
+          console.log('✅ Product deleted from database:', id);
+        }
+
+        // Update local array
+        products = products.filter(p => p.id !== id);
+        loadProductsTable();
+        updateStats();
+        showAlert('Product deleted successfully!', 'success');
+
+      } catch (error) {
+        console.error('Error in deleteProduct:', error);
+        showAlert('Failed to delete product: ' + error.message, 'error');
+      }
+    }
+
+    // View order details (enhanced)
+    function viewOrderDetails(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) {
+        showAlert('Order not found!', 'error');
+        return;
+      }
+
+      // Update breadcrumb
+      const breadcrumb = document.getElementById('orderDetailBreadcrumb');
+      if (breadcrumb) {
+        breadcrumb.textContent = orderId;
+      }
+
+      document.getElementById('orderDetailNumber').textContent = order.id;
+      document.getElementById('orderCustomerName').textContent = order.customerName;
+      document.getElementById('orderCustomerEmail').textContent = order.customerEmail;
+      document.getElementById('orderCustomerPhone').textContent = order.customerPhone;
+      document.getElementById('orderCustomerAddress').textContent = order.customerAddress;
+
+      const itemsHtml = order.items.map(item => `
+        <div class="order-item" style="border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem;">
+          <div style="flex: 1;">
+            <div style="font-weight: 600; color: var(--primary);">${item.name}</div>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem;">Quantity: <strong>${item.quantity}</strong> | Unit Price: <strong>Rs. ${item.price.toLocaleString()}</strong></div>
+          </div>
+          <div style="font-weight: 600; font-size: 1.1rem; color: var(--success);">Rs. ${(item.price * item.quantity).toLocaleString()}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('orderItemsList').innerHTML = itemsHtml;
+
+      const subtotal = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const shipping = 500;
+
+      document.getElementById('orderSubtotal').textContent = `LKR ${subtotal.toLocaleString()}`;
+      document.getElementById('orderShipping').textContent = `LKR ${shipping.toLocaleString()}`;
+      document.getElementById('orderTotal').textContent = `LKR ${order.total.toLocaleString()}`;
+
+      document.getElementById('orderStatusBadge').innerHTML = `
+        <span class="badge ${order.status === 'delivered' ? 'success' : order.status === 'cancelled' ? 'danger' : 'warning'}">
+          <i class="fas fa-${getStatusIcon(order.status)}"></i>
+          ${order.status}
+        </span>
+      `;
+
+      document.getElementById('orderPaymentBadge').innerHTML = `
+        <span class="badge ${order.paymentStatus === 'paid' ? 'success' : 'warning'}">
+          <i class="fas fa-${order.paymentStatus === 'paid' ? 'credit-card' : 'clock'}"></i>
+          ${order.paymentStatus}
+        </span>
+      `;
+
+      document.getElementById('updateOrderStatus').value = order.status;
+
+      switchSection('order-details');
+      showAlert(`Viewing details for order ${orderId}`, 'info');
+    }
+    
+    // Print current order
+    // ============================================
+    // PRINT FUNCTIONS (ORDERS & INVOICES)
+    // ============================================
+    function printCurrentOrder() {
+      // Add confirmation to prevent accidental printing
+      if (!confirm('Do you want to print this order invoice?')) {
+        return;
+      }
+      
+      const orderId = document.getElementById('orderDetailNumber').textContent;
+      if (orderId && orderId !== '-') {
+        printOrder(orderId);
+      } else {
+        showAlert('No order selected to print', 'error');
+      }
+    }
+
+    // Back to orders
+    function backToOrders() {
+      switchSection('orders');
+    }
+
+    // Update order status
+    function updateOrderStatus() {
+      const orderId = document.getElementById('orderDetailNumber').textContent;
+      const newStatus = document.getElementById('updateOrderStatus').value;
+      
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = newStatus;
+        loadOrdersTable();
+        showAlert('Order status updated successfully!', 'success');
+        
+        document.getElementById('orderStatusBadge').innerHTML = `
+          <span class="badge ${newStatus === 'delivered' ? 'success' : newStatus === 'cancelled' ? 'danger' : 'warning'}">
+            ${newStatus}
+          </span>
+        `;
+      }
+    }
+
+    // Show alert in specific container
+    function showAlert(message, type, containerId = 'addProductAlert') {
+      const alertDiv = document.getElementById(containerId);
+      if (alertDiv) {
+        alertDiv.innerHTML = `
+          <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            ${message}
+          </div>
+        `;
+        
+        setTimeout(() => {
+          alertDiv.innerHTML = '';
+        }, 3000);
+      }
+    }
+
+    // Settings-specific alert function
+    function showSettingsAlert(message, type, section) {
+      showAlert(message, type, `${section}SettingsAlert`);
+    }
+
+    // Setup settings navigation
+    function setupSettingsNavigation() {
+      // Wait for DOM to be fully loaded
+      const settingsNavItems = document.querySelectorAll('[data-settings-tab]');
+      const settingsTabs = document.querySelectorAll('.settings-tab');
+
+      console.log('Settings navigation setup:', {
+        navItems: settingsNavItems.length,
+        tabs: settingsTabs.length
+      });
+
+      settingsNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetTab = item.getAttribute('data-settings-tab');
+          console.log('Settings tab clicked:', targetTab);
+          switchSettingsTab(targetTab);
+        });
+      });
+      
+      // Initialize first tab as active
+      if (settingsNavItems.length > 0) {
+        switchSettingsTab('general');
+      }
+    }
+
+    // Switch settings tab
+    function switchSettingsTab(tabId) {
+      console.log('Switching to settings tab:', tabId);
+      
+      const settingsNavItems = document.querySelectorAll('[data-settings-tab]');
+      const settingsTabs = document.querySelectorAll('.settings-tab');
+
+      settingsNavItems.forEach(nav => {
+        nav.classList.remove('active');
+        if (nav.getAttribute('data-settings-tab') === tabId) {
+          nav.classList.add('active');
+        }
+      });
+
+      settingsTabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.id === `settings-${tabId}`) {
+          tab.classList.add('active');
+          console.log('Activated tab:', tab.id);
+        }
+      });
+    }
+
+    // Settings functions
+    function saveGeneralSettings() {
+      console.log('Saving general settings...');
+      
+      try {
+        // Get form data
+        const formData = {
+          storeName: document.getElementById('storeName')?.value || '',
+          storeEmail: document.getElementById('storeEmail')?.value || '',
+          storePhone: document.getElementById('storePhone')?.value || '',
+          storeAddress: document.getElementById('storeAddress')?.value || ''
+        };
+        
+        // Validate required fields
+        if (!formData.storeName.trim()) {
+          showSettingsAlert('Store name is required', 'error', 'general');
+          return false;
+        }
+        
+        // Simulate saving
+        console.log('Saving general settings:', formData);
+        showSettingsAlert('General settings saved successfully!', 'success', 'general');
+        
+        // Store in localStorage for persistence
+        localStorage.setItem('generalSettings', JSON.stringify(formData));
+        
+      } catch (error) {
+        console.error('Error saving general settings:', error);
+        showSettingsAlert('Error saving settings. Please try again.', 'error', 'general');
+      }
+      
+      return false;
+    }
+
+    function saveHomepageSettings() {
+      console.log('Saving homepage settings...');
+      
+      try {
+        const checkboxes = document.querySelectorAll('#settings-homepage input[type="checkbox"]');
+        const settings = {};
+        
+        checkboxes.forEach(checkbox => {
+          const section = checkbox.closest('div[style*="panel2"]')?.querySelector('h3')?.textContent.trim();
+          if (section) {
+            settings[section] = checkbox.checked;
+          }
+        });
+        
+        console.log('Homepage settings:', settings);
+        localStorage.setItem('homepageSettings', JSON.stringify(settings));
+        showSettingsAlert('Homepage settings saved successfully!', 'success', 'homepage');
+        
+      } catch (error) {
+        console.error('Error saving homepage settings:', error);
+        showSettingsAlert('Error saving homepage settings. Please try again.', 'error', 'homepage');
+      }
+    }
+
+    function addNewCategory() {
+      const name = prompt('Enter new category name:');
+      if (name && name.trim()) {
+        console.log('Adding category:', name);
+        showSettingsAlert(`Category "${name}" added successfully!`, 'success', 'categories');
+        
+        // In a real app, this would add to the categories list
+        // For now, just show success message
+      }
+    }
+
+    function saveShippingSettings() {
+      console.log('Saving shipping settings...');
+      
+      try {
+        // Get shipping form data
+        const shippingData = {
+          flatRate: document.getElementById('flatRateShipping')?.value || '500',
+          freeShippingThreshold: document.getElementById('freeShippingThreshold')?.value || '50000',
+          freeShipping: document.querySelector('#settings-shipping input[type="checkbox"]')?.checked || false
+        };
+        
+        console.log('Saving shipping settings:', shippingData);
+        localStorage.setItem('shippingSettings', JSON.stringify(shippingData));
+        showSettingsAlert('Shipping settings saved successfully!', 'success', 'shipping');
+        
+      } catch (error) {
+        console.error('Error saving shipping settings:', error);
+        showSettingsAlert('Error saving shipping settings. Please try again.', 'error', 'shipping');
+      }
+      
+      return false;
+    }
+
+    function savePaymentSettings() {
+      console.log('Saving payment settings...');
+      
+      try {
+        const checkboxes = document.querySelectorAll('#settings-payment input[type="checkbox"]');
+        const settings = {};
+        
+        checkboxes.forEach(checkbox => {
+          const method = checkbox.closest('div[style*="panel2"]')?.querySelector('h3')?.textContent.trim();
+          if (method) {
+            settings[method] = checkbox.checked;
+          }
+        });
+        
+        console.log('Payment settings:', settings);
+        localStorage.setItem('paymentSettings', JSON.stringify(settings));
+        showSettingsAlert('Payment settings saved successfully!', 'success', 'payment');
+        
+      } catch (error) {
+        console.error('Error saving payment settings:', error);
+        showSettingsAlert('Error saving payment settings. Please try again.', 'error', 'payment');
+      }
+    }
+
+    // Setup order filters
+    function setupOrderFilters() {
+      // Search filter
+      const searchInput = document.getElementById('orderSearchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', debounce(() => {
+          loadOrdersTable();
+        }, 300));
+      }
+
+      // Status filter
+      const statusFilter = document.getElementById('orderStatusFilter');
+      if (statusFilter) {
+        statusFilter.addEventListener('change', () => {
+          loadOrdersTable();
+        });
+      }
+
+      // Date filter
+      const dateFilter = document.getElementById('orderDateFilter');
+      if (dateFilter) {
+        dateFilter.addEventListener('change', () => {
+          loadOrdersTable();
+        });
+      }
+    }
+
+    // Debounce helper
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // Clear order filters
+    function clearOrderFilters() {
+      const searchInput = document.getElementById('orderSearchInput');
+      const statusFilter = document.getElementById('orderStatusFilter');
+      const dateFilter = document.getElementById('orderDateFilter');
+
+      if (searchInput) searchInput.value = '';
+      if (statusFilter) statusFilter.value = '';
+      if (dateFilter) dateFilter.value = '';
+
+      loadOrdersTable();
+      showAlert('Filters cleared', 'success');
+    }
+
+    // Refresh orders
+    function refreshOrders() {
+      console.log('Refreshing orders...');
+      loadOrdersTable();
+      showAlert('Orders refreshed successfully!', 'success');
+    }
+
+    // Sort orders
+    let sortState = { column: null, direction: 'asc' };
+
+    function sortOrders(column) {
+      console.log('Sorting by:', column);
+
+      // Toggle direction if same column
+      if (sortState.column === column) {
+        sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortState.column = column;
+        sortState.direction = 'asc';
+      }
+
+      // Update sort icons
+      document.querySelectorAll('th i[id^="sort-"]').forEach(icon => {
+        icon.className = 'fas fa-sort';
+      });
+
+      const sortIcon = document.getElementById(`sort-${column}`);
+      if (sortIcon) {
+        sortIcon.className = sortState.direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+      }
+
+      // Sort orders array
+      orders.sort((a, b) => {
+        let aVal, bVal;
+
+        switch(column) {
+          case 'id':
+            aVal = a.id;
+            bVal = b.id;
+            break;
+          case 'customerName':
+            aVal = a.customerName.toLowerCase();
+            bVal = b.customerName.toLowerCase();
+            break;
+          case 'date':
+            aVal = new Date(a.date);
+            bVal = new Date(b.date);
+            break;
+          case 'total':
+            aVal = a.total;
+            bVal = b.total;
+            break;
+          case 'status':
+            aVal = a.status;
+            bVal = b.status;
+            break;
+          default:
+            return 0;
+        }
+
+        if (aVal < bVal) return sortState.direction === 'asc' ? -1 : 1;
+        if (aVal > bVal) return sortState.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      loadOrdersTable();
+    }
+
+    // Quick update status from orders table
+    function quickUpdateStatus(orderId, newStatus) {
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = newStatus;
+        console.log(`Order ${orderId} status updated to: ${newStatus}`);
+        showAlert(`Order ${orderId} status updated to ${newStatus}`, 'success');
+      }
+    }
+
+    // Export orders to CSV
+    function exportOrders() {
+      console.log('Exporting orders to CSV...');
+
+      try {
+        // CSV header
+        let csv = 'Order ID,Customer Name,Customer Email,Customer Phone,Date,Total (LKR),Status,Payment Status\n';
+
+        // CSV rows
+        orders.forEach(order => {
+          csv += `${order.id},"${order.customerName}","${order.customerEmail}","${order.customerPhone}",${order.date},${order.total},${order.status},${order.paymentStatus}\n`;
+        });
+
+        // Create download
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', `orders_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showAlert('Orders exported successfully!', 'success');
+
+      } catch (error) {
+        console.error('Export error:', error);
+        showAlert('Failed to export orders', 'error');
+      }
+    }
+
+    // Print order
+    function printOrder(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) {
+        showAlert('Order not found!', 'error');
+        return;
+      }
+
+      console.log('Printing order:', orderId);
+
+      // Create print window
+      const printWindow = window.open('', '_blank');
+
+      const itemsHtml = order.items.map(item => `
+        <tr>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd;">${item.name}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;">${item.quantity}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">Rs. ${item.price.toLocaleString()}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right; font-weight: bold;">Rs. ${(item.price * item.quantity).toLocaleString()}</td>
+        </tr>
+      `).join('');
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Order ${order.id} - Invoice</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .info { margin-bottom: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th { background: #333; color: white; padding: 10px; text-align: left; }
+            .totals { margin-top: 20px; text-align: right; }
+            .totals div { padding: 5px 0; }
+            .grand-total { font-size: 18px; font-weight: bold; border-top: 2px solid #333; padding-top: 10px; margin-top: 10px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>One Click Computers</h1>
+            <p>Invoice / Order Receipt</p>
+          </div>
+
+          <div class="info">
+            <h2>Order #${order.id}</h2>
+            <p><strong>Date:</strong> ${new Date(order.date).toLocaleDateString()}</p>
+            <p><strong>Status:</strong> ${order.status.toUpperCase()}</p>
+            <p><strong>Payment:</strong> ${order.paymentStatus.toUpperCase()}</p>
+          </div>
+
+          <div class="info">
+            <h3>Customer Information</h3>
+            <p><strong>Name:</strong> ${order.customerName}</p>
+            <p><strong>Email:</strong> ${order.customerEmail}</p>
+            <p><strong>Phone:</strong> ${order.customerPhone}</p>
+            <p><strong>Address:</strong> ${order.customerAddress}</p>
+          </div>
+
+          <h3>Order Items</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th style="text-align: center;">Quantity</th>
+                <th style="text-align: right;">Unit Price</th>
+                <th style="text-align: right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsHtml}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div>Subtotal: Rs. ${(order.total - 500).toLocaleString()}</div>
+            <div>Shipping: Rs. 500</div>
+            <div class="grand-total">Total: Rs. ${order.total.toLocaleString()}</div>
+          </div>
+
+          <div style="margin-top: 50px; text-align: center; color: #666; font-size: 12px;">
+            <p>Thank you for your business!</p>
+            <p>One Click Computers | info@oneclick.lk | +94 11 234 5678</p>
+          </div>
+
+          <sc` + `ript>
+            // Manual print only - auto-print disabled for safety
+            console.log('Invoice ready for printing - use browser print if needed');
+          </sc` + `ript>
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+    }
+
+    // Email customer
+    function emailCustomer(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) {
+        showAlert('Order not found!', 'error');
+        return;
+      }
+
+      console.log('Emailing customer:', order.customerEmail);
+
+      // Create mailto link
+      const subject = encodeURIComponent(`Order ${order.id} Update - One Click Computers`);
+      const body = encodeURIComponent(`Dear ${order.customerName},\n\nYour order ${order.id} has been updated.\n\nOrder Status: ${order.status}\nPayment Status: ${order.paymentStatus}\nTotal Amount: Rs. ${order.total.toLocaleString()}\n\nThank you for shopping with One Click Computers!\n\nBest regards,\nOne Click Computers Team`);
+
+      const mailtoLink = `mailto:${order.customerEmail}?subject=${subject}&body=${body}`;
+
+      // Open email client
+      window.location.href = mailtoLink;
+
+      showAlert(`Opening email client for ${order.customerEmail}`, 'info');
+    }
+
+
+    // ============================================
+    // AUTHENTICATION CHECK
+    // ============================================
+    async function checkAdminAuth() {
+      try {
+        console.log('🔐 Checking admin authentication...');
+
+        // Check localStorage for admin login
+        const adminLoggedIn = localStorage.getItem('admin_logged_in');
+        const adminEmail = localStorage.getItem('admin_email');
+        const adminData = localStorage.getItem('admin_data');
+        const accessToken = localStorage.getItem('admin_access_token');
+
+        console.log('Auth check:', { adminLoggedIn, adminEmail, adminData, hasToken: !!accessToken });
+
+        if (adminLoggedIn === 'true' && adminEmail) {
+          // Set Supabase auth session if we have access token
+          if (accessToken && window.supabaseClient) {
+            try {
+              await window.supabaseClient.auth.setSession({
+                access_token: accessToken,
+                refresh_token: localStorage.getItem('admin_refresh_token') || ''
+              });
+              console.log('✅ Supabase session configured with admin token');
+            } catch (err) {
+              console.warn('⚠️ Failed to set Supabase session:', err);
+            }
+          }
+
+          // Parse admin data if available
+          try {
+            const parsedData = JSON.parse(adminData || '{}');
+            currentUser.email = parsedData.email || adminEmail;
+            currentUser.name = parsedData.name || adminEmail.split('@')[0];
+            console.log('✅ Admin authenticated:', currentUser);
+            return true;
+          } catch (e) {
+            currentUser.email = adminEmail;
+            currentUser.name = adminEmail.split('@')[0];
+            console.log('✅ Admin authenticated (fallback):', currentUser);
+            return true;
+          }
+        }
+
+        // Not authenticated - redirect to login
+        console.log('❌ Not authenticated, redirecting to login...');
+        window.location.href = 'login.html';
+        return false;
+
+      } catch (error) {
+        console.error('❌ Auth check error:', error);
+        window.location.href = 'login.html';
+        return false;
+      }
+    }
+
+    // ============================================
+    // INITIALIZE ON PAGE LOAD
+    // ============================================
+    window.addEventListener('DOMContentLoaded', async () => {
+      console.log('📊 Admin Dashboard - Starting initialization...');
+
+      // Prevent accidental printing via keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // Block Ctrl+P (print shortcut)
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+          e.preventDefault();
+          console.log('⚠️ Print shortcut blocked - use Print Invoice button instead');
+          return false;
+        }
+        
+        // Block F12 conflicts that might trigger print
+        if (e.key === 'F12' && e.shiftKey) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      // Check authentication first
+      const isAuth = await checkAdminAuth();
+
+      if (isAuth) {
+        console.log('✅ Authentication passed, loading dashboard...');
+        // Initialize dashboard immediately
+        await initDashboard();
+      } else {
+        console.log('❌ Authentication failed, stopping dashboard load');
+      }
+    });
+  </script>
+</body>
+</html>

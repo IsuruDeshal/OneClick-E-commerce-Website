@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitors - Gaming, 4K & Professional Displays | One Click Computers Matara</title>    <meta name="description" content="Browse our collection of gaming monitors, 4K displays, ultrawide, and professional monitors. Top brands available in Matara, Sri Lanka.">  <link rel="stylesheet" href="assets/css/styles.css?v=18.1" />
+  <link rel="stylesheet" href="assets/css/critical-grid.css?v=2" />
+  <link rel="stylesheet" href="assets/css/product-modal.css" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <meta name="theme-color" content="#151821" />
+  <meta name="robots" content="index,follow" />
+</head>
+<body class="theme-dark" data-category="Monitors">
+
+<!-- STANDARD HEADER FROM graphics-card.html -->
+<header class="site-header">
+  <div class="container header-top">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <a href="index.html" class="logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-actions">
+      <a class="icon-btn mobile-search-btn" href="#" title="Search" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
+      <a class="icon-btn" href="#" title="Account"><i class="fas fa-user"></i></a>
+      <a class="icon-btn" href="#" title="Cart"><span class="badge">0</span><i class="fas fa-shopping-cart"></i></a>
+    </div>
+  </div>
+    <!-- Mobile Search Bar (hidden by default) -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <div class="container">
+      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Desktop Navigation - Single Row Layout -->
+  <div class="container desktop-nav">
+    <a href="index.html" class="logo desktop-logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-bottom">
+      <a href="index.html" class="mega-trigger">Home</a>
+      <a href="laptops.html" class="mega-trigger">Laptops</a>
+      <a href="desktops.html" class="mega-trigger">Desktops</a>
+      <a href="monitors.html" class="mega-trigger">Monitors</a>
+      <a href="printers.html" class="mega-trigger">Printers</a>
+      <a href="about.html" class="mega-trigger">About</a>
+      <a href="contact.html" class="mega-trigger">Contact</a>
+    </div>
+    <div class="header-actions desktop-actions">      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <a class="icon-btn" href="account.html" title="Account">
+        <i class="fas fa-user"></i>
+      </a>
+      <a class="icon-btn" href="#" title="Compare">
+        <span class="badge">0</span>
+        <i class="fas fa-code-compare"></i>
+      </a>
+      <a class="icon-btn" href="wishlist.html" title="Wishlist">
+        <span class="badge">0</span>
+        <i class="fas fa-heart"></i>
+      </a>
+      <a class="icon-btn" href="cart.html" title="Cart">
+        <span class="badge">0</span>
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+      <button class="icon-btn burger" id="openDrawer" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-panel">
+    <div class="mobile-drawer-head">
+      <strong>Menu</strong>
+      <button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="mobile-menu-items">
+      <a href="index.html" class="mobile-menu-item"><i class="fas fa-home"></i> Home</a>
+      <a href="laptops.html" class="mobile-menu-item"><i class="fas fa-laptop"></i> Laptops</a>
+      <a href="desktops.html" class="mobile-menu-item"><i class="fas fa-desktop"></i> Desktop PCs</a>
+      <a href="printers.html" class="mobile-menu-item"><i class="fas fa-print"></i> Printers</a>
+      <a href="monitors.html" class="mobile-menu-item active"><i class="fas fa-tv"></i> Monitors</a>
+      <a href="services.html" class="mobile-menu-item"><i class="fas fa-tools"></i> Services</a>
+      <a href="about.html" class="mobile-menu-item"><i class="fas fa-info-circle"></i> About Us</a>
+      <a href="contact.html" class="mobile-menu-item"><i class="fas fa-envelope"></i> Contact</a>
+    </div>
+  </div>
+</aside>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <h1>Monitors</h1>
+    <p>Gaming, 4K, ultrawide, and professional displays from top brands</p>
+  </div>
+</section>
+
+<!-- CATALOG WITH LEFT SIDEBAR FILTERS -->
+<section class="container section">
+  <div class="filters-toggle"><button class="btn"><i class="fas fa-filter"></i> Filters</button></div>
+  <div class="catalog-layout">
+    <aside class="filter-sidebar" aria-label="Filters">
+      <h3>Filter Products</h3>
+      <div class="filter-group">
+        <div class="group-head"><h4>Availability</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="mn-instock" data-group="availability" value="in-stock"><label for="mn-instock">In Stock</label></li>
+          <li><input type="checkbox" id="mn-pre" data-group="availability" value="pre-order"><label for="mn-pre">Pre-Order</label></li>
+          <li><input type="checkbox" id="mn-used" data-group="availability" value="used"><label for="mn-used">Used</label></li>
+        </ul>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Brand</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="mb-asus" data-group="brand" value="asus"><label for="mb-asus">ASUS</label></li>
+          <li><input type="checkbox" id="mb-dell" data-group="brand" value="dell"><label for="mb-dell">Dell</label></li>
+          <li><input type="checkbox" id="mb-lg" data-group="brand" value="lg"><label for="mb-lg">LG</label></li>
+          <li><input type="checkbox" id="mb-samsung" data-group="brand" value="samsung"><label for="mb-samsung">Samsung</label></li>
+          <li><input type="checkbox" id="mb-acer" data-group="brand" value="acer"><label for="mb-acer">Acer</label></li>
+        </ul>
+        <div class="brand-more">
+          <ul class="checklist">
+            <li><input type="checkbox" id="mb-benq" data-group="brand" value="benq"><label for="mb-benq">BenQ</label></li>
+            <li><input type="checkbox" id="mb-viewsonic" data-group="brand" value="viewsonic"><label for="mb-viewsonic">ViewSonic</label></li>
+            <li><input type="checkbox" id="mb-aoc" data-group="brand" value="aoc"><label for="mb-aoc">AOC</label></li>
+            <li><input type="checkbox" id="mb-gigabyte" data-group="brand" value="gigabyte"><label for="mb-gigabyte">Gigabyte</label></li>
+          </ul>
+        </div>        <button class="show-more-brands">Show more brands <i class="fas fa-chevron-down"></i></button>
+        <label for="brandSelect" class="visually-hidden">Brand select</label>
+        <select id="brandSelect" data-group="brand-select" style="margin-top:.6rem;width:100%">
+          <option value="">More brands...</option>
+          <option value="benq">BenQ</option>
+          <option value="viewsonic">ViewSonic</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Type</h4></div>
+        <ul class="checklist">
+          <li><input type="checkbox" id="mt-gaming" data-group="type" value="gaming"><label for="mt-gaming">Gaming</label></li>
+          <li><input type="checkbox" id="mt-prof" data-group="type" value="professional"><label for="mt-prof">Professional</label></li>
+          <li><input type="checkbox" id="mt-uw" data-group="type" value="ultrawide"><label for="mt-uw">Ultrawide</label></li>
+          <li><input type="checkbox" id="mt-4k" data-group="type" value="4k"><label for="mt-4k">4K</label></li>
+        </ul>        <label for="typeSelect" class="visually-hidden">Type select</label>
+        <select id="typeSelect" data-group="type-select" style="margin-top:.6rem;width:100%">
+          <option value="">More types...</option>
+          <option value="hdr">HDR</option>
+          <option value="usb-c">USB-C</option>
+          <option value="curved">Curved</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <div class="group-head"><h4>Price</h4></div>
+        <div class="price-box">
+          <div class="price-values">Rs. 30,000 - Rs. 500,000</div>
+          <div class="range">
+            <label for="priceMin" class="visually-hidden">Minimum price</label>
+            <input type="range" id="priceMin" min="30000" max="500000" step="5000" value="30000">
+            <label for="priceMax" class="visually-hidden">Maximum price</label>
+            <input type="range" id="priceMax" min="30000" max="500000" step="5000" value="500000">
+          </div>
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button class="btn reset filters-reset">Reset</button>
+        <button class="btn primary filters-apply">Apply</button>
+      </div>    </aside>
+
+      <div class="catalog-content">
+        <section class="products-section">
+          <div class="section-head">
+            <h2><i class="fas fa-tv"></i> All <span class="accent">Monitors</span></h2>
+          </div>
+          <div class="product-row" data-products-grid data-category="Monitors" data-limit="24"></div>
+        </section>
+        <!-- MONITOR ACCESSORIES -->
+        <section class="section">
+          <div class="section-head">
+            <h2><i class="fas fa-tv"></i> Monitor <span class="accent">Accessories</span></h2>
+          </div>
+          <div class="supplies-grid">            <div class="supply-category-card" id="acc-arms">
+              <div class="supply-icon"><i class="fas fa-box-open"></i></div>
+              <h3>Monitor Arms & Stands</h3>
+              <p>Adjustable monitor arms, desk mounts, and ergonomic stands</p>
+              <div class="supply-brands">
+                <span class="brand-tag">Single Arm</span>
+                <span class="brand-tag">Dual Monitor</span>
+                <span class="brand-tag">Gas Spring</span>
+              </div>
+              <a class="btn btn-outline full-width" href="#acc-arms"><i class="fas fa-desktop"></i> Shop Monitor Arms</a>
+            </div>
+            
+            <div class="supply-category-card" id="acc-cables">
+              <div class="supply-icon"><i class="fas fa-box"></i></div>
+              <h3>Cables & Adapters</h3>
+              <p>HDMI, DisplayPort, USB-C, and adapter cables for all connections</p>
+              <div class="supply-brands">
+                <span class="brand-tag">HDMI 2.1</span>
+                <span class="brand-tag">DisplayPort</span>
+                <span class="brand-tag">USB-C</span>
+              </div>
+              <a class="btn btn-outline full-width" href="#acc-cables"><i class="fas fa-plug"></i> Shop Cables</a>
+            </div>
+            
+            <div class="supply-category-card" id="acc-cleaning">
+              <div class="supply-icon"><i class="fas fa-box"></i></div>
+              <h3>Cleaning & Care</h3>
+              <p>Screen cleaners, microfiber cloths, and protection accessories</p>
+              <div class="supply-brands">
+                <span class="brand-tag">Screen Cleaner</span>
+                <span class="brand-tag">Microfiber</span>
+                <span class="brand-tag">Anti-Glare</span>
+              </div>
+              <a class="btn btn-outline full-width" href="#acc-cleaning"><i class="fas fa-box"></i> Shop Accessories</a>
+            </div>
+          </div>
+        </section>        <!-- CTA SECTION -->
+        <section class="section cta-section">
+          <div class="cta-content">
+            <h2>Need Help Choosing the Perfect Monitor?</h2>
+            <p>Our display experts can help you find the right monitor for gaming, work, or creative projects.</p>
+            <div class="cta-buttons">
+              <a href="contact.html" class="btn btn-primary"><i class="fas fa-user-tie"></i> Get Expert Advice</a>
+              <a href="services.html" class="btn btn-outline"><i class="fas fa-wrench"></i> Setup Services</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="filters-overlay"></div>
+  </section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info Column -->
+      <div class="footer-company">
+        <div class="footer-logo">
+          <img src="assets/img/one-logo.png" alt="One Click Computers">
+          <div class="company-info">
+            <h3>One Click Computers</h3>
+            <p>Premium gaming PCs, workstations & components delivered worldwide</p>
+          </div>
+        </div>
+
+        <div class="footer-contact-info">
+          <h4>Get In Touch</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>46/B Kalidasa Road, Matara</strong>
+          </div>
+          <div class="contact-item">
+            <strong>+94 71 915 9933</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>9:00 AM - 9:30 PM Daily</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>oneclickmatara@gmail.com</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Categories Column -->
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="laptops.html">Laptops & Notebooks</a>
+        <a href="desktops.html">Desktop PCs</a>
+        <a href="graphics-card.html">Graphics Cards</a>
+        <a href="monitors.html">Monitors & Displays</a>
+        <a href="keyboard.html">Keyboards</a>
+        <a href="mouse.html">Gaming Mice</a>
+        <a href="printers.html">Printers</a>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="terms-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="sitemap.html">Site Map</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>&copy; <span id="yearCopy"></span> One Click Computers. All Rights Reserved. Designed with Excellence.</small>
+    </div>
+  </div>
+</footer>
+
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/sidebar-filters.js?v=3"></script>
+<script src="assets/js/product-modal-enhanced.js"></script>
+<!-- Replace Firebase with Supabase init -->
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/supabase-init.js"></script>`n  <script src="assets/js/auth-system.js"></script>
+<script src="assets/js/config-auto.js"></script>
+<script src="assets/js/product-grid-loader.js"></script>
+<script type="module" src="assets/js/product-loader.js"></script>
+<script src="assets/js/backend-products.js"></script>
+<script src="assets/js/cart.js"></script>
+<script src="assets/js/product-auto-collect.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/gating.js"></script>
+<script src="assets/js/filter-loader.js"></script>
+</body>
+</html>

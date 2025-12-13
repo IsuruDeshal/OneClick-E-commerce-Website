@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Account - One Click Computers</title>  <meta name="description" content="Create your One Click Computers account and unlock exclusive benefits"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #151821;
+      color: #f0f0f0;
+      line-height: 1.6;
+    }
+
+    /* CSS Variables for Dark Theme */
+    :root {
+      --bg: #151821;
+      --panel: #1e2129;
+      --panel2: #252831;
+      --text: #f0f0f0;
+      --muted: #a0a0a0;
+      --border: #383c47;
+      --primary: #e44d61;
+      --accent: #ff6b7a;
+      --shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Header Styles */
+    .site-header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .icon-btn {
+      position: relative;
+      color: var(--text);
+      font-size: 1.2rem;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+
+    .icon-btn:hover {
+      color: var(--primary);
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--primary);
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .mobile-menu-btn,
+    .mobile-search-btn {
+      display: none;
+    }
+
+    /* Auth Page Styles */
+    .auth-page {
+      padding: 3rem 0;
+      min-height: calc(100vh - 300px);
+    }
+
+    .auth-container {
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .auth-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #e44d61, #ff6b7a, #ffcc66, #66d9ff, #a78bfa);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .auth-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+      letter-spacing: -.5px;
+    }
+
+    .auth-header p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(228, 77, 97, 0.1);
+      background: var(--panel);
+    }
+
+    .form-input::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    .section-divider {
+      margin: 2rem 0 1.5rem;
+      padding: 1rem 0 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 1.2rem 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-title i {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .checkbox-group label {
+      color: var(--muted);
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin: 0;
+      font-weight: normal;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--panel2);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--panel);
+      border-color: var(--primary);
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .btn.primary:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider span {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .error-message,
+    .success-message {
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin-top: 1.2rem;
+      font-size: 0.95rem;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+    }
+
+    .success-message {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #22c55e;
+    }
+
+    .error-message.show,
+    .success-message.show {
+      display: flex;
+    }
+
+    .error-message i,
+    .success-message i {
+      font-size: 1.1rem;
+    }
+
+    /* Footer Styles */
+    .site-footer {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-company h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-company p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-contact-info h4 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .contact-icon {
+      color: var(--primary);
+      width: 20px;
+      text-align: center;
+    }
+
+    .link-column h4 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .link-column a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .link-column a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .auth-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .auth-page {
+        padding: 2rem 0;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .fa-spin {
+      animation: fa-spin 1s infinite linear;
+    }
+
+    @keyframes fa-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .site-logo{height:50px;width:auto;object-fit:contain;display:block}
+    a.logo{ text-decoration:none; display:flex; align-items:center; gap:10px; color:#fff; font-weight:600; font-size:18px; }
+    a.logo img{ vertical-align:middle; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-top">
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" class="site-logo" />
+      </a>
+
+      <div class="header-actions">
+        <a class="icon-btn" href="#" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="#" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<section class="auth-page">
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Create Your Account</h1>
+          <p>Join <strong>One Click Computers</strong> and unlock exclusive benefits</p>
+        </div>
+
+        <form id="regForm">
+          <!-- Personal Information -->
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="firstName">First Name <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="firstName" 
+                class="form-input" 
+                placeholder="John"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Last Name <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="lastName" 
+                class="form-input" 
+                placeholder="Doe"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="contact">Contact Number <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="tel" 
+                id="contact" 
+                class="form-input" 
+                placeholder="+94 71 234 5678"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                class="form-input" 
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="password" 
+                id="password" 
+                class="form-input" 
+                placeholder="Min. 6 characters"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="confirm">Confirm Password <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="password" 
+                id="confirm" 
+                class="form-input" 
+                placeholder="Re-enter password"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Address Section -->
+          <div class="section-divider">
+            <h3 class="section-title">
+              <i class="fas fa-map-marker-alt"></i>
+              Shipping Address
+            </h3>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="addr1">Address Line 1 <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="addr1" 
+                class="form-input" 
+                placeholder="Street address, P.O. box"
+                required
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="addr2">Address Line 2</label>
+              <input 
+                type="text" 
+                id="addr2" 
+                class="form-input" 
+                placeholder="Apartment, suite, unit (optional)"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="city">City <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="city" 
+                class="form-input" 
+                placeholder="Matara"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="postal">Postal Code <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="postal" 
+                class="form-input" 
+                placeholder="81000"
+                required
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="country">Country <span style="color: var(--primary)">*</span></label>
+              <input 
+                type="text" 
+                id="country" 
+                class="form-input" 
+                placeholder="Sri Lanka"
+                value="Sri Lanka"
+                required
+              />
+            </div>
+          </div>
+
+          <div style="margin-top: 1.2rem;">
+            <div class="checkbox-group">
+              <input type="checkbox" id="defBill" checked />
+              <label for="defBill">Set as default billing address</label>
+            </div>
+            <div class="checkbox-group">
+              <input type="checkbox" id="defShip" checked />
+              <label for="defShip">Set as default shipping address</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn primary" style="width: 100%; margin-top: 1.5rem; justify-content: center;">
+            <i class="fas fa-user-plus"></i>
+            Create Account
+          </button>
+
+          <div id="regError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span></span>
+          </div>
+          <div id="regSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i>
+            <span></span>
+          </div>
+        </form>        <div class="divider">
+          <span>or</span>
+        </div>
+
+        <a href="login.html" class="btn" style="width: 100%; justify-content: center; text-align: center;">
+          <i class="fas fa-sign-in-alt"></i>
+          Already Have an Account? Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info Column -->
+      <div class="footer-company">
+        <h3>One Click Computers</h3>
+        <p>Premium gaming PCs, workstations & components delivered worldwide</p>
+        
+        <div class="footer-contact-info">
+          <h4>Get In Touch</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <strong>46/B Kalidasa Road, Matara</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>+94 71 915 9933</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-clock"></i></div>
+            <strong>9:00 AM - 9:30 PM Daily</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+            <strong>oneclickmatara@gmail.com</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Categories Column -->
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="#">Laptops & Notebooks</a>
+        <a href="#">Desktop PCs</a>
+        <a href="#">Graphics Cards</a>
+        <a href="#">Monitors & Displays</a>
+        <a href="#">Keyboards</a>
+        <a href="#">Gaming Mice</a>
+        <a href="#">Printers</a>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Site Map</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>&copy; <span id="yearCopy"></span> One Click Computers. All Rights Reserved. Designed with Excellence.</small>
+    </div>
+  </div>
+</footer>
+
+<!-- Supabase Scripts -->
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/supabase-init.js"></script>
+
+<script>
+
+  // Set current year in footer
+  document.getElementById('yearCopy').textContent = new Date().getFullYear();
+  
+  const form = document.getElementById('regForm');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Get form elements
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const contact = document.getElementById('contact');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const confirm = document.getElementById('confirm');
+    const addr1 = document.getElementById('addr1');
+    const addr2 = document.getElementById('addr2');
+    const city = document.getElementById('city');
+    const postal = document.getElementById('postal');
+    const country = document.getElementById('country');
+    
+    const errorDiv = document.getElementById('regError');
+    const errorText = errorDiv.querySelector('span');
+    const successDiv = document.getElementById('regSuccess');
+    const successText = successDiv.querySelector('span');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    
+    // Clear previous messages
+    errorDiv.classList.remove('show');
+    successDiv.classList.remove('show');
+    errorText.textContent = '';
+    successText.textContent = '';
+    
+    // Enhanced validation with trim()
+    if (!firstName.value.trim()) {
+      showError('Please enter your first name');
+      return;
+    }
+    
+    if (!lastName.value.trim()) {
+      showError('Please enter your last name');
+      return;
+    }
+    
+    if (!contact.value.trim()) {
+      showError('Please enter your contact number');
+      return;
+    }
+    
+    // Email format validation
+    if (!email.value.trim()) {
+      showError('Please enter your email address');
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.value.trim())) {
+      showError('Please enter a valid email address');
+      return;
+    }
+    
+    // Enhanced password validation
+    if (password.value.length < 6) {
+      showError('Password must be at least 6 characters');
+      return;
+    }
+    
+    const hasUpperCase = /[A-Z]/.test(password.value);
+    const hasNumber = /[0-9]/.test(password.value);
+    
+    if (!hasUpperCase || !hasNumber) {
+      showError('Password must contain at least one uppercase letter and one number');
+      return;
+    }
+    
+    if (password.value !== confirm.value) {
+      showError('Passwords do not match');
+      return;
+    }
+    
+    // Address validation with trim()
+    if (!addr1.value.trim()) {
+      showError('Please enter your address');
+      return;
+    }
+    
+    if (!city.value.trim()) {
+      showError('Please enter your city');
+      return;
+    }
+    
+    if (!postal.value.trim()) {
+      showError('Please enter your postal code');
+      return;
+    }
+    
+    if (!country.value.trim()) {
+      showError('Please enter your country');
+      return;
+    }
+    
+    // Disable submit button
+    submitBtn.disabled = true;
+    const originalHTML = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+    
+    try {
+      // Ensure Supabase is initialized
+      const supabase = await window.ensureSupabase();
+      console.log('Creating account with Supabase...');
+
+      const fullName = firstName.value.trim() + ' ' + lastName.value.trim();
+
+      // Build address payload once
+      const addressData = [{
+        id: Date.now().toString(),
+        fullName: fullName,
+        line1: addr1.value.trim(),
+        line2: addr2.value.trim() || '',
+        city: city.value.trim(),
+        postal: postal.value.trim(),
+        country: country.value.trim(),
+        defaultBilling: document.getElementById('defBill').checked,
+        defaultShipping: document.getElementById('defShip').checked,
+        createdAt: new Date().toISOString()
+      }];
+
+      // Create Supabase user account with metadata (addresses included)
+      const { data, error } = await supabase.auth.signUp({
+        email: email.value.trim(),
+        password: password.value,
+        options: {
+          data: {
+            full_name: fullName,
+            phone: contact.value.trim(),
+            addresses: addressData
+          },
+          emailRedirectTo: window.location.origin + '/oneclick/account.html'
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      console.log('Account created successfully!', data);
+
+      // NOTE: Do NOT update users table here. The database trigger (SECURITY DEFINER)
+      // will create the user profile and store the addresses from metadata.
+      // Attempting an update without a session can hit RLS -> permission error.
+
+      // Success message depending on email confirmation setting
+      const needsEmailConfirm = !data.session; // if no session returned, email confirm likely enabled
+      successText.textContent = needsEmailConfirm
+        ? 'Account created! Please check your email to verify your address before signing in.'
+        : 'Account created successfully! Redirecting...';
+      successDiv.classList.add('show');
+      
+      if (needsEmailConfirm) {
+        // Keep on the page and re-enable button so the user can correct if needed
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHTML;
+      } else {
+        // Redirect to account page when session exists
+        setTimeout(() => {
+          window.location.href = 'account.html';
+        }, 1500);
+      }
+
+    } catch (error) {
+      console.error('Registration error:', error);
+      
+      // Supabase error handling
+      let errorMessage = 'An error occurred. Please try again.';
+      
+      if (error && error.message) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes('already registered') || msg.includes('user already registered')) {
+          errorMessage = 'An account with this email already exists. Please <a href="login.html" style="color: var(--primary); text-decoration: underline;">sign in instead</a>.';
+        } else if (msg.includes('invalid email')) {
+          errorMessage = 'Please enter a valid email address.';
+        } else if (msg.includes('password') && msg.includes('at least')) {
+          errorMessage = 'Password must be at least 6 characters.';
+        } else if (msg.includes('network')) {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        } else if (msg.includes('permission') || msg.includes('rls')) {
+          errorMessage = 'Database permission error. Please contact support.';
+        } else if (msg.includes('rate limit') || msg.includes('email rate')) {
+          errorMessage = 'Too many registration attempts. Please wait a few minutes and try again, or <a href="login.html" style="color: var(--primary); text-decoration: underline;">sign in if you already have an account</a>.';
+        } else if (msg.includes('confirmation') || msg.includes('sending')) {
+          errorMessage = 'Account created but confirmation email failed. Please contact support with email: ' + email.value + ' to verify your account.';
+          // Still show success since account was created
+          successDiv.classList.add('show');
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      showError(errorMessage);
+      
+      // Re-enable submit button
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHTML;
+    }
+  });
+  
+  function showError(message) {
+    const errorDiv = document.getElementById('regError');
+    const errorText = errorDiv.querySelector('span');
+    errorText.innerHTML = message;
+    errorDiv.classList.add('show');
+    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>

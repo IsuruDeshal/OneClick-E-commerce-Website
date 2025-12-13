@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Order Placed • Shop</title>
+  <link rel="stylesheet" href="assets/css/ui.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container">
+      <div class="brand"><div class="logo"></div> <span>NeoShop</span></div>
+      <div class="actions"><a href="index.html">Home</a><a href="orders.html">Orders</a></div>
+    </nav>
+  </header>
+  <main class="container" style="max-width:900px">
+    <div class="card">
+      <div class="card-header"><div class="card-title">Order Placed</div><div class="muted">Your order has been placed successfully</div></div>
+      <div id="summary" class="stack"></div>
+      <div class="row"><a class="btn btn-primary" href="orders.html">View Orders</a><a class="btn btn-outline" href="index.html">Continue Shopping</a></div>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container"><div class="links"><a href="privacy-policy.html">Privacy</a><a href="terms-conditions.html">Terms</a></div></div></footer>
+  <script src="assets/js/ui.js"></script>
+  <script>
+    if(!Mock.requireAuth()) throw new Error('redirecting');
+    const data = JSON.parse(localStorage.getItem('lastOrder')||'null');
+    const box = document.getElementById('summary');
+    if(!data){ box.innerHTML = '<div class="muted">No recent order found.</div>'; }
+    else {
+      const {order} = data;
+      const items = order.items.map(i=> `<div class="row"><div style=flex:1><strong>${i.name||'Item'}</strong><div class=muted>Qty ${i.qty||1} · $${(i.price||0).toFixed(2)}</div></div><div>$${((i.price||0)*(i.qty||1)).toFixed(2)}</div></div>`).join('');
+      box.innerHTML = `<div class="badge-pill">Order ID: ${order.id}</div>
+        <div class="card sm"><div class="card-header"><div><strong>Shipping Address</strong></div></div>
+        <div class="muted">${order.address.fullName}, ${order.address.line1}${order.address.line2?', '+order.address.line2:''}, ${order.address.city} ${order.address.postal}, ${order.address.country}</div></div>
+        <div class="card sm"><div class="card-header"><div><strong>Items</strong></div></div>${items}<div class="right" style="margin-top:10px"><div class="badge-pill">Total: $${(order.total||0).toFixed(2)}</div></div></div>`;
+    }
+  </script>
+</body>
+</html>

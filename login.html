@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - One Click Computers</title>
+  <meta name="description" content="Sign in to your One Click Computers account"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=19.0"/>
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png"/>
+  <meta name="theme-color" content="#151821"/>
+  <script>
+    // Prevent Firebase from loading
+    window.FIREBASE_DISABLED = true;
+  </script>
+  <style>
+    /* Login Page Specific Styles */
+    .login-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+    }
+    
+    .login-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(228, 77, 97, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    
+    .login-container {
+      max-width: 460px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .login-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #e44d61, #ff6b7a, #ffcc66, #66d9ff, #a78bfa);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .login-logo img {
+      height: 50px;
+      width: auto;
+      filter: drop-shadow(0 2px 8px rgba(228, 77, 97, 0.3));
+    }
+    
+    .login-logo span {
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #e44d61 0%, #ffcc66 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .login-header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+    }
+    
+    .login-header p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      outline: none;
+    }
+    
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(228, 77, 97, 0.1);
+    }
+    
+    .form-input::placeholder {
+      color: var(--muted);
+    }
+    
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+    
+    .checkbox-group label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin: 0;
+    }
+    
+    .forgot-link {
+      color: var(--primary);
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+    
+    .forgot-link:hover {
+      opacity: 0.8;
+    }
+    
+    .btn-login {
+      width: 100%;
+      padding: 0.95rem 1.5rem;
+      background: linear-gradient(135deg, #e44d61 0%, #d63f52 100%);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(228, 77, 97, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+    
+    .btn-login:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(228, 77, 97, 0.5);
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    
+    .divider span {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    
+    .btn-register {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      display: block;
+    }
+    
+    .btn-register:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 10px;
+      padding: 0.8rem 1rem;
+      margin-top: 1rem;
+      color: #ef4444;
+      font-size: 0.9rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    .back-home {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .back-home a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    .back-home a:hover {
+      color: var(--primary);
+    }
+    
+    @media (max-width: 640px) {
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="login-card">        <div class="login-header">
+          <a href="index.html" class="login-logo">
+            <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+            <span>One Click Computers</span>
+          </a>
+          <h1>Welcome Back</h1>
+          <p>Sign in to continue to your account</p>
+        </div>
+
+        <form id="loginForm" autocomplete="off">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-input" 
+              placeholder="you@example.com"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              class="form-input" 
+              placeholder="Enter your password"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="form-options">
+            <div class="checkbox-group">
+              <input type="checkbox" id="remember" />
+              <label for="remember">Remember me</label>
+            </div>
+            <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn-login">Sign In</button>
+
+          <div id="loginError" class="error-message"></div>
+        </form>
+
+        <div class="divider">
+          <span>or</span>
+        </div>
+
+        <a href="register.html" class="btn-register">Create New Account</a>
+
+        <div class="back-home">
+          <a href="index.html">← Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/auth-system.js"></script>
+  <script src="api/cart-unified.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script>
+    // Check if already logged in
+    if (window.OneClickAuth && window.OneClickAuth.isAuthenticated) {
+      const redirectUrl = sessionStorage.getItem('redirect_after_login') || 'index.html';
+      sessionStorage.removeItem('redirect_after_login');
+      window.location.href = redirectUrl;
+    }
+
+    // Login form handler
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('loginError');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      // Clear previous errors
+      errorDiv.classList.remove('show');
+      errorDiv.textContent = '';
+      
+      // Validate inputs
+      if (!email || !password) {
+        errorDiv.textContent = 'Please enter both email and password.';
+        errorDiv.classList.add('show');
+        return;
+      }
+
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+      try {
+        // Use global auth system
+        const result = await window.userLogin(email, password);
+
+        if (result.success) {
+          // Show success message
+          errorDiv.style.background = 'var(--success)';
+          errorDiv.textContent = 'Login successful! Redirecting...';
+          errorDiv.classList.add('show');
+
+          // Store user data
+          localStorage.setItem('oneclick_logged_in', 'true');
+          localStorage.setItem('oneclick_user', JSON.stringify(result.user));
+
+          // Redirect after short delay
+          setTimeout(() => {
+            const redirectUrl = sessionStorage.getItem('redirect_after_login') || 'index.html';
+            sessionStorage.removeItem('redirect_after_login');
+            window.location.href = redirectUrl;
+          }, 1000);
+
+        } else {
+          throw new Error(result.error || 'Login failed');
+        }
+
+      } catch (error) {
+        console.error('Login error:', error);
+        errorDiv.style.background = 'var(--danger)';
+        errorDiv.textContent = error.message || 'Invalid email or password. Please try again.';
+        errorDiv.classList.add('show');
+
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+      }
+    });
+
+  </script>
+</body>
+</html>

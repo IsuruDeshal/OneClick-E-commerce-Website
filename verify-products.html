@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Import Verification - One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    .status-card {
+      background: rgba(255,255,255,0.15);
+      border-radius: 15px;
+      padding: 1.5rem;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .status-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+    .status-card .count {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      text-align: center;
+    }
+    .status-card .label {
+      text-align: center;
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+    .category-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .category-item {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .category-item strong {
+      font-size: 1.1rem;
+    }
+    .category-item span {
+      background: rgba(255,255,255,0.3);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .test-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .test-link {
+      background: rgba(255,255,255,0.2);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+    .test-link:hover {
+      background: rgba(255,255,255,0.3);
+      border-color: rgba(255,255,255,0.5);
+      transform: translateY(-2px);
+    }
+    .test-link i {
+      font-size: 1.5rem;
+    }
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      font-size: 1.2rem;
+    }
+    .error {
+      background: rgba(239,68,68,0.3);
+      border: 2px solid rgba(239,68,68,0.5);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 2rem 0;
+    }
+    .success {
+      background: rgba(34,197,94,0.3);
+      border: 2px solid rgba(34,197,94,0.5);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 2rem 0;
+    }
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Product Import Verification</h1>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p style="margin-top: 1rem;">Connecting to Supabase...</p>
+    </div>
+
+    <div id="content" style="display: none;">
+      <div class="status-grid">
+        <div class="status-card">
+          <h3><i class="fas fa-box"></i> Total Products</h3>
+          <div class="count" id="totalCount">0</div>
+          <div class="label">Active products in database</div>
+        </div>
+
+        <div class="status-card">
+          <h3><i class="fas fa-star"></i> Featured</h3>
+          <div class="count" id="featuredCount">0</div>
+          <div class="label">Featured on homepage</div>
+        </div>
+
+        <div class="status-card">
+          <h3><i class="fas fa-layer-group"></i> Categories</h3>
+          <div class="count" id="categoryCount">0</div>
+          <div class="label">Product categories</div>
+        </div>
+      </div>
+
+      <h2 style="margin: 2rem 0 1rem;">📊 Products by Category</h2>
+      <div class="category-list" id="categoryList"></div>
+
+      <h2 style="margin: 2rem 0 1rem;">🧪 Test Your Pages</h2>
+      <div class="test-links">
+        <a href="index.html" class="test-link">
+          <i class="fas fa-home"></i>
+          <span>Homepage (Featured)</span>
+        </a>
+        <a href="shop.html" class="test-link">
+          <i class="fas fa-store"></i>
+          <span>Shop (All Products)</span>
+        </a>
+        <a href="laptops.html" class="test-link">
+          <i class="fas fa-laptop"></i>
+          <span>Laptops</span>
+        </a>
+        <a href="monitors.html" class="test-link">
+          <i class="fas fa-tv"></i>
+          <span>Monitors</span>
+        </a>
+        <a href="keyboards.html" class="test-link">
+          <i class="fas fa-keyboard"></i>
+          <span>Keyboards</span>
+        </a>
+        <a href="printers.html" class="test-link">
+          <i class="fas fa-print"></i>
+          <span>Printers</span>
+        </a>
+        <a href="admin/index.html" class="test-link">
+          <i class="fas fa-cog"></i>
+          <span>Admin Dashboard</span>
+        </a>
+      </div>
+
+      <div class="success">
+        <h3><i class="fas fa-check-circle"></i> ✅ Import Successful!</h3>
+        <p style="margin-top: 0.5rem;">Your products are now live. Click the links above to see them on your website.</p>
+      </div>
+    </div>
+
+    <div id="error" style="display: none;" class="error">
+      <h3><i class="fas fa-exclamation-triangle"></i> Connection Error</h3>
+      <p id="errorMessage" style="margin-top: 0.5rem;"></p>
+    </div>
+  </div>
+
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script>
+    (async function() {
+      const loading = document.getElementById('loading');
+      const content = document.getElementById('content');
+      const errorDiv = document.getElementById('error');
+      const errorMessage = document.getElementById('errorMessage');
+
+      try {
+        // Wait for Supabase client
+        const supabase = await window.ensureSupabase();
+
+        // Get all active products
+        const { data: products, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('status', 'active');
+
+        if (error) throw error;
+
+        // Count featured
+        const featured = products.filter(p => p.featured === true);
+
+        // Group by category
+        const categories = {};
+        products.forEach(p => {
+          const cat = p.category || 'Uncategorized';
+          categories[cat] = (categories[cat] || 0) + 1;
+        });
+
+        // Update counts
+        document.getElementById('totalCount').textContent = products.length;
+        document.getElementById('featuredCount').textContent = featured.length;
+        document.getElementById('categoryCount').textContent = Object.keys(categories).length;
+
+        // Render category list
+        const categoryList = document.getElementById('categoryList');
+        categoryList.innerHTML = Object.entries(categories)
+          .sort((a, b) => b[1] - a[1])
+          .map(([cat, count]) => `
+            <div class="category-item">
+              <strong>${cat}</strong>
+              <span>${count}</span>
+            </div>
+          `).join('');
+
+        // Show content
+        loading.style.display = 'none';
+        content.style.display = 'block';
+
+      } catch (err) {
+        console.error('Verification error:', err);
+        loading.style.display = 'none';
+        errorDiv.style.display = 'block';
+        errorMessage.textContent = err.message || 'Could not connect to Supabase. Check your configuration.';
+      }
+    })();
+  </script>
+</body>
+</html>
+

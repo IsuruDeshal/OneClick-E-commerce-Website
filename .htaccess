@@ -1,0 +1,17 @@
+# One Click Computers - Apache Rewrite Rules
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # If the request is for a file or directory that doesn't exist
+    # and we're not already in /oneclick, redirect to /oneclick
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/oneclick
+    RewriteRule ^(.*)$ /oneclick/$1 [L]
+    
+    # Inside /oneclick folder, enable clean URLs
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)$ index.html [QSA,L]
+</IfModule>

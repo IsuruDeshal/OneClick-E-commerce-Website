@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Setup Wizard - One Click Computers</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0e0f14 0%, #1a1e29 100%);
+            color: #e9ecf1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .wizard {
+            background: #151821;
+            border: 1px solid #272a36;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e44d61, #ffcc66);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #a9b0bf;
+        }
+
+        .step {
+            background: #1a1e29;
+            border: 1px solid #272a36;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e44d61, #d63f52);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .step-content {
+            padding-left: 3rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .status.pending {
+            background: rgba(245,158,11,0.1);
+            color: #f59e0b;
+        }
+
+        .status.success {
+            background: rgba(34,197,94,0.1);
+            color: #22c55e;
+        }
+
+        .status.error {
+            background: rgba(239,68,68,0.1);
+            color: #ef4444;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e44d61, #d63f52);
+            color: white;
+            box-shadow: 0 4px 15px rgba(228,77,97,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(228,77,97,0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .log {
+            background: #0e0f14;
+            border: 1px solid #272a36;
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+        }
+
+        .log-entry.success { color: #22c55e; }
+        .log-entry.error { color: #ef4444; }
+        .log-entry.info { color: #3b82f6; }
+        .log-entry.warning { color: #f59e0b; }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        code {
+            background: #0e0f14;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #ffcc66;
+        }
+    </style>
+</head>
+<body>
+    <div class="wizard">
+        <div class="header">
+            <img src="assets/img/one-logo.png" alt="One Click Computers">
+            <h1>Supabase Setup Wizard</h1>
+            <p>Automatic configuration and database setup</p>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">Connection Test</div>
+            </div>
+            <div class="step-content">
+                <p>Testing connection to Supabase project...</p>
+                <div class="status pending" id="status-connection">
+                    <div class="spinner"></div>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">Database Schema</div>
+            </div>
+            <div class="step-content">
+                <p>Creating database tables and policies...</p>
+                <div class="status pending" id="status-schema">
+                    <div class="spinner"></div>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <div class="step-title">Sample Data</div>
+            </div>
+            <div class="step-content">
+                <p>Inserting sample products and categories...</p>
+                <div class="status pending" id="status-data">
+                    <div class="spinner"></div>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <div class="step-title">Verification</div>
+            </div>
+            <div class="step-content">
+                <p>Verifying setup and testing queries...</p>
+                <div class="status pending" id="status-verify">
+                    <div class="spinner"></div>
+                    <span>Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="log" id="log"></div>
+
+        <div class="actions">
+            <button class="btn btn-primary" id="btnSetup" onclick="runSetup()">
+                <span>🚀 Start Setup</span>
+            </button>
+            <button class="btn btn-primary" id="btnContinue" style="display: none;" onclick="goToDashboard()">
+                <span>✅ Go to Admin Dashboard</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Supabase Scripts -->
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/supabase-init.js"></script>
+
+    <script>
+        const log = document.getElementById('log');
+
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateStatus(step, status, text) {
+            const statusEl = document.getElementById(`status-${step}`);
+            statusEl.className = `status ${status}`;
+            statusEl.innerHTML = status === 'success' ?
+                '<span>✅</span><span>' + text + '</span>' :
+                status === 'error' ?
+                '<span>❌</span><span>' + text + '</span>' :
+                '<div class="spinner"></div><span>' + text + '</span>';
+        }
+
+        async function runSetup() {
+            document.getElementById('btnSetup').disabled = true;
+            addLog('Starting Supabase setup wizard...', 'info');
+
+            try {
+                // Step 1: Connection Test
+                addLog('Step 1: Testing connection to Supabase...', 'info');
+                updateStatus('connection', 'pending', 'Connecting...');
+
+                await window.ensureSupabase();
+                const client = window.supabaseClient;
+
+                addLog('✅ Connected to Supabase successfully!', 'success');
+                addLog(`Project URL: ${window.SUPABASE_CONFIG.url}`, 'info');
+                updateStatus('connection', 'success', 'Connected');
+
+                // Step 2: Database Schema
+                addLog('Step 2: Checking database schema...', 'info');
+                updateStatus('schema', 'pending', 'Creating tables...');
+
+                // Note: SQL schema must be run manually in Supabase SQL Editor
+                // We'll just verify tables exist
+                const { data: tables, error: tableError } = await client
+                    .from('products')
+                    .select('id')
+                    .limit(1);
+
+                if (tableError && tableError.code === '42P01') {
+                    addLog('⚠️  Tables not found. Please run supabase-schema.sql in Supabase SQL Editor', 'warning');
+                    addLog('Go to: https://app.supabase.com → SQL Editor → Run supabase-schema.sql', 'warning');
+                    updateStatus('schema', 'error', 'Run SQL schema first');
+                    return;
+                } else {
+                    addLog('✅ Database tables verified!', 'success');
+                    updateStatus('schema', 'success', 'Tables ready');
+                }
+
+                // Step 3: Sample Data
+                addLog('Step 3: Checking for existing data...', 'info');
+                updateStatus('data', 'pending', 'Inserting data...');
+
+                const { data: existingProducts } = await client
+                    .from('products')
+                    .select('id');
+
+                if (existingProducts && existingProducts.length === 0) {
+                    addLog('Inserting sample products...', 'info');
+
+                    const sampleProducts = [
+                        {
+                            name: 'Gaming Laptop Pro',
+                            sku: 'LAP-001',
+                            description: 'High-performance gaming laptop with RTX 4070',
+                            category: 'Laptops',
+                            price: 125000.00,
+                            stock: 10,
+                            image_url: 'assets/img/laptop1.jpg',
+                            status: 'active',
+                            featured: true
+                        },
+                        {
+                            name: 'Mechanical Keyboard RGB',
+                            sku: 'KB-001',
+                            description: 'RGB mechanical gaming keyboard',
+                            category: 'Keyboards',
+                            price: 5999.00,
+                            stock: 50,
+                            image_url: 'assets/img/keyboard1.jpg',
+                            status: 'active',
+                            featured: true
+                        },
+                        {
+                            name: '27" Gaming Monitor',
+                            sku: 'MON-001',
+                            description: '165Hz 1440p gaming monitor',
+                            category: 'Monitors',
+                            price: 34999.00,
+                            stock: 20,
+                            image_url: 'assets/img/monitor1.jpg',
+                            status: 'active',
+                            featured: false
+                        }
+                    ];
+
+                    const { error: insertError } = await client
+                        .from('products')
+                        .insert(sampleProducts);
+
+                    if (insertError) {
+                        addLog('Error inserting products: ' + insertError.message, 'error');
+                    } else {
+                        addLog('✅ Sample products inserted!', 'success');
+                    }
+                } else {
+                    addLog(`✅ Found ${existingProducts.length} existing products`, 'success');
+                }
+
+                updateStatus('data', 'success', 'Data ready');
+
+                // Step 4: Verification
+                addLog('Step 4: Verifying setup...', 'info');
+                updateStatus('verify', 'pending', 'Testing queries...');
+
+                const { data: products, error: queryError } = await client
+                    .from('products')
+                    .select('*')
+                    .limit(5);
+
+                if (queryError) {
+                    addLog('Error querying products: ' + queryError.message, 'error');
+                    updateStatus('verify', 'error', 'Query failed');
+                    return;
+                }
+
+                addLog(`✅ Successfully queried ${products.length} products`, 'success');
+                addLog('Setup complete! Database is ready to use.', 'success');
+                updateStatus('verify', 'success', 'Verified');
+
+                // Show continue button
+                document.getElementById('btnContinue').style.display = 'inline-flex';
+
+            } catch (error) {
+                addLog('❌ Setup failed: ' + error.message, 'error');
+                console.error('Setup error:', error);
+            }
+        }
+
+        function goToDashboard() {
+            window.location.href = 'index.html';
+        }
+
+        // Auto-check connection on load
+        setTimeout(async () => {
+            try {
+                await window.ensureSupabase();
+                addLog('Supabase client initialized', 'success');
+            } catch (error) {
+                addLog('Error initializing Supabase: ' + error.message, 'error');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+

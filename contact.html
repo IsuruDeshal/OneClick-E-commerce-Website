@@ -1,0 +1,609 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact Us - One Click Computers Matara</title>
+  <meta name="description" content="Contact One Click Computers in Matara for gaming PCs, laptops, computer repairs, and accessories. We're here to help!">
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2">
+  <link rel="stylesheet" href="assets/css/critical-grid.css?v=2">
+  <style>
+    /* Two-Column Hero Layout */
+    .contact-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin: 3rem 0;
+    }
+    
+    @media (max-width: 968px) {
+      .contact-hero {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Map Container */
+    .map-container {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 450px;
+      position: relative;
+    }
+    
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .map-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--panel2), var(--border));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+    }
+    
+    .map-placeholder i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    
+    /* Contact Info Block */
+    .contact-info-block {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+    }
+    
+    .contact-info-block h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--text);
+    }
+    
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--panel2);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .contact-detail:hover {
+      background: var(--border);
+      transform: translateX(5px);
+    }
+    
+    .contact-detail-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), #ff6b7a);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    
+    .contact-detail-content h3 {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .contact-detail-content p {
+      font-size: 1.3rem;
+      color: var(--text);
+      margin: 0;
+      font-weight: 700;
+    }
+    
+    .contact-detail-content a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .contact-detail-content a:hover {
+      color: #ff6b7a;
+      text-decoration: underline;
+    }
+    
+    /* Visit Store CTA */
+    .visit-cta {
+      background: linear-gradient(135deg, var(--primary), #ff6b7a);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      color: white;
+      margin-top: 2rem;
+    }
+    
+    .visit-cta h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .visit-cta p {
+      margin-bottom: 0;
+      opacity: 0.95;
+    }
+    
+    /* FAQ Accordion */
+    .faq-section {
+      margin: 4rem 0;
+    }
+    
+    .faq-accordion {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-item:hover {
+      border-color: var(--primary);
+    }
+    
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1.5rem 2rem;
+      text-align: left;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-question:hover {
+      color: var(--primary);
+    }
+    
+    .faq-question::after {
+      content: '+';
+      font-size: 1.8rem;
+      color: var(--primary);
+      transition: transform 0.3s ease;
+    }
+    
+    .faq-item.active .faq-question::after {
+      transform: rotate(45deg);
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 2rem;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 300px;
+      padding: 0 2rem 1.5rem;
+    }
+    
+    .faq-answer p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+    
+    /* Streamlined Form */
+    .contact-form-section {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .form-group label {
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      background: var(--panel2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--panel);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, var(--primary), #ff6b7a);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(228, 77, 97, 0.4);
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+      <a href="index.html" class="logo"><img src="assets/img/one-logo.png" alt="One Click Computers" /></a>
+      <div class="header-actions">
+        <a class="icon-btn mobile-search-btn" href="#" title="Search" id="mobileSearchBtn"><i class="fas fa-search"></i></a>
+        <a class="icon-btn" href="#" title="Account"><i class="fas fa-user"></i></a>
+        <a class="icon-btn" href="#" title="Cart"><span class="badge">0</span><i class="fas fa-shopping-cart"></i></a>
+      </div>
+    </div>
+    <div class="mobile-search-bar" id="mobileSearchBar">
+      <div class="container"><form class="search"><input type="search" placeholder="Search for products.." aria-label="Search" /><button type="submit" aria-label="Search"><i class="fas fa-search"></i></button></form></div>
+    </div>
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo"><img src="assets/img/one-logo.png" alt="One Click Computers" /></a>
+      <div class="header-bottom">
+        <a href="index.html" class="mega-trigger">Home</a>
+        <a href="laptops.html" class="mega-trigger">Laptops</a>
+        <a href="desktops.html" class="mega-trigger">Desktops</a>
+        <a href="monitors.html" class="mega-trigger">Monitors</a>
+        <a href="printers.html" class="mega-trigger">Printers</a>
+        <a href="services.html" class="mega-trigger">Services</a>
+        <a href="about.html" class="mega-trigger">About</a>
+        <a href="contact.html" class="mega-trigger active">Contact</a>
+      </div>
+      <div class="header-actions desktop-actions">
+        <form class="search"><input type="search" placeholder="Search for products.." aria-label="Search" /><button type="submit" aria-label="Search"><i class="fas fa-search"></i></button></form>
+        <a class="icon-btn" href="#" title="Account"><i class="fas fa-user"></i></a>
+        <a class="icon-btn" href="#" title="Compare"><span class="badge">0</span>⚖</a>
+        <a class="icon-btn" href="#" title="Wishlist"><span class="badge">0</span>♥</a>
+        <a class="icon-btn" href="#" title="Cart"><span class="badge">0</span><i class="fas fa-shopping-cart"></i></a>
+        <button class="icon-btn burger" id="openDrawer" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Drawer -->
+  <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="mobile-drawer-overlay"></div>
+    <div class="mobile-drawer-panel">
+      <div class="mobile-drawer-head"><strong>Menu</strong><button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close"><i class="fas fa-times"></i></button></div>
+      <div class="mobile-menu-items">
+        <a href="index.html" class="mobile-menu-item"><i class="fas fa-home"></i> Home</a>
+        <a href="laptops.html" class="mobile-menu-item"><i class="fas fa-laptop"></i> Laptops</a>
+        <a href="desktops.html" class="mobile-menu-item"><i class="fas fa-desktop"></i> Desktops</a>
+        <a href="monitors.html" class="mobile-menu-item"><i class="fas fa-tv"></i> Monitors</a>
+        <a href="printers.html" class="mobile-menu-item"><i class="fas fa-print"></i> Printers</a>
+        <a href="services.html" class="mobile-menu-item"><i class="fas fa-tools"></i> Services</a>
+        <a href="about.html" class="mobile-menu-item"><i class="fas fa-info-circle"></i> About</a>
+        <a href="contact.html" class="mobile-menu-item active"><i class="fas fa-envelope"></i> Contact</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span aria-current="page">Contact</span></nav>
+      <h1>Get in <span class="accent">Touch</span></h1>
+      <p>We're here to help. Reach out anytime.</p>
+    </div>
+  </section>
+
+  <!-- TWO-COLUMN HERO: Map + Contact Info -->
+  <section class="container">
+    <div class="contact-hero">
+      <!-- LEFT: Google Map -->
+      <div class="map-container">
+        <!-- Replace with actual Google Maps embed -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.123456789!2d80.5487!3d5.9485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwNTYnNTQuNiJOIDgwwrAzMicxMi45IkU!5e0!3m2!1sen!2slk!4v1234567890"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <!-- Fallback if you don't have the map yet -->
+        <!-- <div class="map-placeholder">
+          <i class="fas fa-map-marked-alt"></i>
+          <p>Google Maps will appear here</p>
+          <small>46/B Kalidasa Road, Matara</small>
+        </div> -->
+      </div>
+      
+      <!-- RIGHT: Contact Information -->
+      <div class="contact-info-block">
+        <h2>Contact <span class="accent">Information</span></h2>
+        
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="contact-detail-content">
+            <h3>Our Address</h3>
+            <p>46/B Kalidasa Road, Matara</p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="contact-detail-content">
+            <h3>Phone Number</h3>
+            <p><a href="tel:+94719159933">+94 71 915 9933</a></p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="contact-detail-content">
+            <h3>Email Address</h3>
+            <p><a href="mailto:oneclickmatara@gmail.com">oneclickmatara@gmail.com</a></p>
+          </div>
+        </div>
+        
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="contact-detail-content">
+            <h3>Business Hours</h3>
+            <p>Daily: 9:00 AM – 9:30 PM</p>
+          </div>
+        </div>
+        
+        <div class="visit-cta">
+          <h3>Visit Our Store</h3>
+          <p>Try peripherals, explore demo builds, and get same-day diagnostics</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="container faq-section">
+    <div class="section-head">
+      <h2>Frequently Asked <span class="accent">Questions</span></h2>
+    </div>
+    
+    <div class="faq-accordion">
+      <div class="faq-item">
+        <button class="faq-question">
+          Do you build custom gaming PCs?
+        </button>
+        <div class="faq-answer">
+          <p>Yes! We specialize in custom gaming PC builds tailored to your budget and performance needs. From entry-level 1080p gaming to high-end 4K setups, we'll help you choose the perfect components and build your dream PC.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          Do you offer island-wide delivery?
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely. We provide secure, tracked island-wide delivery across Sri Lanka. All products are carefully packaged to ensure they arrive in perfect condition.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          What payment methods do you accept?
+        </button>
+        <div class="faq-answer">
+          <p>We accept cash payments, bank transfers, and credit/debit cards for in-store purchases. For online orders, we support bank transfers and secure payment gateways.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          Do you provide warranty on products?
+        </button>
+        <div class="faq-answer">
+          <p>Yes, all our products come with official manufacturer warranties. We're authorized distributors, so you get genuine warranties ranging from 1-5 years depending on the product.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          Can you repair laptops and desktops?
+        </button>
+        <div class="faq-answer">
+          <p>Yes, we offer professional repair services for both laptops and desktops. From diagnostics to component replacement, software troubleshooting, and performance optimization—we handle it all.</p>
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          How long does a custom build take?
+        </button>
+        <div class="faq-answer">
+          <p>Typically 2-3 days depending on parts availability. Rush builds can be completed in 24 hours for an additional fee. We'll keep you updated throughout the process.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section class="container section">
+    <div class="section-head">
+      <h2>Send us a <span class="accent">Message</span></h2>
+    </div>
+    
+    <div class="contact-form-section">
+      <form id="contactForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Your Name *</label>
+            <input type="text" id="name" name="name" required placeholder="John Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required placeholder="john@example.com">
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="How can we help you?">
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" required placeholder="Write your message here..."></textarea>
+          </div>
+        </div>
+        
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-paper-plane"></i>
+          Send Message
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-company">
+          <div class="footer-logo"><img src="assets/img/one-logo.png" alt="One Click Computers"><div class="company-info"><h3>One Click Computers</h3><p>Premium gaming PCs, workstations & components</p></div></div>
+          <div class="footer-contact-info"><h4>Get In Touch</h4>
+            <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><strong>46/B Kalidasa Road, Matara</strong></div>
+            <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><strong>+94 71 915 9933</strong></div>
+            <div class="contact-item"><div class="contact-icon"><i class="fas fa-clock"></i></div><strong>9:00 AM - 9:30 PM Daily</strong></div>
+            <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><strong>oneclickmatara@gmail.com</strong></div>
+          </div>
+        </div>
+        <div class="link-column"><h4>Shop Categories</h4>
+          <a href="laptops.html">Laptops & Notebooks</a>
+          <a href="desktops.html">Desktop PCs</a>
+          <a href="graphics-card.html">Graphics Cards</a>
+          <a href="monitors.html">Monitors & Displays</a>
+          <a href="keyboard.html">Keyboards</a>
+          <a href="mouse.html">Gaming Mice</a>
+          <a href="printers.html">Printers</a>
+        </div>
+        <div class="link-column"><h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="about.html">About Us</a>
+          <a href="services.html">Services</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="terms-conditions.html">Terms & Conditions</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="sitemap.html">Site Map</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><small>© <span id="yearCopy"></span> One Click Computers. All Rights Reserved.</small></div>
+    </div>
+  </footer>
+  
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/firebase-shim.js"></script>
+  <script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+        
+        // Close all FAQ items
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Open clicked item if it wasn't active
+        if (!isActive) {
+          faqItem.classList.add('active');
+        }
+      });
+    });
+    
+    // Contact Form Submission
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+      e.target.reset();
+    });
+    
+    // Set current year
+    document.getElementById('yearCopy').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

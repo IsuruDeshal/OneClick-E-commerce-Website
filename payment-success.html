@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - One Click Computers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 5rem auto;
+            text-align: center;
+            padding: 3rem;
+            background: #151821;
+            border-radius: 20px;
+            border: 1px solid #272a36;
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            animation: scaleIn 0.5s ease;
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        h1 {
+            color: #22c55e;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .order-details {
+            background: #1a1e29;
+            border: 1px solid #272a36;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #272a36;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            color: #a9b0bf;
+        }
+        .detail-value {
+            color: #e9ecf1;
+            font-weight: 600;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e44d61, #d63f52);
+            color: white;
+        }
+        .btn-secondary {
+            background: #272a36;
+            color: #e9ecf1;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(228,77,97,0.3);
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>Payment Successful!</h1>
+        <p style="color: #a9b0bf; margin-bottom: 2rem;">
+            Thank you for your order. Your payment has been processed successfully.
+        </p>
+
+        <div class="order-details" id="orderDetails">
+            <div class="detail-row">
+                <span class="detail-label">Order ID:</span>
+                <span class="detail-value" id="orderId">Loading...</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment ID:</span>
+                <span class="detail-value" id="paymentId">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Amount Paid:</span>
+                <span class="detail-value" id="amount">-</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Method:</span>
+                <span class="detail-value" id="method">PayHere</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value" style="color: #22c55e;">Confirmed</span>
+            </div>
+        </div>
+
+        <p style="color: #a9b0bf; margin: 2rem 0;">
+            📧 A confirmation email has been sent to your email address.<br>
+            📦 You can track your order from your account.
+        </p>
+
+        <div>
+            <a href="orders.html" class="btn btn-primary">View My Orders</a>
+            <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('order');
+        const paymentId = urlParams.get('payment_id');
+        const amount = urlParams.get('amount');
+
+        // Display order details
+        if (orderId) {
+            document.getElementById('orderId').textContent = orderId;
+        }
+        if (paymentId) {
+            document.getElementById('paymentId').textContent = paymentId;
+        }
+        if (amount) {
+            document.getElementById('amount').textContent = 'Rs ' + parseFloat(amount).toLocaleString();
+        }
+
+        // Clear cart
+        localStorage.removeItem('cart');
+
+        // Send confirmation event (for analytics)
+        if (window.gtag) {
+            gtag('event', 'purchase', {
+                transaction_id: orderId,
+                value: amount,
+                currency: 'LKR'
+            });
+        }
+    </script>
+</body>
+</html>
+

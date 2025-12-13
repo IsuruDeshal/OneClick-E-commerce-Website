@@ -1,0 +1,456 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Product Details | One Click Computers Matara</title>
+  <meta name="description" id="pageDescription" content="Shop premium computers, laptops, and accessories at One Click Computers Matara">
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2" />
+  <link rel="stylesheet" href="assets/css/critical-grid.css?v=2" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <meta name="theme-color" content="#151821" />
+  <script>
+    (function redirectToUnifiedProductView(){
+      var target = 'product-details.html' + (window.location.search || '') + (window.location.hash || '');
+      if (!window.location.pathname.endsWith('/product-details.html')) {
+        window.location.replace(target);
+      }
+    })();
+  </script>
+  <style>
+    .product-detail-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 768px) {
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .product-gallery {
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+    .main-image {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #1a1d2e;
+      margin-bottom: 1rem;
+    }
+    .thumbnail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.5rem;
+    }
+    .thumbnail {
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .thumbnail:hover,
+    .thumbnail.active {
+      border-color: #ff6b35;
+    }
+    .product-info {
+      color: #e0e0e0;
+    }
+    .product-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .product-brand {
+      color: #ff6b35;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .product-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #4ade80;
+      margin: 1rem 0;
+    }
+    .stock-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .stock-badge.in-stock {
+      background: rgba(74, 222, 128, 0.2);
+      color: #4ade80;
+    }
+    .stock-badge.out-of-stock {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .product-description {
+      line-height: 1.8;
+      color: #c0c0c0;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      border-left: 4px solid #ff6b35;
+    }
+    .product-description h2, 
+    .product-description h3 {
+      color: #fff;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .product-description h2 {
+      font-size: 1.5rem;
+    }
+    .product-description h3 {
+      font-size: 1.2rem;
+    }
+    .product-description ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .product-description li {
+      padding-left: 1.5rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    .product-description li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #4ade80;
+      font-weight: bold;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .spec-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .spec-label {
+      color: #999;
+      font-size: 0.9rem;
+    }
+    .spec-value {
+      color: #fff;
+      font-weight: 600;
+    }
+    .highlights-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+    .highlights-list li {
+      background: rgba(255, 107, 53, 0.1);
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 8px;
+      border-left: 3px solid #ff6b35;
+      color: #e0e0e0;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .btn-buy-now {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #ff6b35, #ff8c42);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-buy-now:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+    }
+    .btn-secondary {
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #ff6b35;
+    }
+    .loading-spinner {
+      text-align: center;
+      padding: 4rem;
+      color: #999;
+    }
+    .error-message {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .breadcrumb {
+      display: flex;
+      gap: 0.5rem;
+      color: #999;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    .breadcrumb a {
+      color: #ff6b35;
+      text-decoration: none;
+    }
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="theme-dark">
+
+<!-- STANDARD HEADER FOR ALL PAGES -->
+<header class="site-header">
+  <div class="container header-top">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <a href="index.html" class="logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-actions">
+      <a class="icon-btn mobile-search-btn" href="#" title="Search" id="mobileSearchBtn">🔍</a>
+      <a class="icon-btn" href="account.html" title="Account">👤</a>
+      <a class="icon-btn" href="cart.html" title="Cart"><span class="badge" id="cartBadge">0</span>🛒</a>
+    </div>
+  </div>
+  
+  <!-- Mobile Search Bar (hidden by default) -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <div class="container">
+      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Desktop Navigation - Single Row Layout -->
+  <div class="container desktop-nav">
+    <a href="index.html" class="logo desktop-logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-bottom">
+      <a href="index.html" class="mega-trigger">Home</a>
+      <a href="laptops.html" class="mega-trigger">Laptops</a>
+      <a href="desktops.html" class="mega-trigger">Desktops</a>
+      <a href="monitors.html" class="mega-trigger">Monitors</a>
+      <a href="printers.html" class="mega-trigger">Printers</a>
+      <a href="about.html" class="mega-trigger">About</a>
+      <a href="contact.html" class="mega-trigger">Contact</a>
+    </div>
+    
+    <div class="header-actions desktop-actions">
+      <form class="search">
+        <input type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">🔍</button>
+      </form>
+      <a class="icon-btn" href="account.html" title="Account">👤</a>
+      <a class="icon-btn" href="wishlist.html" title="Wishlist"><span class="badge">0</span>❤</a>
+      <a class="icon-btn" href="cart.html" title="Cart"><span class="badge" id="cartBadgeDesktop">0</span>🛒</a>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-panel">
+    <div class="mobile-drawer-head">
+      <strong>Menu</strong>
+      <button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close">✕</button>
+    </div>
+    
+    <div class="mobile-menu-items">
+      <a href="index.html" class="mobile-menu-item">🏠 Home</a>
+      <a href="laptops.html" class="mobile-menu-item">💻 Laptops</a>
+      <a href="desktops.html" class="mobile-menu-item">🖥️ Desktop PCs</a>
+      <a href="printers.html" class="mobile-menu-item">🖨️ Printers</a>
+      <a href="monitors.html" class="mobile-menu-item">📺 Monitors</a>
+      <a href="services.html" class="mobile-menu-item">🔧 Services</a>
+      <a href="about.html" class="mobile-menu-item">ℹ️ About Us</a>
+      <a href="contact.html" class="mobile-menu-item">📞 Contact</a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="product-detail-container">
+  <!-- Loading State -->
+  <div id="loadingState" class="loading-spinner">
+    <h2>Loading product details...</h2>
+    <p>Please wait...</p>
+  </div>
+
+  <!-- Error State -->
+  <div id="errorState" class="error-message" style="display: none;">
+    <h2>⚠️ Product Not Found</h2>
+    <p id="errorMessage">We couldn't find the product you're looking for.</p>
+    <a href="index.html" class="btn-secondary" style="margin-top: 1rem; display: inline-block;">← Back to Home</a>
+  </div>
+
+  <!-- Product Content -->
+  <div id="productContent" style="display: none;">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="#" id="categoryLink">Category</a>
+      <span>›</span>
+      <span id="productBreadcrumb">Product</span>
+    </div>
+
+    <div class="product-grid">
+      <!-- Left: Product Gallery -->
+      <div class="product-gallery">
+        <img id="mainImage" src="" alt="Product Image" class="main-image">
+        <div id="thumbnailGrid" class="thumbnail-grid"></div>
+      </div>
+
+      <!-- Right: Product Info -->
+      <div class="product-info">
+        <div id="productBrand" class="product-brand"></div>
+        <h1 id="productTitle" class="product-title"></h1>
+        
+        <div id="productPrice" class="product-price"></div>
+        <div id="stockBadge" class="stock-badge"></div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button id="btnBuyNow" class="btn-buy-now">🛒 Buy Now</button>
+          <button id="btnAddToCart" class="btn-secondary">Add to Cart</button>
+          <button id="btnWishlist" class="btn-secondary">❤️ Wishlist</button>
+        </div>
+
+        <!-- Highlights -->
+        <div id="highlightsSection" style="display: none;">
+          <h3 style="color: #fff; margin-top: 2rem;">Key Features</h3>
+          <ul id="highlightsList" class="highlights-list"></ul>
+        </div>
+
+        <!-- Specifications -->
+        <div id="specsSection" style="display: none;">
+          <h3 style="color: #fff; margin-top: 2rem;">Specifications</h3>
+          <div id="specsGrid" class="specs-grid"></div>
+        </div>
+
+        <!-- Description -->
+        <div id="descriptionSection" class="product-description" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <!-- Mobile-First Company Section -->
+    <div class="footer-company">
+      <div class="footer-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers">
+        <div class="company-info">
+          <h3>One Click Computers</h3>
+          <p>Premium gaming PCs, workstations & components</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Contact Section -->
+    <div class="footer-contact">
+      <h4>📍 Visit Our Store</h4>
+      <div class="contact-item">
+        <strong>46/B Kalidasa Rd, Matara</strong>
+      </div>
+      <div class="contact-row">
+        <div class="contact-item">
+          <strong>📞 +94 71 915 9933</strong>
+        </div>
+        <div class="contact-item">
+          <strong>🕐 9am - 9:30pm</strong>
+        </div>
+      </div>
+      <div class="contact-item email">
+        <strong>✉️ oneclickmatara@gmail.com</strong>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="footer-links">
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="laptops.html">💻 Laptops</a>
+        <a href="desktops.html">🖥️ Desktop PCs</a>
+        <a href="printers.html">🖨️ Printers</a>
+        <a href="monitors.html">🎮 Monitors</a>
+      </div>
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="about.html">About Us</a>
+        <a href="terms-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>© <span id="yearCopy">2025</span> One Click Computers. All rights reserved.</small>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/product-detail.js"></script>
+
+</body>
+</html>

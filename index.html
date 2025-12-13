@@ -1,0 +1,790 @@
+﻿﻿﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>One Click Computers - Home</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=18.2" />
+    <link rel="stylesheet" href="assets/css/product-modal.css" />
+</head>
+<body class="theme-dark">
+
+<!-- Header -->
+<header class="site-header">
+  <div class="container header-top">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <a href="index.html" class="logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-actions">
+      <a class="icon-btn mobile-search-btn" href="#" title="Search" id="mobileSearchBtn">
+        <i class="fas fa-search"></i>
+      </a>
+      <a class="icon-btn" href="account.html" title="Account">
+        <i class="fas fa-user"></i>
+      </a>
+      <a class="icon-btn" href="cart.html" title="Cart">
+        <span class="badge">0</span>
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Mobile Search Bar (hidden by default) -->
+  <div class="mobile-search-bar" id="mobileSearchBar">
+    <div class="container">
+      <form class="search" onsubmit="return false;">
+        <input id="searchInput" type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Desktop Navigation - Single Row Layout -->
+  <div class="container desktop-nav">
+    <a href="index.html" class="logo desktop-logo">
+      <img src="assets/img/one-logo.png" alt="One Click Computers" />
+    </a>
+    
+    <div class="header-bottom">
+      <div class="mega-trigger" data-mega="all">
+        All Category <span><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="mega-trigger" data-mega="printer">
+        Printer <span><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="mega-trigger" data-mega="components">
+        Monitors <span><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="mega-trigger" data-mega="peripherals">
+        PC Components <span><i class="fas fa-chevron-down"></i></span>
+      </div>
+      <div class="mega-trigger" data-mega="accessories">
+        PC Accessories <span><i class="fas fa-chevron-down"></i></span>
+      </div>
+    </div>
+    <div class="header-actions desktop-actions">
+      <form class="search" onsubmit="return false;">
+        <input id="searchInput" type="search" placeholder="Search for products.." aria-label="Search" />
+        <button type="submit" aria-label="Search">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <a class="icon-btn" href="account.html" title="Account">
+        <i class="fas fa-user"></i>
+      </a>
+      <a class="icon-btn" href="#" title="Compare">
+        <span class="badge">0</span>
+        <i class="fas fa-code-compare"></i>
+      </a>
+      <a class="icon-btn" href="wishlist.html" title="Wishlist">
+        <span class="badge">0</span>
+        <i class="fas fa-heart"></i>
+      </a>
+      <a class="icon-btn" href="cart.html" title="Cart">
+        <span class="badge">0</span>
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+      <button class="icon-btn burger" id="openDrawer" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mega Menu Panel - All Category -->
+  <div class="mega" id="megaPanel" data-mega-content="all" aria-hidden="true">
+    <div class="container mega-grid">
+      <div class="mega-col">
+        <div class="mega-title">Processor</div>
+        <div class="chips">
+          <a href="desktops.html#amd-processor">AMD Processor</a>
+          <a href="desktops.html#intel-processor">Intel Processor</a>
+        </div>
+
+        <div class="mega-title">Motherboard</div>
+        <div class="chips">
+          <a href="desktops.html#amd-motherboard">AMD Motherboard</a>
+          <a href="desktops.html#intel-motherboard">Intel Motherboard</a>
+        </div>
+
+        <div class="mega-title">CPU Cooler</div>
+        <div class="chips">
+          <a href="case-fans.html#aio">AIO Liquid Cooler</a>
+          <a href="case-fans.html#air">Air Cooler</a>
+        </div>
+
+        <div class="mega-title">RAM</div>
+        <div class="chips">
+          <a href="desktops.html#ddr4">DDR4 Memory</a>
+          <a href="desktops.html#ddr5">DDR5 Memory</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <a href="graphics-card.html" class="mega-link">Graphics Card</a>
+        <a href="internal-ssd.html" class="mega-link">Internal SSD</a>
+        <a href="hard-drive.html" class="mega-link">Hard Drive</a>
+        <a href="power-supply.html" class="mega-link">Power Supply</a>
+        <a href="cabinets.html" class="mega-link">Cabinets</a>
+        <a href="case-fans.html" class="mega-link">Case Fans</a>
+      </div>
+
+      <div class="mega-col">
+        <a href="monitors.html" class="mega-link">Monitor</a>
+        <a href="keyboard.html" class="mega-link">Keyboard</a>
+        <a href="mouse.html" class="mega-link">Mouse</a>
+        <a href="mousepad.html" class="mega-link">Mousepad</a>
+        <a href="headset.html" class="mega-link">Headset</a>
+        <a href="controller.html" class="mega-link">Controller</a>
+      </div>
+
+      <div class="mega-col">
+        <a href="custom-cables.html" class="mega-link">Custom Cables</a>
+        <a href="ups.html" class="mega-link">UPS</a>
+        <a href="external-ssd.html" class="mega-link">External SSD</a>
+        <a href="power-strip.html" class="mega-link">Power Strip</a>
+        <a href="usb-devices.html" class="mega-link">USB Devices</a>
+        <a href="vertical-gpu-bracket.html" class="mega-link">Vertical GPU Bracket</a>
+      </div>
+
+      <!-- Dynamic: categories from Firestore -->
+      <div class="mega-col" data-mega-dynamic>
+        <div class="mega-title">Browse Categories</div>
+        <!-- Links will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Menu Panel - Printer -->
+  <div class="mega" data-mega-content="printer" aria-hidden="true">
+    <div class="container mega-grid">
+      <div class="mega-col">
+        <div class="mega-title">Printer Type</div>
+        <div class="chips">
+          <a href="printers.html#inkjet">Inkjet Printer</a>
+          <a href="printers.html#laser">Laser Printer</a>
+          <a href="printers.html#aio">All-in-One Printer</a>
+          <a href="printers.html#thermal">Thermal Printer</a>
+          <a href="printers.html#photo">Photo Printer</a>
+        </div>
+
+        <div class="mega-title">Brand</div>
+        <div class="chips">
+          <a href="printers.html#hp">HP Printers</a>
+          <a href="printers.html#canon">Canon Printers</a>
+          <a href="printers.html#epson">Epson Printers</a>
+          <a href="printers.html#brother">Brother Printers</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Ink Cartridges</div>
+        <div class="chips">
+          <a href="printers.html#hp-ink">HP Ink</a>
+          <a href="printers.html#canon-ink">Canon Ink</a>
+          <a href="printers.html#epson-ink">Epson Ink</a>
+          <a href="printers.html#brother-ink">Brother Ink</a>
+          <a href="printers.html#black-ink">Black Ink</a>
+          <a href="printers.html#color-ink">Color Ink</a>
+          <a href="printers.html#combo-ink">Combo Pack</a>
+        </div>
+
+        <div class="mega-title">Toners</div>
+        <div class="chips">
+          <a href="printers.html#hp-toner">HP Toner</a>
+          <a href="printers.html#canon-toner">Canon Toner</a>
+          <a href="printers.html#brother-toner">Brother Toner</a>
+          <a href="printers.html#samsung-toner">Samsung Toner</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Features</div>
+        <div class="chips">
+          <a href="printers.html#wifi">Wireless Printer</a>
+          <a href="printers.html#color">Color Printer</a>
+          <a href="printers.html#mono">Monochrome Printer</a>
+          <a href="printers.html#duplex">Duplex Printing</a>
+          <a href="printers.html#mobile">Mobile Printing</a>
+        </div>
+        <a href="printers.html#scanner" class="mega-link">Scanner</a>
+        <a href="printers.html#copier" class="mega-link">Copier</a>
+        <a href="printers.html#fax" class="mega-link">Fax Machine</a>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Accessories</div>
+        <div class="chips">
+          <a href="#">Printer Paper</a>
+          <a href="#">Photo Paper</a>
+          <a href="#">Label Paper</a>
+          <a href="#">USB Printer Cable</a>
+        </div>
+        <a href="#" class="mega-link">Printer Stand</a>
+        <a href="#" class="mega-link">Cleaning Kit</a>
+        <a href="#" class="mega-link">Refill Kits</a>
+        <a href="#" class="mega-link">Drum Units</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Menu Panel - Monitors -->
+  <div class="mega" data-mega-content="components" aria-hidden="true">
+    <div class="container mega-grid">
+      <div class="mega-col">
+        <div class="mega-title">Screen Size</div>
+        <div class="chips">
+          <a href="monitors.html#24-inch">24 Inch</a>
+          <a href="monitors.html#27-inch">27 Inch</a>
+          <a href="monitors.html#32-inch">32 Inch</a>
+          <a href="monitors.html#34-ultrawide">34 Inch Ultrawide</a>
+          <a href="monitors.html#49-super-ultrawide">49 Inch Super Ultrawide</a>
+        </div>
+
+        <div class="mega-title">Resolution</div>
+        <div class="chips">
+          <a href="monitors.html#1080p">1080p Full HD</a>
+          <a href="monitors.html#1440p">1440p QHD</a>
+          <a href="monitors.html#4k">4K UHD</a>
+          <a href="monitors.html#5k">5K</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Refresh Rate</div>
+        <div class="chips">
+          <a href="monitors.html#60hz">60Hz</a>
+          <a href="monitors.html#75hz">75Hz</a>
+          <a href="monitors.html#144hz">144Hz</a>
+          <a href="monitors.html#165hz">165Hz</a>
+          <a href="monitors.html#240hz">240Hz</a>
+          <a href="monitors.html#360hz">360Hz</a>
+        </div>
+
+        <div class="mega-title">Panel Type</div>
+        <div class="chips">
+          <a href="monitors.html#ips">IPS Panel</a>
+          <a href="monitors.html#va">VA Panel</a>
+          <a href="monitors.html#tn">TN Panel</a>
+          <a href="monitors.html#oled">OLED</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Features</div>
+        <div class="chips">
+          <a href="monitors.html#gsync">G-Sync Compatible</a>
+          <a href="monitors.html#freesync">FreeSync</a>
+          <a href="monitors.html#hdr">HDR Support</a>
+          <a href="monitors.html#curved">Curved Display</a>
+          <a href="monitors.html#usb-c">USB-C with Power Delivery</a>
+        </div>
+        <a href="monitors.html#speakers" class="mega-link">Built-in Speakers</a>
+        <a href="monitors.html#vesa" class="mega-link">VESA Mount</a>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Use Case</div>
+        <div class="chips">
+          <a href="monitors.html#gaming">Gaming Monitors</a>
+          <a href="monitors.html#pro">Professional/Design</a>
+          <a href="monitors.html#office">Office/Productivity</a>
+          <a href="monitors.html#creator">Content Creation</a>
+        </div>
+        <a href="monitors.html#arms" class="mega-link">Monitor Arms & Stands</a>
+        <a href="usb-devices.html#monitor-cables" class="mega-link">Monitor Cables</a>
+        <a href="usb-devices.html#screen-cleaners" class="mega-link">Screen Cleaners</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Menu Panel - Peripherals -->
+  <div class="mega" data-mega-content="peripherals" aria-hidden="true">
+    <div class="container mega-grid">
+      <div class="mega-col">
+        <div class="mega-title">Monitor</div>
+        <div class="chips">
+          <a href="monitors.html#24-1080-144">24" 1080p 144Hz</a>
+          <a href="monitors.html#27-1440-165">27" 1440p 165Hz</a>
+          <a href="monitors.html#32-4k-60">32" 4K 60Hz</a>
+          <a href="monitors.html#34-ultrawide">Ultrawide 34"</a>
+          <a href="monitors.html#curved-gaming">Curved Gaming</a>
+        </div>
+
+        <div class="mega-title">Keyboard</div>
+        <div class="chips">
+          <a href="keyboard.html#mechanical">Mechanical RGB</a>
+          <a href="keyboard.html#wireless">Wireless Keyboard</a>
+          <a href="keyboard.html#tkl">TKL Keyboard</a>
+          <a href="keyboard.html#60">60% Compact</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Mouse</div>
+        <div class="chips">
+          <a href="mouse.html#wired">Wired Gaming Mouse</a>
+          <a href="mouse.html#wireless">Wireless Gaming</a>
+          <a href="mouse.html#rgb">RGB Mouse</a>
+          <a href="mouse.html#ergonomic">Ergonomic Mouse</a>
+        </div>
+
+        <div class="mega-title">Audio</div>
+        <div class="chips">
+          <a href="headset.html#gaming">Gaming Headset</a>
+          <a href="headset.html#wireless">Wireless Headset</a>
+          <a href="headset.html#studio">Studio Headphones</a>
+          <a href="headset.html#speakers-2-1">Speakers 2.1</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <a href="mousepad.html#large" class="mega-link">Mousepad Large</a>
+        <a href="mousepad.html#rgb" class="mega-link">RGB Mousepad</a>
+        <a href="usb-devices.html#webcam-1080p" class="mega-link">Webcam 1080p</a>
+        <a href="usb-devices.html#webcam-4k" class="mega-link">Webcam 4K</a>
+        <a href="usb-devices.html#microphone-usb" class="mega-link">Microphone USB</a>
+        <a href="controller.html" class="mega-link">Game Controller</a>
+      </div>
+
+      <div class="mega-col">
+        <a href="services.html#gaming-chair" class="mega-link">Gaming Chair</a>
+        <a href="monitors.html#arms" class="mega-link">Desk Mount Arm</a>
+        <a href="usb-devices.html#led-strip" class="mega-link">LED Light Strip</a>
+        <a href="services.html#desk-organizer" class="mega-link">Desk Organizer</a>
+        <a href="custom-cables.html#management" class="mega-link">Cable Management</a>
+        <a href="keyboard.html#wrist-rest" class="mega-link">Wrist Rest</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mega Menu Panel - PC Accessories -->
+  <div class="mega" data-mega-content="accessories" aria-hidden="true">
+    <div class="container mega-grid">
+      <div class="mega-col">
+        <div class="mega-title">Power & Protection</div>
+        <div class="chips">
+          <a href="ups.html#600va">UPS 600VA</a>
+          <a href="ups.html#1000va">UPS 1000VA</a>
+          <a href="power-strip.html#6-outlet">Power Strip 6 Outlet</a>
+          <a href="power-strip.html#surge">Surge Protector</a>
+        </div>
+
+        <div class="mega-title">Cables</div>
+        <div class="chips">
+          <a href="usb-devices.html#hdmi">HDMI Cable</a>
+          <a href="usb-devices.html#displayport">DisplayPort Cable</a>
+          <a href="usb-devices.html#usb-c">USB-C Cable</a>
+          <a href="custom-cables.html">Custom PSU Cables</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <div class="mega-title">Storage</div>
+        <div class="chips">
+          <a href="external-ssd.html#500gb">External SSD 500GB</a>
+          <a href="external-ssd.html#1tb">External SSD 1TB</a>
+          <a href="hard-drive.html#2tb">External HDD 2TB</a>
+          <a href="usb-devices.html#flash-drive">USB Flash Drive</a>
+        </div>
+
+        <div class="mega-title">Networking</div>
+        <div class="chips">
+          <a href="usb-devices.html#wifi-adapter">WiFi Adapter</a>
+          <a href="usb-devices.html#ethernet-cable">Ethernet Cable</a>
+          <a href="usb-devices.html#network-switch">Network Switch</a>
+        </div>
+      </div>
+
+      <div class="mega-col">
+        <a href="usb-devices.html#usb-hub" class="mega-link">USB Hub 7-Port</a>
+        <a href="usb-devices.html#card-reader" class="mega-link">Card Reader</a>
+        <a href="vertical-gpu-bracket.html#support" class="mega-link">GPU Support Bracket</a>
+        <a href="vertical-gpu-bracket.html" class="mega-link">Vertical GPU Mount</a>
+        <a href="usb-devices.html#rgb-sync-hub" class="mega-link">RGB Sync Hub</a>
+        <a href="case-fans.html#splitter" class="mega-link">Fan Splitter</a>
+      </div>
+
+      <div class="mega-col">
+        <a href="usb-devices.html#cleaning-kit" class="mega-link">Cleaning Kit</a>
+        <a href="usb-devices.html#compressed-air" class="mega-link">Compressed Air</a>
+        <a href="custom-cables.html#thermal-pads" class="mega-link">Thermal Pads</a>
+        <a href="usb-devices.html#anti-static" class="mega-link">Anti-Static Wrist Strap</a>
+        <a href="usb-devices.html#tools" class="mega-link">Screwdriver Set</a>
+        <a href="custom-cables.html#cable-ties" class="mega-link">Cable Ties</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu Drawer -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+  <div class="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer-panel">
+    <div class="mobile-drawer-head">
+      <strong>Categories</strong>
+      <button class="close-drawer-btn" id="closeMobileDrawer" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="mobile-menu-items">
+      <a href="index.html" class="mobile-menu-item">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <a href="laptops.html" class="mobile-menu-item">
+        <i class="fas fa-laptop"></i> Laptops
+      </a>
+      <a href="desktops.html" class="mobile-menu-item">
+        <i class="fas fa-desktop"></i> Desktops
+      </a>
+      <a href="monitors.html" class="mobile-menu-item">
+        <i class="fas fa-tv"></i> Monitors
+      </a>
+      <a href="printers.html" class="mobile-menu-item">
+        <i class="fas fa-print"></i> Printers
+      </a>
+      <a href="#" class="mobile-menu-item" data-mega="peripherals">
+        <i class="fas fa-microchip"></i> PC Components
+      </a>
+      <a href="#" class="mobile-menu-item" data-mega="accessories">
+        <i class="fas fa-keyboard"></i> PC Accessories
+      </a>
+      
+      <hr style="margin: 1rem 0; border-color: var(--border);">
+      
+      <a href="services.html" class="mobile-menu-item">
+        <i class="fas fa-tools"></i> Our Services
+      </a>
+      <a href="about.html" class="mobile-menu-item">
+        <i class="fas fa-info-circle"></i> About Us
+      </a>
+      <a href="contact.html" class="mobile-menu-item">
+        <i class="fas fa-envelope"></i> Contact Us
+      </a>
+      <a href="index.html#wishlist" class="mobile-menu-item">
+        <i class="fas fa-heart"></i> Wishlist
+      </a>
+      <a href="index.html#compare" class="mobile-menu-item">
+        <span>?</span> Compare
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- Old Drawer (keep for compatibility) -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <strong>Menu</strong>
+      <button class="icon-btn" id="closeDrawer" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <a href="#">Custom PC</a>
+    <a href="#">Pre-Built PC</a>
+    <a href="#">Gaming Console</a>
+    <a href="#">Contact Us</a>
+    <hr />
+    <a href="#">PC Components</a>
+    <a href="#">Peripherals</a>
+    <a href="#">PC Accessories</a>
+  </div>
+</aside>
+
+<!-- DESKTOP PROMO BANNER (Black Friday) -->
+<section class="promo-banner">
+  <div class="container">
+    <a href="laptops.html" aria-label="Black Friday Super Sale - Up to 45% OFF">
+      <img src="assets/img/black-friday-banner.webp?v=2025-10-19" alt="Black Friday Super Sale - Up to 45% OFF" loading="eager" />
+    </a>
+  </div>
+  
+</section>
+
+<!-- MOBILE IMAGE BANNER -->
+<section class="mobile-image-banner">
+  <div class="container">
+    <img src="assets/img/black-friday-banner.webp?v=2025-10-19" alt="Black Friday Super Sale - Up to 45% OFF" />
+  </div>
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Shop by <span class="accent">Category</span></h2>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-card" href="laptops.html"><img src="assets/icons/laptop.svg" alt="Laptop"><span>Laptop</span></a>
+    <a class="cat-card" href="desktops.html"><img src="assets/icons/desktop.svg" alt="Desktop"><span>Desktop</span></a>
+    <a class="cat-card" href="printers.html"><img src="assets/icons/printer.svg" alt="Printer"><span>Printer</span></a>
+    <a class="cat-card" href="graphics-card.html"><img src="assets/icons/gpu.svg" alt="Graphics Card"><span>Graphics Card</span></a>
+    <a class="cat-card" href="monitors.html"><img src="assets/icons/monitor.svg" alt="Monitor"><span>Monitor</span></a>
+    <a class="cat-card" href="printers.html#ink"><img src="assets/icons/ink.svg" alt="Printer Ink"><span>Printer Ink</span></a>
+    <a class="cat-card" href="cabinets.html"><img src="assets/icons/case.svg" alt="Cabinets"><span>Cabinets</span></a>
+    <a class="cat-card" href="internal-ssd.html"><img src="assets/icons/ssd.svg" alt="Internal SSD"><span>Internal SSD</span></a>
+    <a class="cat-card" href="case-fans.html"><img src="assets/icons/fan.svg" alt="Case Fans"><span>Case Fans</span></a>
+    <a class="cat-card" href="graphics-card.html"><img src="assets/icons/gpu.svg" alt="Graphics Card"><span>Graphics Card</span></a>
+    <a class="cat-card" href="custom-cables.html"><img src="assets/icons/fan.svg" alt="Custom Cables"><span>Custom Cables</span></a>
+    <a class="cat-card" href="power-supply.html"><img src="assets/icons/fan.svg" alt="Power Supply"><span>Power Supply</span></a>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS (FROM SUPABASE) -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Top <span class="accent">Selling</span></h2>
+    <a href="shop.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="__FEATURED__" data-limit="8"></div>
+</section>
+
+<!-- FEATURED LAPTOPS -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Shop <span class="accent">Laptops</span></h2>
+    <a href="laptops.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="Laptops" data-limit="4"></div>
+</section>
+
+<!-- MONITORS -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Best <span class="accent">Monitors</span></h2>
+    <a href="monitors.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="Monitors" data-limit="4"></div>
+</section>
+
+<!-- KEYBOARDS & MICE -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Gaming <span class="accent">Products</span></h2>
+    <a href="keyboards.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="Gaming Peripherals" data-limit="4"></div>
+</section>
+
+<!-- PRE-BUILT PC -->
+<section class="container section">
+  <div class="section-head">
+    <h2>Pre-Built <span class="accent">PC</span></h2>
+    <a href="desktops.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="Pre-Built PC" data-limit="8"></div>
+</section>
+
+<!-- WHY US -->
+<section class="why-us">
+  <div class="container">
+    <div class="features">
+      <div class="feat"><div class="i"><i class="fas fa-tools"></i></div><b>Expert Builders</b><span>Custom PC expertise</span></div>
+      <div class="feat"><div class="i"><i class="fas fa-tools"></i></div><b>Passion-Driven</b><span>We love what we build</span></div>
+      <div class="feat"><div class="i"><i class="fas fa-tools"></i></div><b>Your Dream, Our Mission</b><span>Design fits your needs</span></div>
+      <div class="feat"><div class="i"><i class="fas fa-tools"></i></div><b>Trusted Online</b><span>Reliable & friendly service</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOMER REVIEWS (slider) -->
+<section class="container section reviews-section">
+  <div class="section-head"><h2>Customer <span class="accent">Reviews</span></h2></div>
+  <div class="carousel" data-carousel>
+    <button class="carousel-nav left" data-prev aria-label="Prev">�</button>
+    <div class="carousel-track" data-track>
+      <div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Bought the ASUS ROG Strix G16 laptop from here. Amazing performance for gaming and video editing! Fast delivery and great packaging. Worth every penny!</p>
+  <div class="who">� Kasun Perera, Colombo</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Purchased HP LaserJet printer for my office. Print quality is superb and setup was very easy. Customer support helped me with installation. Highly satisfied!</p>
+  <div class="who">� Nimal Fernando, Kandy</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Got RTX 4070 graphics card at best price. Runs all latest games at ultra settings smoothly. One Click Computers has genuine products and excellent service!</p>
+  <div class="who">� Dinesh Silva, Galle</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Dell XPS 15 laptop is perfect for my design work. Beautiful display and powerful performance. Delivery was on time and the team was very professional!</p>
+  <div class="who">� Dilini Jayasinghe, Negombo</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Ordered Canon PIXMA G3000 printer. Tank system is economical and print quality is excellent. Best purchase for home office setup. Thank you One Click Computers!</p>
+  <div class="who">� Chaminda Wickramasinghe, Matara</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Built custom gaming PC with their help. They suggested perfect components within my budget. PC runs flawlessly! Best computer store in the city!</p>
+  <div class="who">� Tharaka Rajapaksa, Kurunegala</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Bought Lenovo Legion 5 Pro. Amazing gaming laptop with great cooling system. The staff was knowledgeable and helped me choose the right model. Excellent experience!</p>
+  <div class="who">� Sanduni Amarasinghe, Jaffna</div>
+</div>
+<div class="review">
+  <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+  <p>Purchased 27-inch 1440p monitor for my setup. Colors are vibrant and 165Hz is smooth. Competitive pricing and fast shipping. Will definitely shop here again!</p>
+  <div class="who">� Ruwan De Silva, Anuradhapura</div>
+</div>
+    </div>
+    <button class="carousel-nav right" data-next aria-label="Next">�</button>
+  </div>
+</section>
+
+<!-- PRINTERS -->
+<section class="container section">
+  <div class="section-head">
+    <h3 style="font-size:1.8rem;font-weight:800;margin:0">Top <span class="accent">Printers</span> & All-in-One Solutions</h3>
+    <a href="printers.html" class="see-all-btn">See All</a>
+  </div>
+  <div class="product-row" data-products-grid data-category="Printers" data-limit="6"></div>
+</section>
+
+<!-- COMMUNITY BANNERS -->
+<section class="container section community">
+  <div class="banner-row">
+    <img src="assets/img/banner1.webp" alt="Community 1" />
+    <img src="assets/img/banner2.webp" alt="Community 2" />
+    <img src="assets/img/banner3.webp" alt="Community 3" />
+    <img src="assets/img/banner4.webp" alt="Community 4" />
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="container section">
+  <div class="section-head"><h2>FAQs</h2></div>
+  <div class="accordion" data-accordion>
+    <div class="item">
+      <button class="head" aria-expanded="false">What is the delivery time?</button>
+      <div class="body">Typically 13 business days depending on your city and product availability.</div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">Do we provide after sales support?</button>
+      <div class="body">Yes, we offer chat/phone/email support and handle RMA/warranty for eligible products.</div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">Whats the return policy?</button>
+      <div class="body">7-day easy returns for unopened items. DOA replacements as per brand policy.</div>
+    </div>
+    <div class="item">
+      <button class="head" aria-expanded="false">How do we ship our PC builds?</button>
+      <div class="body">We use shock-safe packaging and cable locks; GPUs are braced; shipping is insured.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info Column -->
+      <div class="footer-company">
+        <div class="footer-logo">
+          <img src="assets/img/one-logo.png" alt="One Click Computers">
+          <div class="company-info">
+            <h3>One Click Computers</h3>
+            <p>Premium gaming PCs, workstations & components delivered worldwide</p>
+          </div>
+        </div>
+        
+        <div class="footer-contact-info">
+          <h4>Get In Touch</h4>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>46/B Kalidasa Road, Matara</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>+94 71 915 9933</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>9:00 AM - 9:30 PM Daily</strong>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+            <strong>oneclickmatara@gmail.com</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shop Categories Column -->
+      <div class="link-column">
+        <h4>Shop Categories</h4>
+        <a href="laptops.html">Laptops & Notebooks</a>
+        <a href="desktops.html">Desktop PCs</a>
+        <a href="graphics-card.html">Graphics Cards</a>
+        <a href="monitors.html">Monitors & Displays</a>
+        <a href="keyboard.html">Keyboards</a>
+        <a href="mouse.html">Gaming Mice</a>
+        <a href="printers.html">Printers</a>
+      </div>
+
+      <!-- Quick Links Column -->
+      <div class="link-column">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="terms-conditions.html">Terms & Conditions</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="sitemap.html">Site Map</a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <small>© <span id="yearCopy"></span> One Click Computers. All Rights Reserved. Designed with Excellence.</small>
+    </div>
+  </div>
+</footer>
+
+    <!-- Supabase Connection (MUST load before backend-products.js) -->
+    <script src="assets/js/supabase-config.js"></script>
+    <script src="assets/js/supabase-init.js"></script>
+    <script src="assets/js/auth-system.js"></script>
+    <script src="assets/js/config-auto.js"></script>
+    <script src="assets/js/api-config.js"></script>
+
+    <!-- Product Loading -->
+    <script src="assets/js/product-grid-loader.js"></script>
+    <script src="assets/js/backend-products.js"></script>
+    <script src="assets/js/cart-manager.js"></script>
+    <script>
+      window.CartManager = window.CartManager || new (window.CartManagerClass || (()=>{}))();
+      if (window.CartManager && typeof window.CartManager.init === 'function') { window.CartManager.init(); }
+    </script>
+
+    <!-- Other Scripts -->
+    <script src="assets/js/search-init.js"></script>
+    <!-- Removed catalog.mod.js - causes Firebase error -->
+    <script type="module" src="/assets/js/search.js"></script>
+    <script src="assets/js/product-modal-enhanced.js"></script>
+    <script src="assets/js/app.js"></script>
+    <!-- Disabled product-auto-collect - causes localhost:5000 errors in production -->
+    <!-- <script src="assets/js/product-auto-collect.js"></script> -->
+
+    <!-- UI and gating scripts (moved inside body) -->
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/gating.js"></script>
+    <script src="assets/js/product-loader.js"></script>
+    <script>document.addEventListener('DOMContentLoaded',()=>{ if(window.ProductFeed){ window.ProductFeed.loadFeatured(); } });</script>
+
+  </body>
+  </html>

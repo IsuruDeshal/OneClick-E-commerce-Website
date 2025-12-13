@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Placed Successfully • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.4" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .success-page {
+      min-height: 70vh;
+      padding: 3rem 0;
+    }
+    
+    .success-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      animation: scaleIn 0.5s ease;
+    }
+    
+    .success-icon i {
+      font-size: 3rem;
+      color: white;
+    }
+    
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+    
+    .success-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .success-subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+    }
+    
+    .order-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .order-number {
+      background: var(--gradient-3);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    
+    .order-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .order-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    
+    .section-title i {
+      color: var(--primary);
+    }
+    
+    .order-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .order-item:last-child {
+      border-bottom: none;
+    }
+    
+    .order-item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel2);
+      flex-shrink: 0;
+    }
+    
+    .order-item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .order-item-details {
+      flex: 1;
+    }
+    
+    .order-item-title {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    
+    .order-item-qty {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    
+    .order-item-price {
+      font-weight: 600;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      color: var(--muted);
+    }
+    
+    .info-row strong {
+      color: var(--text);
+    }
+    
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-top: 2px solid var(--border);
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    
+    .total-amount {
+      color: var(--primary);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid #10b981;
+      border-radius: 20px;
+      color: #10b981;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .success-title {
+        font-size: 1.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .action-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      <nav class="main-nav">
+        <a href="shop.html" class="nav-link">
+          <i class="fas fa-laptop"></i>
+          <span>Shop</span>
+        </a>
+        <a href="account.html" class="nav-link">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </a>
+        <a href="cart.html" class="nav-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+          <span class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="index.html" class="mobile-menu-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="shop.html" class="mobile-menu-link">
+        <i class="fas fa-laptop"></i>
+        <span>Shop</span>
+      </a>
+      <a href="account.html" class="mobile-menu-link">
+        <i class="fas fa-user"></i>
+        <span>Account</span>
+      </a>
+      <a href="cart.html" class="mobile-menu-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="container success-page">
+    <div class="success-header">
+      <div class="success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h1 class="success-title">Order Placed Successfully!</h1>
+      <p class="success-subtitle">Thank you for your purchase. We'll send you updates on your order.</p>
+    </div>
+    
+    <div class="order-card">
+      <div class="order-number" id="orderNumberDisplay">
+        <i class="fas fa-receipt"></i> Loading order details...
+      </div>
+      
+      <div id="orderDetails">
+        <!-- Order details will be loaded here -->
+      </div>
+      
+      <div class="action-buttons">
+        <a href="orders.html" class="btn btn-primary">
+          <i class="fas fa-list"></i> View All Orders
+        </a>
+        <a href="shop.html" class="btn btn-outline">
+          <i class="fas fa-shopping-bag"></i> Continue Shopping
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-company">
+          <div class="footer-logo"><img src="assets/img/one-logo.png" alt="One Click Computers"><div class="company-info"><h3>One Click Computers</h3><p>Premium gaming PCs, workstations & components</p></div></div>
+          <div class="footer-contact-info"><h4>Get In Touch</h4>
+            <div class="contact-item"><div class="contact-icon">📍</div><strong>46/B Kalidasa Road, Matara</strong></div>
+            <div class="contact-item"><div class="contact-icon">📞</div><strong>+94 71 915 9933</strong></div>
+            <div class="contact-item"><div class="contact-icon">🕐</div><strong>9:00 AM - 9:30 PM Daily</strong></div>
+            <div class="contact-item"><div class="contact-icon">✉️</div><strong>oneclickmatara@gmail.com</strong></div>
+          </div>
+        </div>
+        <div class="link-column"><h4>Shop Categories</h4>
+          <a href="laptops.html">Laptops & Notebooks</a>
+          <a href="desktops.html">Desktop PCs</a>
+          <a href="graphics-card.html">Graphics Cards</a>
+          <a href="monitors.html">Monitors & Displays</a>
+          <a href="keyboard.html">Keyboards</a>
+          <a href="mouse.html">Gaming Mice</a>
+          <a href="printers.html">Printers</a>
+        </div>
+        <div class="link-column"><h4>Quick Links</h4>
+          <a href="index.html">Home</a>
+          <a href="about.html">About Us</a>
+          <a href="services.html">Services</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="terms-conditions.html">Terms & Conditions</a>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="sitemap.html">Site Map</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><small>© <span id="yearCopy"></span> One Click Computers. All Rights Reserved.</small></div>
+    </div>
+  </footer>
+
+  <script>document.getElementById('yearCopy').textContent = new Date().getFullYear();</script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/firebase-shim.js"></script>
+  <script type="module" src="assets/js/order-success.js"></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Product Details | One Click Computers</title>
+  <meta name="description" id="page-description" content="View product details">
+  <script>
+    (function redirectToNewView(){
+      var target = 'product-details.html' + (window.location.search || '') + (window.location.hash || '');
+      if (!window.location.pathname.endsWith('/product-details.html')) {
+        window.location.replace(target);
+      }
+    })();
+  </script>
+  
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2" />
+  <link rel="stylesheet" href="assets/css/product-modal.css" />
+  
+  <style>
+    /* Product Details Page Styles */
+    .details-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      min-height: 60vh;
+    }
+
+    .loading-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #fff;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 107, 53, 0.3);
+      border-top-color: #ff6b35;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .product-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .product-gallery {
+      position: sticky;
+      top: 2rem;
+      height: fit-content;
+    }
+
+    .main-product-image {
+      width: 100%;
+      height: 500px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .thumbnail-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .thumbnail {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+      opacity: 0.6;
+    }
+
+    .thumbnail:hover,
+    .thumbnail.active {
+      opacity: 1;
+      border-color: #ff6b35;
+    }
+
+    .product-info h1 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .product-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .meta-badge {
+      padding: 0.5rem 1rem;
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 8px;
+      color: #ff6b35;
+      font-size: 0.9rem;
+    }
+
+    .price-section {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 140, 66, 0.1));
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .current-price {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ff6b35;
+      margin-bottom: 0.5rem;
+    }
+
+    .original-price {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: line-through;
+      margin-right: 1rem;
+    }
+
+    .discount-badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background: #ff6b35;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .stock-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .stock-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .stock-indicator.in-stock .stock-dot {
+      background: #4caf50;
+    }
+
+    .stock-indicator.low-stock .stock-dot {
+      background: #ff9800;
+    }
+
+    .stock-indicator.out-of-stock .stock-dot {
+      background: #f44336;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .product-description {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.8;
+      font-size: 1.1rem;
+      margin: 2rem 0;
+    }
+
+    .features-section,
+    .specs-section {
+      margin: 2rem 0;
+    }
+
+    .features-section h2,
+    .specs-section h2 {
+      color: #ff6b35;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .features-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .features-list svg {
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .spec-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem;
+      border-radius: 8px;
+      border-left: 3px solid #ff6b35;
+    }
+
+    .spec-label {
+      display: block;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .spec-value {
+      display: block;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-icon {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: #ff6b35;
+      color: #fff;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      background: #ff8547;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 2px solid #ff6b35;
+      flex: 1;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 107, 53, 0.1);
+    }
+
+    .btn-icon {
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: #ff6b35;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 107, 53, 0.1);
+    }
+
+    .recommendations-section {
+      margin-top: 4rem;
+    }
+
+    .recommendations-section h2 {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .error-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #fff;
+    }
+
+    .error-icon {
+      font-size: 4rem;
+      color: #ff6b35;
+      margin-bottom: 1rem;
+    }
+
+    .error-state h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .error-state p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .product-details {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 2rem;
+      }
+
+      .product-gallery {
+        position: static;
+      }
+
+      .product-info h1 {
+        font-size: 1.8rem;
+      }
+
+      .current-price {
+        font-size: 2rem;
+      }
+
+      .recommendations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation will be loaded by app.js -->
+  
+  <main class="details-container">
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+      <h2>Loading product details...</h2>
+    </div>
+
+    <!-- Product Content (populated by JavaScript) -->
+    <div id="productContent" style="display: none;"></div>
+
+    <!-- Error State -->
+    <div id="errorState" class="error-state" style="display: none;">
+      <div class="error-icon">⚠️</div>
+      <h2>Product Not Found</h2>
+      <p>We couldn't find the product you're looking for.</p>
+      <a href="index.html" class="btn-primary">Back to Home</a>
+    </div>
+  </main>
+
+  <!-- Recommendations Section -->
+  <section id="recommendationsSection" class="details-container" style="display: none;">
+    <div class="recommendations-section">
+      <h2>You May Also Like</h2>
+      <div id="recommendationsGrid" class="recommendations-grid"></div>
+    </div>
+  </section>
+
+  <!-- Footer will be loaded by app.js -->
+
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/product-details.js"></script>
+</body>
+</html>

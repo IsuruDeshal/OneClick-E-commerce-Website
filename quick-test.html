@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Fix Test - One Click Computers</title>
+  <style>
+    body { font-family: monospace; background: #000; color: #0f0; padding: 2rem; }
+    .pass { color: #0f0; }
+    .fail { color: #f00; }
+    pre { background: #111; padding: 1rem; border: 1px solid #333; }
+  </style>
+</head>
+<body>
+  <h1>🔧 Quick Fix Test</h1>
+  <div id="results"></div>
+
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="assets/js/backend-products.js"></script>
+
+  <script>
+    const results = document.getElementById('results');
+    const log = (msg, pass = true) => {
+      results.innerHTML += `<p class="${pass?'pass':'fail'}">${pass?'✓':'✗'} ${msg}</p>`;
+    };
+
+    setTimeout(async () => {
+      // Test 1: Config loaded
+      log('Supabase config loaded', !!window.SUPABASE_CONFIG);
+
+      // Test 2: Client init function exists
+      log('ensureSupabase function exists', typeof window.ensureSupabase === 'function');
+
+      // Test 3: Try to connect
+      try {
+        const client = await window.ensureSupabase();
+        log('Supabase client created', !!client);
+
+        // Test 4: Query products
+        const { data, error } = await client
+          .from('products')
+          .select('id, name, category')
+          .eq('status', 'active')
+          .limit(5);
+
+        if (error) throw error;
+        log(`Fetched ${data.length} products`, data.length > 0);
+
+        results.innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+
+        // Test 5: Check product grids would be found
+        results.innerHTML += '<h2>Testing on actual homepage...</h2>';
+        const iframe = document.createElement('iframe');
+        iframe.src = 'index.html';
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        iframe.onload = () => {
+          const grids = iframe.contentDocument.querySelectorAll('[data-products-grid]');
+          log(`Found ${grids.length} product grid(s) on homepage`, grids.length > 0);
+
+          grids.forEach((grid, i) => {
+            const cat = grid.getAttribute('data-category');
+            const limit = grid.getAttribute('data-limit');
+            results.innerHTML += `<p>Grid ${i+1}: category="${cat}", limit="${limit}"</p>`;
+          });
+
+          results.innerHTML += '<hr><a href="index.html" style="color:#0ff;font-size:1.2rem;">→ Go to Homepage</a>';
+        };
+
+      } catch (err) {
+        log('Error: ' + err.message, false);
+        results.innerHTML += '<pre>' + err.stack + '</pre>';
+      }
+    }, 500);
+  </script>
+</body>
+</html>
+

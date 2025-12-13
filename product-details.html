@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title id="productTitle">Product Details - One Click Computers</title>
+  <meta name="description" id="productDescription" content="View product details">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2" />
+  <link rel="stylesheet" href="assets/css/ui.css" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+
+  <style>
+    /* Product Details Specific Styles */
+    .product-details-page {
+      min-height: 100vh;
+      background: var(--bg, #0a0b0f);
+      color: var(--text, #e0e0e0);
+      padding-bottom: 4rem;
+    }
+
+    .breadcrumb {
+      padding: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    .breadcrumb a {
+      color: #888;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--primary, #ff6b35);
+    }
+
+    .breadcrumb .separator {
+      margin: 0 0.5rem;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--panel, #1a1d2e);
+      border: 1px solid var(--border, #2a2d3e);
+      border-radius: 8px;
+      color: var(--text, #e0e0e0);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      margin-bottom: 2rem;
+    }
+
+    .back-button:hover {
+      background: var(--panel2, #242736);
+      border-color: var(--primary, #ff6b35);
+      transform: translateX(-4px);
+    }
+
+    .product-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    @media (min-width: 968px) {
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Product Gallery */
+    .product-gallery {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .main-image-container {
+      position: relative;
+      background: var(--panel, #1a1d2e);
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border, #2a2d3e);
+    }
+
+    .main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 2rem;
+    }
+
+    .zoom-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .thumbnail-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .thumbnail {
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s;
+      background: var(--panel, #1a1d2e);
+      padding: 0.5rem;
+    }
+
+    .thumbnail:hover {
+      border-color: var(--primary, #ff6b35);
+      transform: scale(1.05);
+    }
+
+    .thumbnail.active {
+      border-color: var(--primary, #ff6b35);
+    }
+
+    /* Product Info */
+    .product-info {
+      padding: 1rem 0;
+    }
+
+    .product-category {
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      background: var(--primary, #ff6b35);
+      color: white;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .product-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: white;
+      margin: 1rem 0;
+      line-height: 1.2;
+    }
+
+    .product-sku {
+      color: #888;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .stars {
+      color: #fbbf24;
+      font-size: 1.1rem;
+    }
+
+    .rating-count {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .product-price-section {
+      background: var(--panel, #1a1d2e);
+      border: 1px solid var(--border, #2a2d3e);
+      border-radius: 16px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .product-price {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #4ade80;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-label {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .stock-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border, #2a2d3e);
+    }
+
+    .stock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .stock-badge.in-stock {
+      background: rgba(74, 222, 128, 0.2);
+      color: #4ade80;
+    }
+
+    .stock-badge.low-stock {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+    }
+
+    .stock-badge.out-of-stock {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    .product-description {
+      line-height: 1.8;
+      color: #c0c0c0;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: var(--panel, #1a1d2e);
+      border: 1px solid var(--border, #2a2d3e);
+      border-radius: 16px;
+    }
+
+    .description-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    /* Action Buttons */
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .quantity-label {
+      font-weight: 600;
+      color: white;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--panel, #1a1d2e);
+      border: 1px solid var(--border, #2a2d3e);
+      border-radius: 10px;
+      padding: 0.5rem;
+    }
+
+    .qty-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: var(--panel2, #242736);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .qty-btn:hover {
+      background: var(--primary, #ff6b35);
+      transform: scale(1.1);
+    }
+
+    .qty-input {
+      width: 60px;
+      height: 40px;
+      text-align: center;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary, #ff6b35);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #e85a28;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--panel, #1a1d2e);
+      border: 2px solid var(--border, #2a2d3e);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary, #ff6b35);
+      background: var(--panel2, #242736);
+    }
+
+    .btn-wishlist {
+      background: transparent;
+      border: 2px solid var(--border, #2a2d3e);
+      color: #ef4444;
+    }
+
+    .btn-wishlist:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+    }
+
+    /* Loading State */
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 2rem;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border, #2a2d3e);
+      border-top-color: var(--primary, #ff6b35);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.2rem;
+      color: #888;
+    }
+
+    /* Error State */
+    .error-container {
+      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .error-icon {
+      font-size: 4rem;
+      color: #ef4444;
+      margin-bottom: 1rem;
+    }
+
+    .error-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      color: #888;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* Specifications Table */
+    .specs-section {
+      margin: 3rem 0;
+      padding: 2rem;
+      background: var(--panel, #1a1d2e);
+      border: 1px solid var(--border, #2a2d3e);
+      border-radius: 16px;
+    }
+
+    .specs-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+
+    .spec-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border, #2a2d3e);
+    }
+
+    .spec-row:last-child {
+      border-bottom: none;
+    }
+
+    .spec-label {
+      font-weight: 600;
+      color: #888;
+    }
+
+    .spec-value {
+      color: white;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .product-grid {
+        gap: 2rem;
+      }
+
+      .product-gallery {
+        position: relative;
+        top: 0;
+      }
+
+      .product-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--bg, #0a0b0f);
+        padding: 1rem;
+        margin: 0 -1rem;
+        border-top: 1px solid var(--border, #2a2d3e);
+      }
+
+      .spec-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark product-details-page">
+
+  <!-- Loading State -->
+  <div id="loadingState" class="loading-container">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading product details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div id="errorState" class="error-container" style="display:none;">
+    <i class="fas fa-exclamation-triangle error-icon"></i>
+    <h1 class="error-title">Product Not Found</h1>
+    <p class="error-message">
+      Sorry, we couldn't find the product you're looking for.
+      It may have been removed or the link is incorrect.
+    </p>
+    <a href="/index.html" class="btn btn-primary">
+      <i class="fas fa-home"></i>
+      Back to Homepage
+    </a>
+  </div>
+
+  <!-- Main Content (Hidden until loaded) -->
+  <div id="mainContent" style="display:none;">
+
+    <!-- Same Header as index.html will be injected here -->
+    <div id="headerPlaceholder"></div>
+
+    <div class="product-container">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+        <span class="separator">/</span>
+        <a href="#" id="categoryLink">Category</a>
+        <span class="separator">/</span>
+        <span id="productBreadcrumb">Product</span>
+      </div>
+
+      <!-- Back Button -->
+      <a href="javascript:history.back()" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to Shop
+      </a>
+
+      <!-- Product Grid -->
+      <div class="product-grid">
+
+        <!-- Product Gallery with Auto-Slideshow -->
+        <div class="product-gallery">
+          <div class="main-image-container">
+            <img id="mainImage" src="" alt="Product" class="main-image">
+          </div>
+          <div class="thumbnail-grid" id="thumbnailGrid">
+            <!-- Thumbnails will be inserted here -->
+          </div>
+          <p style="text-align: center; color: #888; font-size: 0.85rem; margin-top: 1rem;">
+            <i class="fas fa-play-circle"></i> Auto-slides every 4 seconds
+          </p>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+          <span class="product-category" id="productCategory">Category</span>
+          <h1 class="product-title" id="productTitle">Product Name</h1>
+          <p class="product-sku">SKU: <span id="productSKU"></span></p>
+
+          <div class="product-rating">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <span class="rating-count">(4.5 / 5 based on 124 reviews)</span>
+          </div>
+
+          <!-- Price Section -->
+          <div class="product-price-section">
+            <p class="price-label">Price</p>
+            <div class="product-price" id="productPrice">LKR 0</div>
+            <div class="stock-info">
+              <span class="stock-badge in-stock" id="stockBadge">
+                <i class="fas fa-check-circle"></i>
+                <span id="stockText">In Stock</span>
+              </span>
+              <span id="stockCount" style="color:#888;"></span>
+            </div>
+          </div>
+
+          <!-- Quantity Selector -->
+          <div class="quantity-selector">
+            <span class="quantity-label">Quantity:</span>
+            <div class="quantity-controls">
+              <button class="qty-btn" id="decreaseQty">
+                <i class="fas fa-minus"></i>
+              </button>
+              <input type="number" class="qty-input" id="qtyInput" value="1" min="1" max="99">
+              <button class="qty-btn" id="increaseQty">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="product-actions">
+            <button class="btn btn-primary" id="addToCartBtn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="btn btn-wishlist" id="addToWishlistBtn">
+              <i class="far fa-heart"></i>
+              Add to Wishlist
+            </button>
+            <a href="/checkout.html" class="btn btn-secondary">
+              <i class="fas fa-bolt"></i>
+              Buy Now
+            </a>
+          </div>
+
+          <!-- Description -->
+          <div class="product-description">
+            <h2 class="description-title">
+              <i class="fas fa-info-circle"></i>
+              Product Description
+            </h2>
+            <p id="productDescription">Loading description...</p>
+          </div>
+
+          <!-- Specifications -->
+          <div class="specs-section">
+            <h2 class="specs-title">
+              <i class="fas fa-list"></i>
+              Specifications
+            </h2>
+            <div id="specsContainer">
+              <!-- Specs will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Same Footer as index.html will be injected here -->
+    <div id="footerPlaceholder"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>
+  <script src="api/auth-guard.js"></script>
+  <script src="api/cart-unified.js"></script>
+
+  <script>
+    // Product Details Page Logic (Supabase-first with PHP fallback)
+    (async function() {
+      const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      const PHP_API_URL = isLocal ? 'api' : 'https://YOUR-EC2-IP/api';
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawId = urlParams.get('id') || urlParams.get('sku');
+
+      if (!rawId) {
+        showError();
+        return;
+      }
+
+      try {
+        let product = null;
+
+        // Try Supabase first
+        try {
+          const supabase = await window.ensureSupabase();
+          // Prefer match by id; if not UUID, try sku
+          let query = supabase
+            .from('products')
+            .select('*')
+            .eq('status', 'active')
+            .eq('id', rawId)
+            .single();
+
+          let { data, error } = await query;
+
+          if (error || !data) {
+            // Retry by SKU
+            const retry = await supabase
+              .from('products')
+              .select('*')
+              .eq('status', 'active')
+              .eq('sku', rawId)
+              .single();
+            data = retry.data;
+          }
+
+          if (data) {
+            product = normalizeProduct(data);
+          }
+        } catch (e) {
+          // Ignore and fallback
+          console.warn('Supabase fetch failed, falling back to PHP:', e.message);
+        }
+
+        // Fallback to PHP API
+        if (!product) {
+          const res = await fetch(`${PHP_API_URL}/get-products-v2.php?id=${encodeURIComponent(rawId)}`);
+          const json = await res.json();
+          if (json && json.success && json.product) {
+            product = normalizeProduct(json.product);
+          } else if (json && (json.products && json.products.length)) {
+            product = normalizeProduct(json.products[0]);
+          }
+        }
+
+        if (!product) {
+          showError();
+          return;
+        }
+
+        renderProduct(product);
+      } catch (error) {
+        console.error('Error loading product:', error);
+        showError();
+      }
+
+      function normalizeProduct(p) {
+        return {
+          id: p.id,
+          name: p.name || p.title || 'Product',
+          category: p.category || 'Products',
+          sku: p.sku || '',
+          price: parseFloat(p.offer_price || p.price || 0),
+          originalPrice: p.offer_price ? parseFloat(p.price || 0) : undefined,
+          stock: parseInt(p.stock || 0),
+          description: p.description || '',
+          image_url: p.image_url || p.image || 'assets/img/product.svg',
+          images: Array.isArray(p.image_urls) && p.image_urls.length ? p.image_urls : [p.image_url || p.image || 'assets/img/product.svg'],
+          brand: p.brand || ''
+        };
+      }
+
+      function showError() {
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('errorState').style.display = 'block';
+      }
+
+      // Load product images from database
+      async function loadProductImages(product) {
+        try {
+          const supabase = await window.ensureSupabase();
+          if (!supabase) throw new Error('Supabase not initialized');
+
+          // Fetch all images for this product
+          const { data: images, error } = await supabase
+            .from('product_images')
+            .select('*')
+            .eq('product_id', product.id)
+            .order('sort_order', { ascending: true });
+
+          if (error) {
+            console.warn('Error loading product images:', error);
+            // Fallback to main_image_url
+            images = [];
+          }
+
+          const mainImage = document.getElementById('mainImage');
+          const thumbnailGrid = document.getElementById('thumbnailGrid');
+
+          // Use images from DB, fallback to main_image_url
+          const imageList = images && images.length > 0 
+            ? images 
+            : [{ image_url: product.main_image_url, is_primary: true, sort_order: 0 }];
+
+          // Set main image (primary or first)
+          const primaryImg = imageList.find(i => i.is_primary);
+          mainImage.src = primaryImg?.image_url || imageList[0].image_url;
+          mainImage.alt = product.name;
+
+          // Build thumbnails
+          thumbnailGrid.innerHTML = imageList.map((img, index) => `
+            <img 
+              src="${img.image_url}" 
+              alt="${product.name} - Image ${index + 1}" 
+              class="thumbnail ${index === 0 ? 'active' : ''}"
+              data-full="${img.image_url}"
+            >
+          `).join('');
+
+        } catch (error) {
+          console.error('loadProductImages error:', error);
+          // Fallback: use main_image_url
+          const mainImage = document.getElementById('mainImage');
+          const thumbnailGrid = document.getElementById('thumbnailGrid');
+          mainImage.src = product.main_image_url;
+          thumbnailGrid.innerHTML = `
+            <img 
+              src="${product.main_image_url}" 
+              alt="${product.name}" 
+              class="thumbnail active"
+              data-full="${product.main_image_url}"
+            >
+          `;
+        }
+      }
+
+      function renderProduct(product) {
+        // Hide loading, show content
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+
+        // Update page title
+        document.title = `${product.name} - One Click Computers`;
+        document.getElementById('productTitle').textContent = product.name;
+
+        // Update meta description
+        const metaDesc = document.getElementById('productDescription');
+        if (metaDesc) metaDesc.setAttribute('content', product.description || product.name);
+
+        // Product details
+        document.getElementById('productCategory').textContent = product.category || 'Product';
+        document.getElementById('productSKU').textContent = product.sku || 'N/A';
+        document.getElementById('productPrice').textContent = `LKR ${Number(product.price || 0).toLocaleString()}`;
+        document.getElementById('productDescription').textContent = product.description || 'No description available.';
+        document.getElementById('productBreadcrumb').textContent = product.name;
+
+        // Category link
+        const categoryLink = document.getElementById('categoryLink');
+        categoryLink.textContent = product.category || 'Products';
+        categoryLink.href = `/${(product.category || 'products').toLowerCase().replace(/\s+/g, '-')}.html`;
+
+        // Stock status
+        const stock = parseInt(product.stock || 0);
+        const stockBadge = document.getElementById('stockBadge');
+        const stockText = document.getElementById('stockText');
+        const stockCount = document.getElementById('stockCount');
+
+        if (stock > 10) {
+          stockBadge.className = 'stock-badge in-stock';
+          stockText.textContent = 'In Stock';
+          stockCount.textContent = `${stock} units available`;
+        } else if (stock > 0) {
+          stockBadge.className = 'stock-badge low-stock';
+          stockText.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Low Stock';
+          stockCount.textContent = `Only ${stock} left!`;
+        } else {
+          stockBadge.className = 'stock-badge out-of-stock';
+          stockText.innerHTML = '<i class="fas fa-times-circle"></i> Out of Stock';
+          stockCount.textContent = '';
+          const btn = document.getElementById('addToCartBtn');
+          if (btn) { btn.disabled = true; btn.textContent = 'Out of Stock'; }
+        }
+
+        // Main image
+        const mainImage = document.getElementById('mainImage');
+        mainImage.src = product.image_url;
+        mainImage.alt = product.name;
+
+        // Thumbnails & Gallery Controller
+        // Load images from product_images table
+        await loadProductImages(product);
+
+        // Initialize gallery auto-slideshow
+        initGalleryAutoSlide();
+
+        // Specs
+        renderSpecs(product);
+
+        // Quantity controls & add to cart
+        setupQuantityControls(stock);
+        setupAddToCart(product, stock);
+      }
+
+      // ==========================================
+      // Gallery Auto-Slideshow Controller
+      // ==========================================
+      function initGalleryAutoSlide() {
+        const mainImage = document.getElementById('mainImage');
+        const thumbs = Array.from(document.querySelectorAll('.product-gallery .thumbnail'));
+
+        if (!mainImage || !thumbs.length) return;
+
+        let currentIndex = 0;
+        let autoSlideTimer = null;
+
+        function changeImage(index) {
+          currentIndex = index;
+          const thumb = thumbs[index];
+          
+          // Update main image
+          mainImage.src = thumb.dataset.full || thumb.src;
+
+          // Update active thumbnail
+          thumbs.forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+
+          // Restart auto-slide timer
+          restartAutoSlide();
+        }
+
+        function nextImage() {
+          const next = (currentIndex + 1) % thumbs.length;
+          changeImage(next);
+        }
+
+        function restartAutoSlide() {
+          if (autoSlideTimer) clearInterval(autoSlideTimer);
+          autoSlideTimer = setInterval(nextImage, 4000); // Auto-slide every 4 seconds
+        }
+
+        // Thumbnail click handler
+        thumbs.forEach((thumb, i) => {
+          thumb.addEventListener('click', () => {
+            changeImage(i);
+          });
+        });
+
+        // Start auto-slideshow
+        restartAutoSlide();
+      }
+
+      function renderSpecs(product) {
+        const specsContainer = document.getElementById('specsContainer');
+        const specs = [
+          { label: 'Brand', value: product.brand || 'One Click' },
+          { label: 'Category', value: product.category || 'Electronics' },
+          { label: 'SKU', value: product.sku || 'N/A' },
+          { label: 'Warranty', value: '1 Year Manufacturer Warranty' },
+          { label: 'Availability', value: (product.stock || 0) > 0 ? 'In Stock' : 'Out of Stock' }
+        ];
+        specsContainer.innerHTML = specs.map(spec => `
+          <div class="spec-row">
+            <div class="spec-label">${spec.label}</div>
+            <div class="spec-value">${spec.value}</div>
+          </div>
+        `).join('');
+      }
+
+      function setupQuantityControls(maxStock) {
+        const qtyInput = document.getElementById('qtyInput');
+        const decreaseBtn = document.getElementById('decreaseQty');
+        const increaseBtn = document.getElementById('increaseQty');
+        qtyInput.max = maxStock;
+        decreaseBtn.addEventListener('click', () => {
+          const current = parseInt(qtyInput.value) || 1;
+          if (current > 1) qtyInput.value = current - 1;
+        });
+        increaseBtn.addEventListener('click', () => {
+          const current = parseInt(qtyInput.value) || 1;
+          if (current < maxStock) qtyInput.value = current + 1;
+        });
+        qtyInput.addEventListener('change', () => {
+          const value = parseInt(qtyInput.value) || 1;
+          if (value < 1) qtyInput.value = 1;
+          if (value > maxStock) qtyInput.value = maxStock;
+        });
+      }
+
+      function setupAddToCart(product, stock) {
+        const btn = document.getElementById('addToCartBtn');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          if (stock <= 0) return;
+          const qty = parseInt(document.getElementById('qtyInput').value) || 1;
+          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          const existing = cart.find(i => i.id === product.id || i.sku === product.sku);
+          if (existing) existing.quantity = (existing.quantity || 1) + qty; else cart.push({ id: product.id, name: product.name, price: product.price, image: product.image_url, sku: product.sku || product.id, quantity: qty });
+          localStorage.setItem('cart', JSON.stringify(cart));
+          btn.textContent = '✓ Added to Cart';
+          setTimeout(() => (btn.textContent = 'Add to Cart'), 1500);
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>

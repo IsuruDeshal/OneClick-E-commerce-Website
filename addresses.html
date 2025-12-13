@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Addresses • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.3" />
+  <link rel="stylesheet" href="assets/css/address-manager.css" />
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      <nav class="main-nav">
+        <a href="shop.html" class="nav-link">
+          <i class="fas fa-laptop"></i>
+          <span>Shop</span>
+        </a>
+        <a href="account.html" class="nav-link">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </a>
+        <a href="cart.html" class="nav-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Cart</span>
+          <span class="badge">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu">
+    <div class="mobile-menu-content">
+      <a href="index.html" class="mobile-menu-link">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="shop.html" class="mobile-menu-link">
+        <i class="fas fa-laptop"></i>
+        <span>Shop</span>
+      </a>
+      <a href="account.html" class="mobile-menu-link">
+        <i class="fas fa-user"></i>
+        <span>Account</span>
+      </a>
+      <a href="cart.html" class="mobile-menu-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="container" style="min-height: 70vh; padding: 2rem 0;">
+    <!-- Page Header -->
+    <div style="background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem;">
+      <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; font-size: 0.9rem;">
+        <a href="index.html" style="color: var(--muted); text-decoration: none;">Home</a>
+        <span style="color: var(--muted);">/</span>
+        <a href="account.html" style="color: var(--muted); text-decoration: none;">Account</a>
+        <span style="color: var(--muted);">/</span>
+        <span style="color: var(--text);">Addresses</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1 style="margin: 0; color: var(--text); display: flex; align-items: center; gap: 0.7rem;">
+          <i class="fas fa-map-marker-alt"></i>
+          My Addresses
+        </h1>
+        <button id="add-address-btn" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add New Address
+        </button>
+      </div>
+      <p style="margin: 0.5rem 0 0 0; color: var(--muted);">Manage your saved addresses for faster checkout</p>
+    </div>
+
+    <!-- Addresses Display Container -->
+    <div id="addresses-container"></div>
+
+    <!-- Address Form Container (Hidden by default) -->
+    <div id="address-form-container" class="address-form-container" style="display: none;">
+      <h2 id="form-title">Add New Address</h2>
+      <form id="address-form">
+        <input type="hidden" id="editing-address-id" />
+        
+        <div class="form-group">
+          <label for="full_name">Full Name *</label>
+          <input type="text" id="full_name" name="full_name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" required />
+        </div>
+
+        <div class="form-group">
+          <label for="address_line1">Address Line 1 *</label>
+          <input type="text" id="address_line1" name="address_line1" placeholder="Street address, P.O. box" required />
+        </div>
+
+        <div class="form-group">
+          <label for="address_line2">Address Line 2 (Optional)</label>
+          <input type="text" id="address_line2" name="address_line2" placeholder="Apartment, suite, unit, building, floor, etc." />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City *</label>
+            <input type="text" id="city" name="city" required />
+          </div>
+          <div class="form-group">
+            <label for="postal_code">Postal Code *</label>
+            <input type="text" id="postal_code" name="postal_code" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country *</label>
+          <select id="country" name="country" required>
+            <option value="">Select Country</option>
+            <option value="Sri Lanka">Sri Lanka</option>
+            <option value="India">India</option>
+            <option value="USA">United States</option>
+            <option value="UK">United Kingdom</option>
+            <option value="Australia">Australia</option>
+            <option value="Canada">Canada</option>
+            <option value="Germany">Germany</option>
+            <option value="France">France</option>
+          </select>
+        </div>
+
+        <div class="form-group checkbox">
+          <input type="checkbox" id="is_default" name="is_default" />
+          <label for="is_default">Set as default address</label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save Address</button>
+          <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>Your trusted partner for high-quality computer hardware and accessories.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Customer Service</h3>
+        <ul>
+          <li><a href="account.html">My Account</a></li>
+          <li><a href="orders.html">Order History</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 One Click Computers. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>`n  <script src="assets/js/auth-system.js"></script>
+  <script src="api/address-manager.js"></script>
+  <script src="api/address-ui.js"></script>
+  <script>
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+      });
+    }
+
+    // Wait for all scripts to load before setting up form handlers
+    function initializeAddressForm() {
+      const addBtn = document.getElementById('add-address-btn');
+      const cancelBtn = document.getElementById('cancel-btn');
+      const addressForm = document.getElementById('address-form');
+      
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          document.getElementById('address-form-container').style.display = 'block';
+          document.getElementById('form-title').textContent = 'Add New Address';
+          document.getElementById('editing-address-id').value = '';
+          if (addressForm) addressForm.reset();
+        });
+      }
+      
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          document.getElementById('address-form-container').style.display = 'none';
+        });
+      }
+      
+      if (addressForm) {
+        addressForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const editingId = document.getElementById('editing-address-id').value;
+          
+          // Call the globally exposed function
+          if (typeof window.submitAddressForm === 'function') {
+            await window.submitAddressForm(e, editingId || null);
+          } else {
+            console.error('submitAddressForm function not loaded yet');
+            // Retry after a short delay
+            setTimeout(() => {
+              if (typeof window.submitAddressForm === 'function') {
+                window.submitAddressForm(e, editingId || null);
+              } else {
+                alert('Form handler not ready. Please refresh the page.');
+              }
+            }, 500);
+          }
+        });
+      }
+      
+      console.log('Address form initialized');
+    }
+
+    // Initialize when DOM is ready and scripts are loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeAddressForm);
+    } else {
+      // DOM already loaded, initialize immediately
+      initializeAddressForm();
+    }
+  </script>
+</body>
+</html>

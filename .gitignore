@@ -1,0 +1,25 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.tmp
+*.log
+copilotDiffState.xml
+
+# Node modules (if any)
+node_modules/
+
+# Environment files with secrets
+.env
+.env.local
+.env.production
+
+# Cache
+.cache/

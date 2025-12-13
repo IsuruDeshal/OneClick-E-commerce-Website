@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - One Click Computers</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .failed-container {
+            max-width: 600px;
+            margin: 5rem auto;
+            text-align: center;
+            padding: 3rem;
+            background: #151821;
+            border-radius: 20px;
+            border: 1px solid #272a36;
+        }
+        .failed-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 3rem;
+            animation: shake 0.5s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        h1 {
+            color: #ef4444;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            color: #fca5a5;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #e44d61, #d63f52);
+            color: white;
+        }
+        .btn-secondary {
+            background: #272a36;
+            color: #e9ecf1;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .help-section {
+            background: #1a1e29;
+            border: 1px solid #272a36;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .help-section h3 {
+            color: #e9ecf1;
+            margin-bottom: 1rem;
+        }
+        .help-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        .help-section li {
+            padding: 0.5rem 0;
+            color: #a9b0bf;
+        }
+        .help-section li::before {
+            content: '• ';
+            color: #e44d61;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div class="failed-container">
+        <div class="failed-icon">✕</div>
+        <h1>Payment Failed</h1>
+        <p style="color: #a9b0bf; margin-bottom: 1rem;">
+            Unfortunately, we couldn't process your payment.
+        </p>
+
+        <div class="error-message" id="errorMessage">
+            Your payment was not completed. Please try again.
+        </div>
+
+        <div class="help-section">
+            <h3>Common Reasons:</h3>
+            <ul>
+                <li>Insufficient funds in your account</li>
+                <li>Incorrect card details</li>
+                <li>Payment cancelled by you</li>
+                <li>Bank declined the transaction</li>
+                <li>Network/connection issue</li>
+            </ul>
+        </div>
+
+        <p style="color: #a9b0bf; margin: 2rem 0;">
+            Don't worry, no money was deducted from your account.<br>
+            Your cart items are still saved.
+        </p>
+
+        <div>
+            <a href="checkout.html" class="btn btn-primary">Try Again</a>
+            <a href="cart.html" class="btn btn-secondary">View Cart</a>
+            <a href="index.html" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #272a36;">
+            <p style="color: #a9b0bf; font-size: 0.9rem;">
+                Need help? Contact us:<br>
+                📞 +94 71 915 9933<br>
+                📧 oneclickmatara@gmail.com
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Get error details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        const reason = urlParams.get('reason');
+
+        // Display error if provided
+        if (error || reason) {
+            const errorDiv = document.getElementById('errorMessage');
+            if (error) {
+                errorDiv.textContent = decodeURIComponent(error);
+            } else if (reason) {
+                errorDiv.textContent = decodeURIComponent(reason);
+            }
+        }
+
+        // Track failed payment (for analytics)
+        if (window.gtag) {
+            gtag('event', 'payment_failed', {
+                reason: error || reason || 'unknown'
+            });
+        }
+    </script>
+</body>
+</html>
+

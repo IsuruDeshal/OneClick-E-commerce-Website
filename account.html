@@ -1,0 +1,1041 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+  <title>My Account • One Click Computers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=18.2"/>
+  <link rel="shortcut icon" href="assets/img/one-logo.png" type="image/png" />
+  <style>
+    .account-page {
+      min-height: 70vh;
+      padding: 2rem 0;
+    }
+    
+    .account-header {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .account-header-info h1 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+    }
+    
+    .account-header-info p {
+      margin: 0;
+      color: var(--muted);
+    }
+    
+    .admin-badge {
+      display: inline-block;
+      background: var(--gradient-3);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .account-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .account-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+    
+    .account-card-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--gradient-3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    
+    .account-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+    }
+    
+    .account-card p {
+      margin: 0 0 1rem 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    .account-section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .account-section h2 {
+      margin: 0 0 1.5rem 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .account-section h2 i {
+      color: var(--primary);
+    }
+    
+    .order-card {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .order-card:hover {
+      border-color: var(--primary);
+    }
+    
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .order-number {
+      font-weight: 700;
+      color: var(--text);
+    }
+    
+    .order-status {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .status-paid {
+      background: #10b981;
+      color: white;
+    }
+    
+    .status-pending {
+      background: #f59e0b;
+      color: white;
+    }
+    
+    .status-cancelled {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .order-items {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    .order-total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+    }
+    
+    .address-card {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .address-card h4 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text);
+    }
+    
+    .address-card p {
+      margin: 0.3rem 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    .profile-form {
+      display: grid;
+      gap: 1.5rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .form-group label {
+      color: var(--text);
+      font-weight: 600;
+    }
+    
+    .form-group input {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    
+    @media (max-width: 768px) {
+      .account-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-top">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      
+      <a href="index.html" class="logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers"/>
+      </a>
+      
+      <div class="header-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+    
+    <div class="container desktop-nav">
+      <a href="index.html" class="logo desktop-logo">
+        <img src="assets/img/one-logo.png" alt="One Click Computers" />
+      </a>
+      
+      <div class="header-bottom">
+        <a href="index.html">Home</a>
+        <a href="laptops.html">Laptops</a>
+        <a href="desktops.html">Desktops</a>
+        <a href="monitors.html">Monitors</a>
+        <a href="printers.html">Printers</a>
+      </div>
+      
+      <div class="header-actions desktop-actions">
+        <a class="icon-btn" href="account.html" title="Account">
+          <i class="fas fa-user"></i>
+        </a>
+        <a class="icon-btn" href="wishlist.html" title="Wishlist">
+          <span class="badge">0</span>
+          <i class="fas fa-heart"></i>
+        </a>
+        <a class="icon-btn" href="cart.html" title="Cart">
+          <span class="badge">0</span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container account-page">
+    <!-- Account Header -->
+    <div class="account-header">
+      <div class="account-header-info">
+        <h1 id="userName">My Account</h1>
+        <p id="userEmail">Loading...</p>
+      </div>
+      <button class="btn" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="account-grid">
+      <div class="account-card" onclick="window.location.href='orders.html'">
+        <div class="account-card-icon" style="background: var(--gradient-2);">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <h3>Your Orders</h3>
+        <p>Track, return, or buy things again</p>
+        <div class="btn btn-outline">View Orders <i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="account-card" onclick="window.location.href='addresses.html'">
+        <div class="account-card-icon" style="background: var(--gradient-3);">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <h3>Addresses</h3>
+        <p>Edit addresses for orders and gifts</p>
+        <div class="btn btn-outline">Manage Addresses <i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="account-card" onclick="window.location.href='wishlist.html'">
+        <div class="account-card-icon" style="background: var(--gradient-4);">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h3>Wishlist</h3>
+        <p>View and manage your saved items</p>
+        <div class="btn btn-outline">View Wishlist <i class="fas fa-arrow-right"></i></div>
+      </div>
+
+      <div class="account-card" id="profileCard">
+        <div class="account-card-icon" style="background: var(--gradient-5);">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <h3>Profile Settings</h3>
+        <p>Edit your personal information</p>
+        <div class="btn btn-outline">Edit Profile <i class="fas fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="account-section">
+      <h2><i class="fas fa-clock"></i> Recent Orders</h2>
+      <div id="recentOrders">
+        <div class="empty-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading orders...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Addresses -->
+    <div class="account-section">
+      <h2><i class="fas fa-map-marker-alt"></i> Saved Addresses</h2>
+      <div id="savedAddresses">
+        <div class="empty-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading addresses...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="profileModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: none; align-items: center; justify-content: center;">
+      <div style="background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; max-width: 500px; width: 90%;">
+        <h2 style="margin: 0 0 1.5rem 0; color: var(--text);">Edit Profile</h2>
+        <form class="profile-form" id="profileForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="displayName" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="emailField" disabled>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="phoneField" placeholder="Enter your phone number">
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn primary">
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+            <button type="button" class="btn" onclick="closeProfileModal()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 One Click Computers. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/config-auto.js"></script>
+  <script src="assets/js/supabase-config.js"></script>
+  <script src="assets/js/supabase-init.js"></script>`n  <script src="assets/js/auth-system.js"></script>
+  <script src="assets/js/backend-products.js"></script>
+  <script src="assets/js/supabase-auth.js"></script>
+  <script src="assets/js/supabase-db.js"></script>
+  <script src="assets/js/cart-manager.js"></script>
+  <script>
+    (function() {
+      'use strict';
+
+      const state = {
+        supabase: null,
+        db: null,
+        user: null,
+        profile: null
+      };
+
+      const els = {
+        userName: document.getElementById('userName'),
+        userEmail: document.getElementById('userEmail'),
+        recentOrders: document.getElementById('recentOrders'),
+        savedAddresses: document.getElementById('savedAddresses'),
+        profileModal: document.getElementById('profileModal'),
+        profileForm: document.getElementById('profileForm'),
+        displayNameInput: document.getElementById('displayName'),
+        emailField: document.getElementById('emailField'),
+        phoneField: document.getElementById('phoneField'),
+        logoutBtn: document.getElementById('logoutBtn'),
+        profileCard: document.getElementById('profileCard')
+      };
+
+      function formatPrice(value) {
+        const amount = Number.isFinite(Number(value)) ? Number(value) : 0;
+        return new Intl.NumberFormat('en-LK', {
+          style: 'currency',
+          currency: 'LKR',
+          maximumFractionDigits: 0
+        }).format(amount);
+      }
+
+      function formatDate(value) {
+        if (!value) return 'N/A';
+        try {
+          const date = value instanceof Date ? value : new Date(value);
+          if (Number.isNaN(date.getTime())) return 'N/A';
+          return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch (error) {
+          console.warn('Date format error:', error);
+          return 'N/A';
+        }
+      }
+
+      function spinnerMarkup(message) {
+        return `
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>${message}</p>
+          </div>
+        `;
+      }
+
+      function emptyStateMarkup(iconClass, message, actionHtml = '') {
+        return `
+          <div class="empty-state">
+            <i class="fas ${iconClass}"></i>
+            <p>${message}</p>
+            ${actionHtml || ''}
+          </div>
+        `;
+      }
+
+      function notify(message, type = 'info') {
+        if (window.CartManager && typeof window.CartManager.showNotification === 'function') {
+          window.CartManager.showNotification(message, type);
+        } else {
+          console.log(`[${type}] ${message}`);
+        }
+      }
+
+      function supabaseAvailable() {
+        if (typeof window.ensureSupabase !== 'function') {
+          console.warn('Supabase helpers not detected on account dashboard.');
+          if (els.recentOrders) {
+            els.recentOrders.innerHTML = emptyStateMarkup('fa-cloud-slash', 'Supabase is not available right now.');
+          }
+          if (els.savedAddresses) {
+            els.savedAddresses.innerHTML = emptyStateMarkup('fa-cloud-slash', 'Supabase is not available right now.');
+          }
+          return false;
+        }
+        return true;
+      }
+
+      async function initSupabaseStack() {
+        if (!supabaseAvailable()) return false;
+        try {
+          state.supabase = await window.ensureSupabase();
+          if (!state.supabase) throw new Error('ensureSupabase returned null');
+          state.db = window.supabaseDB || null;
+          if (state.db && typeof state.db.init === 'function') {
+            try {
+              await state.db.init();
+            } catch (dbInitError) {
+              console.warn('Supabase DB helper init warning:', dbInitError.message || dbInitError);
+            }
+          }
+          return true;
+        } catch (error) {
+          console.warn('Supabase initialization failed:', error);
+          if (els.recentOrders) {
+            els.recentOrders.innerHTML = emptyStateMarkup('fa-cloud-slash', 'Unable to connect to Supabase.');
+          }
+          if (els.savedAddresses) {
+            els.savedAddresses.innerHTML = emptyStateMarkup('fa-cloud-slash', 'Unable to connect to Supabase.');
+          }
+          return false;
+        }
+      }
+
+      function resolveRole(profile, user) {
+        return (
+          profile?.role ||
+          user?.user_metadata?.role ||
+          (Array.isArray(user?.app_metadata?.roles) ? user.app_metadata.roles[0] : user?.app_metadata?.role) ||
+          'user'
+        );
+      }
+
+      function enhanceNameFromEmail(email) {
+        if (!email || typeof email !== 'string') return 'User';
+        return email.split('@')[0];
+      }
+
+      async function loadUserProfile(user) {
+        if (!user || !state.supabase) return;
+
+        let profile = null;
+
+        if (state.db && typeof state.db.getUserProfile === 'function') {
+          try {
+            const response = await state.db.getUserProfile(user.id);
+            if (response?.success && response.user) {
+              profile = response.user;
+            } else if (response?.error) {
+              console.warn('SupabaseDB profile lookup failed:', response.error);
+            }
+          } catch (error) {
+            console.warn('SupabaseDB profile lookup error:', error);
+          }
+        }
+
+        if (!profile) {
+          try {
+            const { data, error } = await state.supabase
+              .from('users')
+              .select('id, email, name, phone, role')
+              .eq('id', user.id)
+              .limit(1);
+
+            if (error && error.code !== 'PGRST116') {
+              throw error;
+            }
+
+            profile = Array.isArray(data) && data.length ? data[0] : null;
+          } catch (error) {
+            console.warn('Direct Supabase profile query failed:', error.message || error);
+          }
+        }
+
+        state.profile = profile;
+
+        const metadata = user.user_metadata || {};
+        const displayName = profile?.name || metadata.displayName || metadata.full_name || enhanceNameFromEmail(user.email);
+        const phone = profile?.phone || metadata.phone || '';
+        const role = resolveRole(profile, user);
+
+        if (els.userName) {
+          const badge = role === 'admin' ? '<span class="admin-badge">Admin</span>' : '';
+          els.userName.innerHTML = `Welcome back, ${displayName}! ${badge}`;
+        }
+        if (els.userEmail) {
+          els.userEmail.textContent = user.email || '—';
+        }
+        if (els.displayNameInput) {
+          els.displayNameInput.value = displayName || '';
+        }
+        if (els.emailField) {
+          els.emailField.value = user.email || '';
+        }
+        if (els.phoneField) {
+          els.phoneField.value = phone || '';
+        }
+      }
+
+      function statusClass(status) {
+        const normalized = (status || '').toString().toLowerCase();
+        if (['paid', 'completed', 'shipped', 'delivered', 'fulfilled', 'payment_success'].includes(normalized)) {
+          return 'status-paid';
+        }
+        if (['pending', 'processing', 'payment_pending', 'awaiting_payment'].includes(normalized)) {
+          return 'status-pending';
+        }
+        if (['cancelled', 'canceled', 'failed', 'refunded', 'payment_failed'].includes(normalized)) {
+          return 'status-cancelled';
+        }
+        return 'status-pending';
+      }
+
+      function renderOrders(orders) {
+        if (!els.recentOrders) return;
+        if (!Array.isArray(orders) || orders.length === 0) {
+          els.recentOrders.innerHTML = emptyStateMarkup(
+            'fa-shopping-bag',
+            'You have no recent orders yet.',
+            '<a href="shop.html" class="btn primary" style="margin-top: 1rem;"><i class="fas fa-shopping-cart"></i> Start Shopping</a>'
+          );
+          return;
+        }
+
+        const markup = orders.map(order => {
+          const orderId = (order.order_number || order.id || '').toString();
+          const label = orderId ? orderId.replace(/^#/, '').substring(0, 12).toUpperCase() : 'N/A';
+          const status = (order.status || 'pending').toString();
+          const items = Array.isArray(order.order_items)
+            ? order.order_items
+            : Array.isArray(order.items)
+              ? order.items
+              : [];
+          const itemCount = items.reduce((total, item) => {
+            const quantity = item.quantity ?? item.qty ?? 1;
+            return total + (Number.isFinite(Number(quantity)) ? Number(quantity) : 1);
+          }, 0);
+
+          const createdAt = order.created_at || order.createdAt || order.createdAtFormatted || null;
+          return `
+            <div class="order-card">
+              <div class="order-header">
+                <div>
+                  <div class="order-number">Order #${label}</div>
+                  <div style="font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem;">
+                    ${formatDate(createdAt)}
+                  </div>
+                </div>
+                <span class="order-status ${statusClass(status)}">${status.toUpperCase()}</span>
+              </div>
+              <div class="order-items">
+                ${itemCount || order.item_count || 0} item${(itemCount || order.item_count || 0) === 1 ? '' : 's'}
+              </div>
+              <div class="order-total">
+                <span>Total:</span>
+                <span>${formatPrice(order.total)}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        els.recentOrders.innerHTML = markup;
+      }
+
+      function renderAddresses(addresses) {
+        if (!els.savedAddresses) return;
+        if (!Array.isArray(addresses) || addresses.length === 0) {
+          els.savedAddresses.innerHTML = emptyStateMarkup(
+            'fa-map-marker-alt',
+            'No saved addresses yet.',
+            '<a href="addresses.html" class="btn primary" style="margin-top: 1rem;"><i class="fas fa-plus"></i> Add Address</a>'
+          );
+          return;
+        }
+
+        const markup = addresses.map(address => {
+          const fullName = address.name || address.full_name || address.fullName || 'Address';
+          const phone = address.phone || '';
+          const line1 = address.address_line1 || address.line1 || '';
+          const line2 = address.address_line2 || address.line2 || '';
+          const city = address.city || '';
+          const postal = address.postal_code || address.postal || '';
+          const country = address.country || 'Sri Lanka';
+          const defaultBilling = address.default_billing || address.defaultBilling || address.is_default_billing;
+          const defaultShipping = address.default_shipping || address.defaultShipping || address.is_default;
+
+          const badges = [
+            defaultShipping ? '<span class="address-badge badge-shipping">Default Shipping</span>' : '',
+            defaultBilling ? '<span class="address-badge badge-billing">Default Billing</span>' : ''
+          ].filter(Boolean).join('');
+
+          return `
+            <div class="address-card">
+              <h4>${fullName}</h4>
+              ${badges ? `<div class="address-badges">${badges}</div>` : ''}
+              <div class="address-details">
+                ${phone ? `<div><i class="fas fa-phone" style="width: 20px;"></i> ${phone}</div>` : ''}
+                ${line1 ? `<div><i class="fas fa-map-marker-alt" style="width: 20px;"></i> ${line1}</div>` : ''}
+                ${line2 ? `<div style="padding-left: 28px;">${line2}</div>` : ''}
+                <div style="padding-left: 28px;">${[city, postal].filter(Boolean).join(', ')}</div>
+                <div style="padding-left: 28px;">${country}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        els.savedAddresses.innerHTML = markup;
+      }
+
+      async function loadRecentOrders(user) {
+        if (!els.recentOrders || !state.supabase) return;
+        
+        try {
+          // Query orders directly from Supabase with authentication
+          const { data: orders, error } = await state.supabase
+            .from('orders')
+            .select('id, order_number, status, total, created_at, order_items(id, product_id, quantity, price)')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(5);
+          
+          if (error) {
+            console.warn('Orders query error:', error);
+            els.recentOrders.parentElement.style.display = 'none';
+            return;
+          }
+          
+          if (Array.isArray(orders) && orders.length > 0) {
+            renderOrders(orders);
+          } else {
+            renderOrders([]);
+          }
+        } catch (error) {
+          console.error('Load recent orders failed:', error);
+          els.recentOrders.parentElement.style.display = 'none';
+        }
+      }
+
+      async function loadSavedAddresses(user) {
+        if (!els.savedAddresses || !state.supabase) return;
+        
+        try {
+          // Query addresses directly from Supabase with authentication
+          const { data: addresses, error } = await state.supabase
+            .from('addresses')
+            .select('id, name, full_name, phone, address_line1, address_line2, city, postal_code, country, is_default, default_shipping, default_billing, updated_at')
+            .eq('user_id', user.id)
+            .order('is_default', { ascending: false })
+            .order('updated_at', { ascending: false })
+            .limit(3);
+          
+          if (error) {
+            console.warn('Addresses query error:', error);
+            els.savedAddresses.parentElement.style.display = 'none';
+            return;
+          }
+          
+          if (Array.isArray(addresses) && addresses.length > 0) {
+            renderAddresses(addresses);
+          } else {
+            renderAddresses([]);
+          }
+        } catch (error) {
+          console.error('Load saved addresses failed:', error);
+          els.savedAddresses.parentElement.style.display = 'none';
+        }
+      }
+
+      async function refreshDashboard(user) {
+        if (!user) return;
+        if (els.userName) {
+          els.userName.textContent = 'Loading your account...';
+        }
+        if (els.userEmail) {
+          els.userEmail.textContent = user.email || 'Loading...';
+        }
+
+        await Promise.all([
+          loadUserProfile(user),
+          loadRecentOrders(user),
+          loadSavedAddresses(user)
+        ]);
+      }
+
+      function openProfileModal() {
+        if (!els.profileModal) return;
+        els.profileModal.style.display = 'flex';
+      }
+
+      function closeProfileModal() {
+        if (!els.profileModal) return;
+        els.profileModal.style.display = 'none';
+      }
+
+      async function handleProfileSubmit(event) {
+        event.preventDefault();
+        if (!state.user || !state.supabase || !els.profileForm) return;
+
+        const displayName = els.displayNameInput?.value?.trim() || '';
+        const phone = els.phoneField?.value?.trim() || '';
+        const submitBtn = els.profileForm.querySelector('button[type="submit"]');
+        const originalLabel = submitBtn ? submitBtn.innerHTML : '';
+
+        try {
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+          }
+
+          const { error: authError } = await state.supabase.auth.updateUser({
+            data: {
+              displayName,
+              phone
+            }
+          });
+          if (authError) throw authError;
+
+          if (state.db && state.profile?.id && typeof state.db.updateUserProfile === 'function') {
+            const updateResult = await state.db.updateUserProfile(state.profile.id, {
+              name: displayName,
+              phone
+            });
+            if (!updateResult?.success && updateResult?.error) {
+              console.warn('User profile table update warning:', updateResult.error);
+            }
+          }
+
+          notify('Profile updated successfully.', 'success');
+          closeProfileModal();
+          await loadUserProfile(state.user);
+        } catch (error) {
+          console.error('Profile update failed:', error);
+          notify('Failed to update profile. Please try again.', 'error');
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalLabel;
+          }
+        }
+      }
+
+      async function handleLogout() {
+        if (!confirm('Are you sure you want to logout?')) return;
+        try {
+          if (window.supabaseAuth && typeof window.supabaseAuth.signOut === 'function') {
+            const result = await window.supabaseAuth.signOut();
+            if (!result?.success && result?.error) {
+              throw new Error(result.error);
+            }
+          } else if (state.supabase) {
+            const { error } = await state.supabase.auth.signOut();
+            if (error) throw error;
+          }
+          window.location.href = 'login.html';
+        } catch (error) {
+          console.error('Logout failed:', error);
+          notify('Error logging out. Please try again.', 'error');
+        }
+      }
+
+      async function handleAuthChange(user) {
+        if (!user) {
+          localStorage.setItem('redirectAfterLogin', 'account.html');
+          sessionStorage.setItem('postLoginRedirect', 'account.html');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        state.user = user;
+        await mergeGuestState(user);
+        await refreshDashboard(user);
+      }
+
+      async function mergeGuestState(user) {
+        try {
+          if (!user) return;
+          const apiBase = (window.API_CONFIG && window.API_CONFIG.apiUrl) ? window.API_CONFIG.apiUrl : '/api';
+
+          // Merge Cart
+          const cartMergedKey = `cartMerged:${user.id}`;
+          const hasMergedCart = localStorage.getItem(cartMergedKey) === '1';
+          let localCartItems = [];
+          if (window.CartManager && typeof window.CartManager.getItems === 'function') {
+            localCartItems = window.CartManager.getItems().map(it => ({ product_id: it.id || it.product_id, quantity: it.qty || it.quantity || 1 }));
+          } else {
+            try {
+              const raw = localStorage.getItem('oneclick_cart');
+              const parsed = raw ? JSON.parse(raw) : [];
+              if (Array.isArray(parsed)) {
+                localCartItems = parsed.map(it => ({ product_id: it.id || it.product_id, quantity: it.qty || it.quantity || 1 }));
+              }
+            } catch (e) { /* ignore */ }
+          }
+
+          if (!hasMergedCart && Array.isArray(localCartItems) && localCartItems.length > 0) {
+            const resp = await fetch(`${apiBase.replace(/\/$/, '')}/cart/merge-cart.php`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ user_id: user.id, items: localCartItems })
+            });
+            const json = await resp.json();
+            if (json && json.success) {
+              localStorage.setItem(cartMergedKey, '1');
+              // Replace local cart with merged server snapshot to keep badges in sync
+              if (window.CartManager && Array.isArray(json.items)) {
+                const mapped = json.items.map(row => {
+                  const p = row.products || {};
+                  return {
+                    id: p.id || row.product_id,
+                    title: p.title || p.name || 'Product',
+                    name: p.name || p.title || 'Product',
+                    price: p.price || 0,
+                    image: p.image_url || p.main_image || p.image || 'assets/img/placeholder.png',
+                    qty: row.quantity || 1,
+                    addedAt: new Date().toISOString()
+                  };
+                });
+                window.CartManager.cart = mapped;
+                window.CartManager.saveToLocalStorage();
+                window.CartManager.updateAllBadges();
+                window.CartManager.notifyListeners();
+              }
+            }
+          }
+
+          // Merge Wishlist (best-effort; only if local key exists)
+          const wishlistMergedKey = `wishlistMerged:${user.id}`;
+          const hasMergedWishlist = localStorage.getItem(wishlistMergedKey) === '1';
+          let wlItems = [];
+          try {
+            const wlRaw = localStorage.getItem('oneclick_wishlist');
+            const parsed = wlRaw ? JSON.parse(wlRaw) : [];
+            if (Array.isArray(parsed)) {
+              wlItems = parsed.map(it => ({ product_id: it.id || it.product_id || it }));
+            }
+          } catch (e) { /* ignore */ }
+
+          if (!hasMergedWishlist && Array.isArray(wlItems) && wlItems.length > 0) {
+            const wResp = await fetch(`${apiBase.replace(/\/$/, '')}/wishlist/merge-wishlist.php`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ user_id: user.id, items: wlItems })
+            });
+            const wJson = await wResp.json();
+            if (wJson && wJson.success) {
+              localStorage.setItem(wishlistMergedKey, '1');
+              // clear guest wishlist key since server is truthy now
+              localStorage.removeItem('oneclick_wishlist');
+            }
+          }
+        } catch (err) {
+          console.warn('Merge guest state failed:', err);
+        }
+      }
+
+      async function bootstrap() {
+        const supabaseReady = await initSupabaseStack();
+        if (!supabaseReady) {
+          localStorage.setItem('redirectAfterLogin', 'account.html');
+          setTimeout(() => { window.location.href = 'login.html'; }, 500);
+          return;
+        }
+
+        const authManager = window.supabaseAuth;
+        if (!authManager) {
+          console.warn('SupabaseAuthManager is not available; redirecting to login.');
+          localStorage.setItem('redirectAfterLogin', 'account.html');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        await authManager.init();
+        authManager.onAuthStateChange(handleAuthChange);
+
+        if (!authManager.currentUser) {
+          console.log('No authenticated user found; redirecting to login.');
+          localStorage.setItem('redirectAfterLogin', 'account.html');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        await handleAuthChange(authManager.currentUser);
+
+        if (els.logoutBtn) {
+          els.logoutBtn.addEventListener('click', handleLogout);
+        }
+        if (els.profileCard) {
+          els.profileCard.addEventListener('click', openProfileModal);
+        }
+        if (els.profileForm) {
+          els.profileForm.addEventListener('submit', handleProfileSubmit);
+        }
+        if (els.profileModal) {
+          els.profileModal.addEventListener('click', (event) => {
+            if (event.target === els.profileModal) {
+              closeProfileModal();
+            }
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bootstrap);
+
+      // Expose modal helpers for inline handlers
+      window.openProfileModal = openProfileModal;
+      window.closeProfileModal = closeProfileModal;
+    })();
+  </script>
+</body>
+</html>

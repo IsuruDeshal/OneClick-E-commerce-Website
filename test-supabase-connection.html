@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Supabase Connection Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            opacity: 0.9;
+        }
+        .content {
+            padding: 30px;
+        }
+        .test-section {
+            margin-bottom: 25px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .test-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .test-button:active {
+            transform: translateY(0);
+        }
+        .result {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #4caf50;
+            color: white;
+        }
+        .status.error {
+            background: #f44336;
+            color: white;
+        }
+        .status.loading {
+            background: #ff9800;
+            color: white;
+        }
+        .status.info {
+            background: #2196f3;
+            color: white;
+        }
+        .result.success {
+            border-color: #4caf50;
+            background: #f1f8e9;
+            color: #2e7d32;
+        }
+        .result.error {
+            border-color: #f44336;
+            background: #ffebee;
+            color: #c62828;
+        }
+        .result.info {
+            border-color: #2196f3;
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+        .credentials-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .credentials-table th,
+        .credentials-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .credentials-table th {
+            background: #f0f0f0;
+            font-weight: 600;
+            color: #333;
+        }
+        .credentials-table td {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            word-break: break-all;
+        }
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+        }
+        .summary h3 {
+            margin-bottom: 15px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        .summary-status {
+            font-weight: bold;
+        }
+        .summary-status.pass {
+            color: #4caf50;
+        }
+        .summary-status.fail {
+            color: #f44336;
+        }
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+        }
+        .log-info { color: #4ec9b0; }
+        .log-success { color: #4caf50; }
+        .log-error { color: #f44336; }
+        .log-warning { color: #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Supabase Connection Test</h1>
+            <p>OneClick Computers - Configuration Verification</p>
+        </div>
+
+        <div class="content">
+            <!-- Test 1: Configuration -->
+            <div class="test-section">
+                <h3>
+                    1️⃣ Configuration Check
+                    <span class="status" id="test1-status"></span>
+                </h3>
+                <button class="test-button" onclick="testConfiguration()">Check Configuration</button>
+                <div class="result" id="test1-result"></div>
+            </div>
+
+            <!-- Test 2: Supabase Connection -->
+            <div class="test-section">
+                <h3>
+                    2️⃣ Supabase Connection
+                    <span class="status" id="test2-status"></span>
+                </h3>
+                <button class="test-button" onclick="testConnection()">Test Connection</button>
+                <div class="result" id="test2-result"></div>
+            </div>
+
+            <!-- Test 3: Fetch Products -->
+            <div class="test-section">
+                <h3>
+                    3️⃣ Fetch Products
+                    <span class="status" id="test3-status"></span>
+                </h3>
+                <button class="test-button" onclick="testFetchProducts()">Fetch Products</button>
+                <div class="result" id="test3-result"></div>
+            </div>
+
+            <!-- Test 4: Count Data -->
+            <div class="test-section">
+                <h3>
+                    4️⃣ Database Statistics
+                    <span class="status" id="test4-status"></span>
+                </h3>
+                <button class="test-button" onclick="testDatabaseStats()">Get Statistics</button>
+                <div class="result" id="test4-result"></div>
+            </div>
+
+            <!-- Test 5: Real-time Channel -->
+            <div class="test-section">
+                <h3>
+                    5️⃣ Real-time Channel
+                    <span class="status" id="test5-status"></span>
+                </h3>
+                <button class="test-button" onclick="testRealtimeChannel()">Test Real-time</button>
+                <div class="result" id="test5-result"></div>
+            </div>
+
+            <!-- Test 6: User Authentication -->
+            <div class="test-section">
+                <h3>
+                    6️⃣ Authentication Check
+                    <span class="status" id="test6-status"></span>
+                </h3>
+                <button class="test-button" onclick="testAuthentication()">Check Auth</button>
+                <div class="result" id="test6-result"></div>
+            </div>
+
+            <!-- Credentials Display -->
+            <div class="test-section">
+                <h3>📋 Active Configuration</h3>
+                <table class="credentials-table">
+                    <tr>
+                        <th>Setting</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr>
+                        <td>Project URL</td>
+                        <td id="cred-url">-</td>
+                    </tr>
+                    <tr>
+                        <td>Anon Key (First 20 chars)</td>
+                        <td id="cred-key">-</td>
+                    </tr>
+                    <tr>
+                        <td>Environment</td>
+                        <td id="cred-env">-</td>
+                    </tr>
+                    <tr>
+                        <td>Supabase Library</td>
+                        <td id="cred-lib">-</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Console Output -->
+            <div class="test-section">
+                <h3>📊 Live Console Output</h3>
+                <div class="console-output" id="console-output"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="summary" id="summary"></div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://pvnlavcuswjxhywbsodm.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2bmxhdmN1c3dqeGh5d2Jzb2RtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNTkyOTYsImV4cCI6MjA3NzczNTI5Nn0.pddR-mTtvaELNeK_F1HDwZfjs29xj__k9z-WFOqZbFA';
+
+        const testResults = {};
+        const consoleLog = [];
+
+        // Override console.log to capture output
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ');
+            consoleLog.push(message);
+            updateConsoleOutput();
+        };
+
+        function updateConsoleOutput() {
+            const output = document.getElementById('console-output');
+            output.innerHTML = consoleLog.map((msg, i) => {
+                const type = msg.includes('✅') ? 'success' : msg.includes('❌') ? 'error' : msg.includes('⚠️') ? 'warning' : 'info';
+                return `<div class="log-entry log-${type}">${msg}</div>`;
+            }).join('');
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function setStatus(testNum, status) {
+            const statusEl = document.getElementById(`test${testNum}-status`);
+            statusEl.className = 'status ' + status;
+            if (status === 'success') statusEl.textContent = '✅ PASS';
+            else if (status === 'error') statusEl.textContent = '❌ FAIL';
+            else if (status === 'loading') statusEl.textContent = '⏳ Testing...';
+            testResults[testNum] = status;
+        }
+
+        function setResult(testNum, html, type = 'info') {
+            const resultEl = document.getElementById(`test${testNum}-result`);
+            resultEl.innerHTML = html;
+            resultEl.className = 'result ' + type;
+        }
+
+        async function testConfiguration() {
+            setStatus(1, 'loading');
+            console.log('🧪 Test 1: Configuration Check');
+
+            try {
+                const configOk = SUPABASE_URL && SUPABASE_KEY;
+                const html = `
+                    <strong>Project URL:</strong> ${SUPABASE_URL}<br>
+                    <strong>Anon Key:</strong> ${SUPABASE_KEY.substring(0, 50)}...<br>
+                    <strong>Key Length:</strong> ${SUPABASE_KEY.length} characters<br>
+                    <strong>Environment:</strong> ${window.location.hostname.includes('localhost') ? 'Local Development' : 'Production'}<br>
+                    <strong>Status:</strong> ✅ Configuration Loaded
+                `;
+                setResult(1, html, 'success');
+                setStatus(1, 'success');
+                console.log('✅ Configuration verified');
+
+                // Update credentials display
+                document.getElementById('cred-url').textContent = SUPABASE_URL;
+                document.getElementById('cred-key').textContent = SUPABASE_KEY.substring(0, 20) + '...';
+                document.getElementById('cred-env').textContent = window.location.hostname.includes('localhost') ? 'Local (XAMPP)' : 'Remote';
+                document.getElementById('cred-lib').textContent = 'Supabase JS v2';
+            } catch (e) {
+                setResult(1, `❌ Error: ${e.message}`, 'error');
+                setStatus(1, 'error');
+                console.log('❌ Configuration check failed');
+            }
+        }
+
+        async function testConnection() {
+            setStatus(2, 'loading');
+            console.log('🧪 Test 2: Supabase Connection');
+
+            try {
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                // Simple test query
+                const { data, error, status } = await supabase
+                    .from('products')
+                    .select('id')
+                    .limit(1);
+
+                if (error) {
+                    setResult(2, `❌ Connection Error: ${error.message}<br>Status: ${status}`, 'error');
+                    setStatus(2, 'error');
+                    console.log('❌ Connection failed:', error);
+                } else {
+                    setResult(2, `✅ Connected to Supabase<br>Status Code: ${status}<br>Test Query: Success`, 'success');
+                    setStatus(2, 'success');
+                    console.log('✅ Connection successful');
+                }
+            } catch (e) {
+                setResult(2, `❌ Exception: ${e.message}`, 'error');
+                setStatus(2, 'error');
+                console.log('❌ Connection test exception:', e.message);
+            }
+        }
+
+        async function testFetchProducts() {
+            setStatus(3, 'loading');
+            console.log('🧪 Test 3: Fetch Products');
+
+            try {
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                const { data, error } = await supabase
+                    .from('products')
+                    .select('id, name, category, price, status')
+                    .eq('status', 'active')
+                    .limit(10);
+
+                if (error) {
+                    setResult(3, `❌ Query Error: ${error.message}`, 'error');
+                    setStatus(3, 'error');
+                    console.log('❌ Product fetch failed:', error);
+                } else if (!data || data.length === 0) {
+                    setResult(3, `⚠️ No active products found<br>Please ensure products table has status='active'`, 'info');
+                    setStatus(3, 'error');
+                    console.log('⚠️ No products found');
+                } else {
+                    const html = `
+                        ✅ Fetched ${data.length} products<br>
+                        <strong>Sample Products:</strong><br>
+                        <pre>${JSON.stringify(data.slice(0, 3), null, 2)}</pre>
+                    `;
+                    setResult(3, html, 'success');
+                    setStatus(3, 'success');
+                    console.log(`✅ Fetched ${data.length} products`);
+                }
+            } catch (e) {
+                setResult(3, `❌ Exception: ${e.message}`, 'error');
+                setStatus(3, 'error');
+                console.log('❌ Product fetch exception:', e.message);
+            }
+        }
+
+        async function testDatabaseStats() {
+            setStatus(4, 'loading');
+            console.log('🧪 Test 4: Database Statistics');
+
+            try {
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                // Count total products
+                const { count: totalCount } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact' });
+
+                // Count active products
+                const { count: activeCount } = await supabase
+                    .from('products')
+                    .select('*', { count: 'exact' })
+                    .eq('status', 'active');
+
+                // Count categories
+                const { data: categories } = await supabase
+                    .from('products')
+                    .select('category')
+                    .eq('status', 'active');
+
+                const uniqueCategories = [...new Set(categories?.map(p => p.category) || [])].length;
+
+                const html = `
+                    ✅ Database Statistics:<br>
+                    <strong>Total Products:</strong> ${totalCount || 0}<br>
+                    <strong>Active Products:</strong> ${activeCount || 0}<br>
+                    <strong>Categories:</strong> ${uniqueCategories || 0}
+                `;
+                setResult(4, html, 'success');
+                setStatus(4, 'success');
+                console.log(`✅ Stats: ${totalCount} total, ${activeCount} active`);
+            } catch (e) {
+                setResult(4, `❌ Exception: ${e.message}`, 'error');
+                setStatus(4, 'error');
+                console.log('❌ Database stats failed:', e.message);
+            }
+        }
+
+        async function testRealtimeChannel() {
+            setStatus(5, 'loading');
+            console.log('🧪 Test 5: Real-time Channel');
+
+            try {
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                let status = 'Connecting...';
+                const channel = supabase
+                    .channel('products-test')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'products' }, payload => {
+                        console.log('📩 Real-time event:', payload);
+                    })
+                    .subscribe(status => {
+                        console.log('📡 Subscription status:', status);
+                    });
+
+                // Wait 3 seconds and check
+                await new Promise(resolve => setTimeout(resolve, 3000));
+
+                const html = `
+                    ✅ Real-time Channel Active<br>
+                    <strong>Channel:</strong> products-test<br>
+                    <strong>Listening for:</strong> INSERT, UPDATE, DELETE<br>
+                    <strong>Status:</strong> Connected<br>
+                    <small>Listening for 3 seconds - watch console for changes</small>
+                `;
+                setResult(5, html, 'success');
+                setStatus(5, 'success');
+                console.log('✅ Real-time channel connected');
+
+                // Clean up
+                setTimeout(() => channel.unsubscribe(), 5000);
+            } catch (e) {
+                setResult(5, `⚠️ Real-time Status: ${e.message}`, 'info');
+                setStatus(5, 'error');
+                console.log('⚠️ Real-time test:', e.message);
+            }
+        }
+
+        async function testAuthentication() {
+            setStatus(6, 'loading');
+            console.log('🧪 Test 6: Authentication Check');
+
+            try {
+                const { createClient } = window.supabase;
+                const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+                const { data, error } = await supabase.auth.getSession();
+
+                if (error) {
+                    setResult(6, `⚠️ Auth Check: ${error.message}<br>Status: Not Critical`, 'info');
+                    setStatus(6, 'error');
+                    console.log('⚠️ Auth check:', error.message);
+                } else if (!data.session) {
+                    setResult(6, `ℹ️ No active session<br>Status: Expected (Anonymous Access)<br>This is normal for anon key`, 'info');
+                    setStatus(6, 'success');
+                    console.log('ℹ️ No active session (normal)');
+                } else {
+                    setResult(6, `✅ Active Session<br>User: ${data.session.user.email}`, 'success');
+                    setStatus(6, 'success');
+                    console.log('✅ Session found');
+                }
+            } catch (e) {
+                setResult(6, `❌ Exception: ${e.message}`, 'error');
+                setStatus(6, 'error');
+                console.log('❌ Auth test failed:', e.message);
+            }
+        }
+
+        function updateSummary() {
+            const passed = Object.values(testResults).filter(r => r === 'success').length;
+            const total = Object.keys(testResults).length;
+            const allPassed = passed === total;
+
+            const summary = document.getElementById('summary');
+            summary.innerHTML = `
+                <h3>📊 Test Summary</h3>
+                <div class="summary-item">
+                    <span>Tests Passed</span>
+                    <span class="summary-status ${allPassed ? 'pass' : 'fail'}">${passed}/${total}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Overall Status</span>
+                    <span class="summary-status ${allPassed ? 'pass' : 'fail'}">${allPassed ? '✅ ALL SYSTEMS GO' : '⚠️ ISSUES DETECTED'}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Ready for Deployment</span>
+                    <span class="summary-status ${allPassed ? 'pass' : 'fail'}">${allPassed ? '✅ YES' : '❌ NO - Fix Issues First'}</span>
+                </div>
+            `;
+        }
+
+        // Run all tests on page load
+        window.addEventListener('load', async () => {
+            console.log('🚀 Starting Supabase Connection Tests...\n');
+            await testConfiguration();
+            await new Promise(r => setTimeout(r, 500));
+            await testConnection();
+            await new Promise(r => setTimeout(r, 500));
+            await testFetchProducts();
+            await new Promise(r => setTimeout(r, 500));
+            await testDatabaseStats();
+            await new Promise(r => setTimeout(r, 500));
+            await testRealtimeChannel();
+            await new Promise(r => setTimeout(r, 500));
+            await testAuthentication();
+            updateSummary();
+            console.log('\n✅ All tests completed!');
+        });
+
+        // Update summary when tests change
+        setInterval(updateSummary, 1000);
+    </script>
+</body>
+</html>

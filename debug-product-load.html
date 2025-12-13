@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Product Loading</title>
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #00d4ff;
+        }
+        h2 {
+            color: #00d4ff;
+            margin-top: 0;
+        }
+        pre {
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status.ok {
+            background: #10b981;
+            color: #fff;
+        }
+        .status.error {
+            background: #ef4444;
+            color: #fff;
+        }
+        .status.loading {
+            background: #f59e0b;
+            color: #fff;
+        }
+        button {
+            background: #00d4ff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px 5px 5px 0;
+        }
+        button:hover {
+            background: #00acc1;
+        }
+        .log-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: #0f3460;
+            border-left: 3px solid #00d4ff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🐛 One Click Computers - Product Loading Debug</h1>
+    
+    <div class="section">
+        <h2>1. Configuration Check</h2>
+        <button onclick="checkConfig()">Check Supabase Config</button>
+        <div id="configStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. Supabase Connection</h2>
+        <button onclick="checkSupabase()">Test Supabase Connection</button>
+        <div id="supabaseStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>3. Product Fetch Test</h2>
+        <button onclick="testFetchProducts()">Fetch Products from Supabase</button>
+        <div id="productStatus"></div>
+        <div id="productResults"></div>
+    </div>
+
+    <div class="section">
+        <h2>4. Real-time Subscription Test</h2>
+        <button onclick="testRealtimeSubscription()">Test Real-time Channel</button>
+        <div id="realtimeStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>5. Render Test (Local)</h2>
+        <button onclick="testRenderProducts()">Test Product Rendering</button>
+        <div id="renderResults" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px;"></div>
+    </div>
+
+    <div class="section">
+        <h2>6. Console Logs</h2>
+        <div id="consoleLogs" style="max-height: 300px; overflow-y: auto;"></div>
+    </div>
+</div>
+
+<script>
+// Intercept console.log
+const originalLog = console.log;
+const logsDiv = document.getElementById('consoleLogs');
+console.log = function(...args) {
+    originalLog.apply(console, args);
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ');
+    const item = document.createElement('div');
+    item.className = 'log-item';
+    item.textContent = msg;
+    logsDiv.appendChild(item);
+    logsDiv.scrollTop = logsDiv.scrollHeight;
+};
+
+function setStatus(elementId, message, type = 'loading') {
+    const el = document.getElementById(elementId);
+    el.innerHTML = `<div class="status ${type}">${message}</div>`;
+}
+
+async function checkConfig() {
+    setStatus('configStatus', 'Checking configuration...', 'loading');
+    try {
+        // Load config
+        if (!window.SUPABASE_CONFIG) {
+            throw new Error('SUPABASE_CONFIG not found');
+        }
+        const config = window.SUPABASE_CONFIG;
+        let html = '<div class="status ok">✅ Configuration Loaded</div>';
+        html += '<pre>' + JSON.stringify(config, null, 2) + '</pre>';
+        document.getElementById('configStatus').innerHTML = html;
+    } catch (e) {
+        setStatus('configStatus', `❌ ${e.message}`, 'error');
+    }
+}
+
+async function checkSupabase() {
+    setStatus('supabaseStatus', 'Initializing Supabase...', 'loading');
+    try {
+        const supabase = await window.ensureSupabase();
+        if (!supabase) throw new Error('Supabase not initialized');
+        
+        // Try a simple query
+        const { data, error } = await supabase.from('products').select('count()', { count: 'exact' });
+        if (error) throw error;
+        
+        let html = `<div class="status ok">✅ Supabase Connected</div>`;
+        html += `<pre>Total Products in Database: ${data}</pre>`;
+        document.getElementById('supabaseStatus').innerHTML = html;
+    } catch (e) {
+        setStatus('supabaseStatus', `❌ ${e.message}`, 'error');
+        console.error('Supabase error:', e);
+    }
+}
+
+async function testFetchProducts() {
+    setStatus('productStatus', 'Fetching products...', 'loading');
+    try {
+        const supabase = await window.ensureSupabase();
+        const { data, error } = await supabase
+            .from('products')
+            .select('id, name, price, offer_price, image_url, category, featured')
+            .eq('status', 'active')
+            .order('created_at', { ascending: false })
+            .limit(10);
+        
+        if (error) throw error;
+        
+        let html = `<div class="status ok">✅ Fetched ${data.length} products</div>`;
+        html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        document.getElementById('productResults').innerHTML = html;
+        console.log('Products fetched:', data);
+    } catch (e) {
+        setStatus('productStatus', `❌ ${e.message}`, 'error');
+        console.error('Fetch error:', e);
+    }
+}
+
+async function testRealtimeSubscription() {
+    setStatus('realtimeStatus', 'Setting up real-time subscription...', 'loading');
+    try {
+        const supabase = await window.ensureSupabase();
+        
+        const subscription = supabase
+            .channel('products-realtime-debug')
+            .on('postgres_changes', 
+                { event: '*', schema: 'public', table: 'products' },
+                (payload) => {
+                    console.log('Real-time event received:', payload);
+                }
+            )
+            .subscribe((status) => {
+                console.log('Subscription status:', status);
+                if (status === 'SUBSCRIBED') {
+                    setStatus('realtimeStatus', '✅ Real-time channel subscribed', 'ok');
+                }
+            });
+        
+        setTimeout(() => {
+            subscription.unsubscribe();
+            console.log('Subscription cleaned up');
+        }, 5000);
+    } catch (e) {
+        setStatus('realtimeStatus', `❌ ${e.message}`, 'error');
+        console.error('Realtime error:', e);
+    }
+}
+
+async function testRenderProducts() {
+    try {
+        const supabase = await window.ensureSupabase();
+        const { data: products, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('status', 'active')
+            .limit(3);
+        
+        if (error) throw error;
+        
+        const resultsDiv = document.getElementById('renderResults');
+        resultsDiv.innerHTML = '';
+        
+        products.forEach(product => {
+            const price = product.price || 0;
+            const img = product.image_url || 'assets/img/placeholder.png';
+            const html = `
+                <div style="background: #0f3460; border-radius: 8px; padding: 10px; text-align: center;">
+                    <img src="${img}" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 10px;" onerror="this.src='assets/img/placeholder.png'">
+                    <strong>${product.name}</strong>
+                    <p style="margin: 5px 0; color: #00d4ff;">Rs ${price.toLocaleString()}</p>
+                    <button onclick="alert('Product ${product.id}')">View</button>
+                </div>
+            `;
+            resultsDiv.innerHTML += html;
+        });
+    } catch (e) {
+        console.error('Render error:', e);
+        document.getElementById('renderResults').innerHTML = `<div class="status error">❌ ${e.message}</div>`;
+    }
+}
+
+// Auto-run on load
+window.addEventListener('load', () => {
+    console.log('🚀 Debug page loaded');
+    checkConfig();
+});
+</script>
+
+<!-- Load dependencies -->
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/supabase-init.js"></script>
+</body>
+</html>
