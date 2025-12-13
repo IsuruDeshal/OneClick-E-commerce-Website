@@ -3,9 +3,7 @@
 
 <img width="1866" height="947" alt="Opera Snapshot_2025-12-13_123146_localhost" src="https://github.com/user-attachments/assets/7e0a2b24-e279-4032-a6f5-905fe5766fc8" />
 
-<img width="1866" height="947" alt="Opera Snapshot_2025-12-13_123236_localhost" src="https://github.com/user-attachments/assets/41ee499d-ff19-4107-ba2e-14a998b7807d" />
 
-<img width="1866" height="947" alt="Opera Snapshot_2025-12-13_123156_localhost" src="https://github.com/user-attachments/assets/b54aa8c4-37ba-4f38-803e-331c8489e7af" />
 
 
 
@@ -14,6 +12,8 @@ A modern, full-featured e-commerce platform for computer hardware and electronic
 ![One Click Computers](assets/img/one-logo.png)
 
 ## ✨ Features
+
+<img width="1866" height="947" alt="Opera Snapshot_2025-12-13_123236_localhost" src="https://github.com/user-attachments/assets/41ee499d-ff19-4107-ba2e-14a998b7807d" />
 
 ### 🛒 Customer Features
 - **Product Catalog** - Browse 20+ categories of computer hardware
